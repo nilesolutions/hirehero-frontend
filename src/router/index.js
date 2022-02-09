@@ -17,9 +17,25 @@ const routes = [
     },
   },
   {
-    path: '/second-page',
-    name: 'second-page',
-    component: () => import('@/views/SecondPage.vue'),
+    path: '/projects',
+    name: 'projects',
+    component: () => import('@/views/Projects.vue'),
+    meta: {
+      layout: 'content',
+    },
+  },
+  {
+    path: '/projects/:id',
+    name: 'project',
+    component: () => import('@/views/Project.vue'),
+    meta: {
+      layout: 'content',
+    },
+  },
+  {
+    path: '/videos',
+    name: 'videos',
+    component: () => import('@/views/Videos.vue'),
     meta: {
       layout: 'content',
     },

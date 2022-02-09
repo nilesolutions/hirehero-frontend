@@ -1,14 +1,14 @@
-import { mdiFileOutline, mdiHomeOutline } from '@mdi/js'
+import { mdiBriefcaseOutline, mdiVideoOutline } from '@mdi/js'
 
 export default [
   {
-    title: 'Home',
-    icon: mdiHomeOutline,
-    to: 'home',
+    title: 'Projects',
+    icon: mdiBriefcaseOutline,
+    to: 'projects',
   },
   {
-    title: 'Second Page',
-    icon: mdiFileOutline,
-    to: 'second-page',
+    title: 'Training Videos',
+    icon: mdiVideoOutline,
+    to: 'videos',
   },
 ]
