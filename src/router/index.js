@@ -1,84 +1,82 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    redirect: 'home',
+    path: "/",
+    redirect: "home",
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('@/views/Home.vue'),
+    path: "/home",
+    name: "home",
+    component: () => import("@/views/Home.vue"),
     meta: {
-      layout: 'content',
+      layout: "content",
       requiresAuth: true,
     },
   },
   {
-    path: '/projects',
-    name: 'projects',
-    component: () => import('@/views/Projects.vue'),
+    path: "/projects",
+    name: "projects",
+    component: () => import("@/views/Projects.vue"),
     meta: {
-      layout: 'content',
+      layout: "content",
       requiresAuth: true,
     },
   },
   {
-    path: '/projects/:id',
-    name: 'project',
-    component: () => import('@/views/Project.vue'),
+    path: "/projects/:id",
+    name: "project",
+    component: () => import("@/views/Project.vue"),
     meta: {
-      layout: 'content',
+      layout: "content",
       requiresAuth: true,
     },
   },
   {
-    path: '/videos',
-    name: 'videos',
-    component: () => import('@/views/Videos.vue'),
+    path: "/videos",
+    name: "videos",
+    component: () => import("@/views/Videos.vue"),
     meta: {
-      layout: 'content',
+      layout: "content",
     },
   },
   {
-    path: '/login',
-    name: 'auth-login',
-    component: () => import('@/views/Login.vue'),
+    path: "/login",
+    name: "auth-login",
+    component: () => import("@/views/Login.vue"),
     meta: {
-      layout: 'blank',
+      layout: "blank",
       redirectIfLoggedIn: true,
     },
   },
   {
-    path: '*',
-    redirect: 'error-404',
+    path: "*",
+    redirect: "error-404",
   },
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
   },
-})
+});
 
-router.beforeEach((to, from, next) => {
-  console.log('Checking before navigation')
-  const accessToken = localStorage.getItem('accessToken')
-  console.log(accessToken)
+router.beforeEach((to, _, next) => {
+  const accessToken = localStorage.getItem("accessToken");
 
   // Redirect to login if not logged in
-  if (!accessToken && to.meta.requiresAuth) return next({ name: 'auth-login' })
+  if (!accessToken && to.meta.requiresAuth) return next({ name: "auth-login" });
 
   // Redirect if logged in
-  if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: 'home' })
+  //if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: 'home' })
 
-  return next()
-})
+  return next();
+});
 
-export default router
+export default router;

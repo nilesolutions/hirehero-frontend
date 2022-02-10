@@ -1,29 +1,56 @@
 // axios
-import axios from 'axios'
-import Vue from 'vue'
-console.log('creating axios')
+import axios from "axios";
+import Vue from "vue";
+
+const baseURL = "http://localhost:3000/api";
+
 const axiosIns = axios.create({
   // You can add your headers here
   // ================================
-  baseURL: 'http://localhost:3000/api',
+  baseURL,
   // timeout: 1000,
   // headers: {'X-Custom-Header': 'foobar'}
-})
+});
 
 axiosIns.interceptors.request.use(
-  config => {
+  (config) => {
     // Do something before request is sent
 
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = localStorage.getItem("accessToken");
 
     // eslint-disable-next-line no-param-reassign
-    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
-    return config
+    return config;
   },
-  error => Promise.reject(error),
-)
+  (error) => Promise.reject(error)
+);
 
-Vue.prototype.$http = axiosIns
+axiosIns.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const status = error.response ? error.response.status : null;
+    const originalReq = error.config;
 
-export default axiosIns
+    if (status == 401) {
+      const refreshUrl = baseURL + "/refresh";
+
+      try {
+        var refreshToken = await axios.post(refreshUrl);
+        console.log(refreshToken);
+      } catch (err) {
+        console.log("retry failed");
+        return Promise.reject("hhhhhhhhhhhhhhh");
+      }
+      console.log("--------");
+    }
+
+    return Promise.reject(error);
+
+    return Promise.reject("loooooooooool");
+  }
+);
+
+Vue.prototype.$http = axiosIns;
+
+export default axiosIns;

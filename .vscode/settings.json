@@ -51,9 +51,8 @@
     // Extension: Vetur
     // "vetur.experimental.templateInterpolationService": true,
     "vetur.validation.template": false,
-    "vetur.format.defaultFormatter.html": "none",
     "[vue]": {
-        "editor.defaultFormatter": "octref.vetur",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     // Extension: npm
     "npm.packageManager": "yarn",
