@@ -14,6 +14,7 @@ const routes = [
     component: () => import('@/views/Home.vue'),
     meta: {
       layout: 'content',
+      requiresAuth: true,
     },
   },
   {
@@ -22,6 +23,7 @@ const routes = [
     component: () => import('@/views/Projects.vue'),
     meta: {
       layout: 'content',
+      requiresAuth: true,
     },
   },
   {
@@ -30,6 +32,7 @@ const routes = [
     component: () => import('@/views/Project.vue'),
     meta: {
       layout: 'content',
+      requiresAuth: true,
     },
   },
   {
@@ -46,6 +49,7 @@ const routes = [
     component: () => import('@/views/Login.vue'),
     meta: {
       layout: 'blank',
+      redirectIfLoggedIn: true,
     },
   },
   {
@@ -61,6 +65,20 @@ const router = new VueRouter({
   scrollBehavior() {
     return { x: 0, y: 0 }
   },
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('Checking before navigation')
+  const accessToken = localStorage.getItem('accessToken')
+  console.log(accessToken)
+
+  // Redirect to login if not logged in
+  if (!accessToken && to.meta.requiresAuth) return next({ name: 'auth-login' })
+
+  // Redirect if logged in
+  if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: 'home' })
+
+  return next()
 })
 
 export default router

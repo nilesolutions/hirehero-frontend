@@ -125,9 +125,14 @@
                       color="primary"
                       type="submit"
                       class="mt-6"
+                      @click="login"
+                      :disabled="isLoading"
                     >
                       Login
                     </v-btn>
+
+                    <v-progress-circular indeterminate class="my-2 mx-auto" color="primary" v-show="isLoading">
+                    </v-progress-circular>
                   </v-form>
                 </v-card-text>
 
@@ -181,6 +186,7 @@ import themeConfig from '@themeConfig'
 export default {
   setup() {
     const isPasswordVisible = ref(false)
+    const isLoading = ref(false)
 
     const email = ref('')
     const password = ref('')
@@ -208,11 +214,28 @@ export default {
       },
     ]
 
+    async function login() {
+      try {
+        if (isLoading.value) return
+        isLoading.value = true
+        console.log('logging in lol')
+        var response = await this.$http.post('/login', {
+          email,
+          password,
+        })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        isLoading.value = false
+      }
+    }
+
     return {
       isPasswordVisible,
       email,
       password,
       socialLink,
+      isLoading,
 
       // Icons
       icons: {
@@ -223,6 +246,7 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      login,
     }
   },
 }
