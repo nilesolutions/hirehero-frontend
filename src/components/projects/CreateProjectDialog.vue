@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent v-model="isOpen">
+  <v-dialog @click:outside="closeDialog" max-width="500" v-model="isOpen">
     <v-card>
       <v-card-title class="justify-center">Create New Project</v-card-title>
 
@@ -12,13 +12,16 @@
         label="Project Name"
       ></v-text-field>
 
-      <v-card-actions v-if="!state.isLoading" class="justify-center">
-        <v-btn color="primary" @click="createProject">Create</v-btn>
-        <v-btn color="danger" @click="closeDialog">Cancel</v-btn>
+      <v-card-actions class="justify-center">
+        <v-btn
+          :loading="state.isLoading"
+          :disabled="state.isLoading"
+          color="primary"
+          @click="createProject"
+          >Create</v-btn
+        >
+        <v-btn :disabled="state.isLoading" color="danger" @click="closeDialog">Cancel</v-btn>
       </v-card-actions>
-      <div v-else class="text-center my-2">
-        <v-progress-circular class="my-2" indeterminate color="primary"></v-progress-circular>
-      </div>
 
       <div v-show="state.errorMsg" class="text-center">Error while creating</div>
     </v-card>
@@ -27,7 +30,7 @@
 
 <script>
 import axios from "@axios";
-import { ref, reactive } from "@vue/composition-api";
+import { reactive } from "@vue/composition-api";
 
 export default {
   name: "CreateProjectDialog",
@@ -50,7 +53,11 @@ export default {
         var response = await axios.post("/projects", {
           name: state.name,
         });
-        console.log(response);
+        emit("projectCreated", {
+          ...response.data,
+          created_at: Date.now(),
+        });
+        emit("close");
       } catch (err) {
         console.log("failure from function");
         console.log(err);

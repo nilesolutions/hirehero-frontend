@@ -108,14 +108,10 @@
                       class="mt-6"
                       @click="login"
                       :disabled="isLoading"
+                      :loading="isLoading"
                     >
                       Login
                     </v-btn>
-
-                    <div class="text-center my-2" v-show="isLoading">
-                      <v-progress-circular indeterminate class="my-2 mx-auto" color="primary">
-                      </v-progress-circular>
-                    </div>
                     <div v-show="errorMsg != ''" class="my-2 text-center">{{ errorMsg }}</div>
                   </v-form>
                 </v-card-text>
