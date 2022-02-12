@@ -63,7 +63,7 @@
               <v-card flat>
                 <v-card-text>
                   <p class="text-2xl font-weight-semibold text--primary mb-2">
-                    Welcome to Materio! 👋🏻
+                    Welcome to HireHeroes!
                   </p>
                   <p class="mb-2">Please sign-in to your account and start the adventure</p>
                 </v-card-text>

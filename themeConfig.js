@@ -2,7 +2,7 @@ import { mdiCheckboxBlankCircleOutline } from '@mdi/js'
 
 const themeConfig = {
   app: {
-    name: 'MATERIO',
+    name: 'HireHeroes',
     logo: require('@/assets/images/svg/logo.svg'),
     isDark: false,
     isRtl: false,
@@ -32,12 +32,15 @@ const themeConfig = {
   },
   themes: {
     light: {
-      primary: '#9155FD',
+      //primary: '#9155FD',
+      primary: '#1F70FD',
       accent: '#0d6efd',
       secondary: '#8A8D93',
-      success: '#56CA00',
+      //success: '#56CA00',
+      success: '#30D988',
       info: '#16B1FF',
-      warning: '#FFB400',
+      //warning: '#FFB400',
+      warning: '#EB5757',
       error: '#FF4C51',
     },
     dark: {
