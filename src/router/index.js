@@ -53,6 +53,15 @@ const routes = [
     },
   },
   {
+    path: "/signup",
+    name: "auth-signup",
+    component: () => import("@/views/Signup.vue"),
+    meta: {
+      layout: "blank",
+      redirectIfLoggedIn: true,
+    },
+  },
+  {
     path: "*",
     redirect: "error-404",
   },

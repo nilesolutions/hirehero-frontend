@@ -119,7 +119,7 @@
                 <!-- create new account  -->
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
                   <p class="mb-0 me-2">New on our platform?</p>
-                  <a href="#"> Create an account </a>
+                  <router-link to="/signup"> Create an account </router-link>
                 </v-card-text>
               </v-card>
             </v-col>
