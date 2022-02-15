@@ -6,7 +6,7 @@
       </v-card-title>
       <v-card-text>Created at : {{ creationDate }}</v-card-text>
 
-      <v-card-actions>
+      <v-card-actions v-if="userType == 'client'">
         <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
           <v-icon>{{ icons.mdiDelete }}</v-icon>
         </v-btn>
@@ -39,6 +39,7 @@
 
 <script>
 import { computed, ref } from "@vue/composition-api";
+import { useUser } from "@/composables/user";
 import axios from "@axios";
 import { mdiDelete } from "@mdi/js";
 
@@ -50,6 +51,7 @@ export default {
   setup(props, { emit }) {
     const isDeleteOpen = ref(false);
     const isLoading = ref(false);
+    const userType = useUser().userType();
 
     const creationDate = computed(() => {
       return new Date(props.project.created_at).toDateString();
@@ -81,6 +83,7 @@ export default {
       creationDate,
       deleteProject,
       goToProject,
+      userType,
 
       icons: {
         mdiDelete,
