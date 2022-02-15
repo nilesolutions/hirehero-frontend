@@ -5,7 +5,7 @@
     </router-link>
     <h2>{{ projectName }}</h2>
 
-    <div class="ml-auto">
+    <div class="ml-auto" v-if="userType == 'client'">
       <v-btn color="primary" @click="isCreateDiagOpen = true">
         Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
       </v-btn>
@@ -20,6 +20,8 @@
 
 <script>
 import { ref } from "@vue/composition-api";
+import { useRouter } from "@/composables/router";
+import { useUser } from "@/composables/user";
 import { mdiChevronLeft, mdiPlus } from "@mdi/js";
 import CreateTaskDialog from "@/components/project/CreateTaskDialog.vue";
 
@@ -27,18 +29,25 @@ export default {
   name: "AddTasks",
   // Use options API to extract from route
   // old Router ver & Vue 2 dont make it easy using composition
-  data() {
-    return {
-      projectName: this.$router.currentRoute.params.projectName,
-    };
-  },
+  // data() {
+  //   return {
+  //     projectName: this.$router.currentRoute.params.projectName,
+  //   };
+  // },
   components: {
     CreateTaskDialog,
   },
   setup() {
     const isCreateDiagOpen = ref(false);
+    const userType = useUser().userType();
+    const routeParams = useRouter().routeParams();
+    console.log(routeParams);
+    console.log(userType);
+
     return {
       isCreateDiagOpen,
+      userType,
+      projectName: routeParams.projectName,
 
       icons: {
         mdiChevronLeft,

@@ -36,7 +36,6 @@ export default {
     const { updateTask } = useTasks();
     const isLoading = ref(false);
     const params = useRouter().routeParams();
-    console.log(params);
 
     async function toggleStatus() {
       try {
