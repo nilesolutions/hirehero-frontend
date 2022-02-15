@@ -1,4 +1,4 @@
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref, set } from "@vue/composition-api";
 
 const tasks = ref([]);
 
@@ -16,8 +16,8 @@ const deleteTask = (taskId) => {
 
 const updateTask = (task) => {
   for (var i = 0; i < tasks.value.length; i++) {
-    if (tasks.value[i].gid == task.gid) {
-      tasks.value[i] = task;
+    if (tasks.value[i].id == task.id) {
+      set(tasks.value, i, task);
       break;
     }
   }

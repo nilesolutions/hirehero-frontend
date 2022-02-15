@@ -35,16 +35,16 @@ export default {
   setup(props) {
     const { updateTask } = useTasks();
     const isLoading = ref(false);
-    const routeParams = useRouter().routeParams();
+    const params = useRouter().routeParams();
+    console.log(params);
 
     async function toggleStatus() {
       try {
         isLoading.value = true;
-        const url = `projects/${routeParams.id}/tasks/${props.task.gid}`;
+        const url = `projects/${params.id}/tasks/${props.task.id}`;
         var response = await axios.patch(url, {
           completed: !props.task.completed,
         });
-        console.log(response.data);
         updateTask(response.data);
       } catch (err) {
         console.log(err);

@@ -39,15 +39,12 @@ axiosIns.interceptors.response.use(
         var refreshToken = await axios.post(refreshUrl);
         console.log(refreshToken);
       } catch (err) {
-        console.log("retry failed");
-        return Promise.reject("hhhhhhhhhhhhhhh");
+        return Promise.reject("Failed from axios import");
       }
       console.log("--------");
     }
 
     return Promise.reject(error);
-
-    return Promise.reject("loooooooooool");
   }
 );
 
