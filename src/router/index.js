@@ -1,7 +1,10 @@
+import { useRouter } from "@/composables/router";
 import Vue from "vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
+
+const { setRoute } = useRouter();
 
 const routes = [
   {
@@ -27,8 +30,9 @@ const routes = [
     },
   },
   {
-    path: "/projects/:id",
+    path: "/project/:id",
     name: "project",
+    props: true,
     component: () => import("@/views/Project.vue"),
     meta: {
       layout: "content",
@@ -77,6 +81,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
+  console.log("before each", to);
+  setRoute(to);
   const accessToken = localStorage.getItem("accessToken");
 
   // Redirect to login if not logged in

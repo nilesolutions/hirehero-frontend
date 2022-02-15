@@ -155,6 +155,7 @@ export default {
           password: password.value,
         });
         localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("userData", JSON.stringify(response.data.userData));
         this.$router.push({ name: "projects" });
       } catch (err) {
         errorMsg.value = err.response.data.message;

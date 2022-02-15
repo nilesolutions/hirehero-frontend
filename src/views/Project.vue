@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-column">
-    <project-info></project-info>
     <add-tasks></add-tasks>
     <tasks-view></tasks-view>
   </div>
@@ -8,8 +7,9 @@
 
 <script>
 import ProjectInfo from "@/components/project/ProjectInfo.vue";
-import AddTasks from "@/components/project/AddTasks.vue";
+import AddTasks from "@/components/project/ProjectNav.vue";
 import TasksView from "@/components/project/TasksView.vue";
+import { useTasks } from "@/composables/tasks";
 
 export default {
   name: "Project",
@@ -17,6 +17,9 @@ export default {
     ProjectInfo,
     AddTasks,
     TasksView,
+  },
+  setup() {
+    const { setTasks } = useTasks();
   },
 };
 </script>
