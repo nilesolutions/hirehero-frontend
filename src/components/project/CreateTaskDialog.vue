@@ -29,6 +29,17 @@
 
         <v-text-field v-model="state.notes" outlined label="Notes"></v-text-field>
 
+        <v-select
+          full-width
+          label="Priority"
+          outlined
+          clearable
+          v-model="state.priority"
+          :items="priorityOptions"
+          @change="setPriority"
+        >
+        </v-select>
+
         <v-btn
           :loading="state.isLoading"
           :disabled="state.isLoading"
@@ -57,6 +68,7 @@ export default {
       name: "",
       dueOn: "",
       notes: "",
+      priority: "",
       isLoading: false,
       menu: false,
     });
@@ -65,15 +77,21 @@ export default {
       state.name = "";
       state.dueOn = "";
       state.notes = "";
+      state.priority = null;
     };
 
     const { addTask } = useTasks();
 
     const minDate = new Date().toISOString();
+    const priorityOptions = ["Low", "Medium", "High"];
 
     const closeDialog = () => {
       emit("close");
       clearFields();
+    };
+
+    const setPriority = (e) => {
+      state.priority = e;
     };
 
     async function createTask() {
@@ -84,6 +102,7 @@ export default {
           name: state.name,
           due_on: state.dueOn,
           notes: state.notes,
+          priority: state.priority,
         });
         console.log(response);
         addTask(response.data);
@@ -100,6 +119,8 @@ export default {
       closeDialog,
       createTask,
       minDate,
+      setPriority,
+      priorityOptions,
     };
   },
 };

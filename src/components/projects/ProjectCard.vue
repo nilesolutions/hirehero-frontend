@@ -1,5 +1,5 @@
 <template>
-  <div class="col-4">
+  <div class="col-12 col-sm-6 col-lg-4">
     <v-card class="mb-2" @click="goToProject">
       <v-card-title>
         {{ project.name }}
