@@ -1,44 +1,80 @@
 <template>
-  <v-card>
+  <v-card class="my-3">
     <v-card-title>Record video</v-card-title>
 
     <v-card-text class="d-flex flex-row">
-      <video class="feedback-video black" ref="feedbackVideo" src="null"></video>
+      <video
+        class="feedback-video black"
+        ref="feedbackPlayer"
+        src="null"
+        :controls="state.recordedVidUrl ? true : false"
+      ></video>
     </v-card-text>
 
     <v-card-actions class="d-flex flex-row flex-wrap">
-      <v-btn class="my-2" @click="toggleRecord">
-        {{ state.isRecording ? "Stop" : "Start" }} Recording
+      <!-- Start / Pause Recording -->
+      <v-btn class="my-2" :disabled="state.isUploading" @click="toggleRecord">
+        <v-icon class="mr-2" color="#b53737">
+          {{ state.isRecording ? icons.mdiPause : icons.mdiRecord }}
+        </v-icon>
+        {{ recordBtnText }}
       </v-btn>
-      <v-btn class="my-2" @click="clear" :disabled="state.isRecording"> Clear Recording </v-btn>
-      <v-btn class="my-2" @click="upload">Upload</v-btn>
-      <v-btn class="my-2">Cancel</v-btn>
+
+      <!-- Clear record -->
+      <v-btn v-if="state.recordedVidUrl" class="my-2" @click="clear" :disabled="state.isRecording">
+        <v-icon class="mr-2">{{ icons.mdiCancel }}</v-icon>
+        Clear
+      </v-btn>
+
+      <!-- Upload recorded video -->
+      <v-btn
+        class="my-2"
+        :disabled="isCtrlDisabled"
+        :loading="state.isUploading"
+        @click="upload"
+        v-if="state.recordedVidUrl"
+      >
+        <v-icon class="mr-2">{{ icons.mdiCloudUpload }}</v-icon>
+        Upload
+      </v-btn>
+
+      <!-- Close dialog and clear recorded video -->
+      <v-btn class="my-2" :disabled="isCtrlDisabled" @click="toggleRecordDialog(false)">
+        Cancel
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import axios from "@axios";
-import { onMounted, reactive, ref } from "@vue/composition-api";
+import { onBeforeUnmount, ref, computed } from "@vue/composition-api";
+import { mdiRecord, mdiPause, mdiCancel, mdiCloudUpload } from "@mdi/js";
+import { useVideos } from "@/composables/videos";
 
 export default {
   name: "RecordVideo",
   setup() {
-    const feedbackVideo = ref(null);
-
-    const state = reactive({
-      isRecording: false,
-    });
+    const { state, toggleRecording, setVidUrl, toggleRecordDialog, toggleUpload, isCtrlDisabled } =
+      useVideos();
+    const feedbackPlayer = ref(null);
 
     var vidStream = null,
       audioStream = null,
       combinedStream = null,
       recorder = null,
       chunks = [],
-      finalBlob = null,
-      recordedVideo = null;
+      finalBlob = null;
 
-    async function setupStream() {
+    var recordBtnText = computed(() => {
+      if (state.isRecording) return "Stop";
+      if (!state.isRecording && state.recordedVidUrl) return "Resume";
+      return "Record";
+    });
+
+    onBeforeUnmount(() => clear());
+
+    async function setupRecording() {
       try {
         vidStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
@@ -50,27 +86,30 @@ export default {
             sampleRate: 44100,
           },
         });
+
+        feedbackPlayer.value.src = null;
+        feedbackPlayer.value.srcObject = null;
+        feedbackPlayer.value.srcObject = vidStream;
+        feedbackPlayer.value.play();
       } catch (err) {
-        console.error(err);
+        throw err;
       }
     }
 
-    async function setupFeedback() {
-      feedbackVideo.value.srcObject = vidStream;
-      feedbackVideo.value.play();
-    }
-
     async function toggleRecord() {
-      if (state.isRecording) stopRecording();
-      else await startRecording();
+      try {
+        if (state.isRecording) stopRecording();
+        else await startRecording();
 
-      state.isRecording = !state.isRecording;
+        toggleRecording(!state.isRecording);
+      } catch (err) {
+        throw err;
+      }
     }
 
     async function startRecording() {
       try {
-        await setupStream();
-        await setupFeedback();
+        await setupRecording();
 
         combinedStream = new MediaStream([...vidStream.getTracks(), ...audioStream.getTracks()]);
         recorder = new MediaRecorder(combinedStream);
@@ -79,7 +118,9 @@ export default {
         recorder.onstop = handleStop;
 
         recorder.start(1000);
-      } catch (err) {}
+      } catch (err) {
+        throw err;
+      }
     }
 
     function stopRecording() {
@@ -88,29 +129,30 @@ export default {
 
     function handleStop(event) {
       finalBlob = new Blob(chunks, { type: "video/mp4" });
-      recordedVideo = URL.createObjectURL(finalBlob);
-      chunks = [];
 
-      feedbackVideo.value.src = recordedVideo;
-      feedbackVideo.value.load();
-      feedbackVideo.value.onloadeddata = () => {
-        console.log("Video loaded");
-        feedbackVideo.value.play();
-      };
+      URL.revokeObjectURL(state.recordedVidUrl);
+      setVidUrl(URL.createObjectURL(finalBlob));
 
       vidStream.getTracks().forEach((track) => track.stop());
       audioStream.getTracks().forEach((track) => track.stop());
+
+      feedbackPlayer.value.src = null;
+      feedbackPlayer.value.srcObject = null;
+      feedbackPlayer.value.src = state.recordedVidUrl;
+      feedbackPlayer.value.load();
     }
 
     function clear() {
+      chunks = [];
       finalBlob = null;
-      recordedVideo = null;
-      console.log(finalBlob, recordedVideo);
+      URL.revokeObjectURL(state.recordedVidUrl);
+      setVidUrl("");
+      feedbackPlayer.value.src = null;
     }
 
     async function upload() {
       if (!finalBlob) return;
-      console.log("uploading");
+      toggleUpload(true);
 
       try {
         var data = new FormData();
@@ -119,6 +161,8 @@ export default {
         console.log(response);
       } catch (err) {
         console.log(err.response);
+      } finally {
+        toggleUpload(false);
       }
     }
 
@@ -127,8 +171,18 @@ export default {
 
       clear,
       upload,
-      feedbackVideo,
+      feedbackPlayer,
       toggleRecord,
+      recordBtnText,
+      toggleRecordDialog,
+      isCtrlDisabled,
+
+      icons: {
+        mdiRecord,
+        mdiPause,
+        mdiCancel,
+        mdiCloudUpload,
+      },
     };
   },
 };
