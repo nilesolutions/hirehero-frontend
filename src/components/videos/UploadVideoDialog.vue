@@ -3,10 +3,15 @@
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Upload a video</v-card-title>
 
-      <v-file-input accept="video/*" label="File"></v-file-input>
+      <v-file-input v-model="file" accept="video/*" label="File"></v-file-input>
 
       <v-card-actions>
-        <v-btn :disabled="state.isUploading" :loading="state.isUploading" color="primary">
+        <v-btn
+          @click="upload"
+          :disabled="state.isUploading"
+          :loading="state.isUploading"
+          color="primary"
+        >
           Upload
         </v-btn>
         <v-btn @click="toggleUploadDialog(false)" :disabled="state.isUploading">Cancel</v-btn>
@@ -17,12 +22,13 @@
 
 <script>
 import { ref } from "@vue/composition-api";
+import axios from "@axios";
 import { useVideos } from "@/composables/videos";
 
 export default {
   name: "UploadVideo",
   setup() {
-    const { state, toggleUploadDialog, toggleUpload } = useVideos();
+    const { state, toggleUploadDialog, toggleUpload, addVideo } = useVideos();
     const file = ref(null);
     console.log("Mounted");
 
@@ -31,11 +37,18 @@ export default {
     };
 
     async function upload() {
+      if (!file.value) return;
+
       try {
         toggleUpload(true);
         const form = new FormData();
-        form.append("file");
+        form.append("file", file.value);
+        var response = await axios.post("/media", form);
+        addVideo(response.data);
+        file.value = null;
+        toggleUploadDialog(false);
       } catch (err) {
+        console.log(err);
       } finally {
         toggleUpload(false);
       }
@@ -45,6 +58,8 @@ export default {
       state,
       toggleUploadDialog,
       closeDialog,
+      upload,
+      file,
     };
   },
 };

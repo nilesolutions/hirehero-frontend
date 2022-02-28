@@ -55,8 +55,15 @@ import { useVideos } from "@/composables/videos";
 export default {
   name: "RecordVideo",
   setup() {
-    const { state, toggleRecording, setVidUrl, toggleRecordDialog, toggleUpload, isCtrlDisabled } =
-      useVideos();
+    const {
+      state,
+      toggleRecording,
+      setVidUrl,
+      toggleRecordDialog,
+      toggleUpload,
+      isCtrlDisabled,
+      addVideo,
+    } = useVideos();
     const feedbackPlayer = ref(null);
 
     var vidStream = null,
@@ -158,7 +165,8 @@ export default {
         var data = new FormData();
         data.append("file", finalBlob, "video.mp4");
         var response = await axios.post("/media", data);
-        console.log(response);
+        addVideo(response.data);
+        toggleRecordDialog(false);
       } catch (err) {
         console.log(err.response);
       } finally {
