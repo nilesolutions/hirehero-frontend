@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="d-flex flex-row align-center mb-6">
-      <h2>Videos</h2>
+      <h2 class="cursive-font black--text">Videos</h2>
 
       <div class="ml-auto">
         <v-btn
           @click="toggleRecordDialog(!state.isRecordDialogOpen)"
           color="primary"
+          tile
           :outlined="state.isRecordDialogOpen"
           :disabled="isCtrlDisabled"
         >
@@ -16,6 +17,7 @@
         <v-btn
           class="ml-2"
           color="primary"
+          tile
           @click="toggleUploadDialog(true)"
           :disabled="isCtrlDisabled"
         >
@@ -27,29 +29,10 @@
     <record-video v-if="state.isRecordDialogOpen"></record-video>
     <upload-video></upload-video>
 
-    <div class="videos-container d-flex flex-row flex-wrap">
-      <v-card class="mb-2 mr-2" v-for="video in state.videos" :key="video.id">
-        <video class="training-video" :src="video.url" preload="meta"></video>
-
-        <v-btn
-          v-if="userType == 'client'"
-          @click="del(video.id)"
-          absolute
-          top
-          right
-          small
-          outlined
-          fab
-          color="warning"
-        >
-          <v-icon>{{ icons.mdiDelete }}</v-icon>
-        </v-btn>
-      </v-card>
-    </div>
-
-    <v-card>
-      <v-card-text v-if="!state.videos.length"> No videos available... <br /> </v-card-text>
+    <v-card v-if="!state.videos.length">
+      <v-card-text> No videos available... <br /> </v-card-text>
     </v-card>
+    <videos-grid v-else></videos-grid>
   </div>
 </template>
 
@@ -57,6 +40,7 @@
 import axios from "@axios";
 import { onMounted } from "@vue/composition-api";
 import { mdiDelete } from "@mdi/js";
+import VideosGrid from "@/components/videos/VideosGrid.vue";
 import RecordVideo from "@/components/videos/RecordVideo.vue";
 import UploadVideo from "@/components/videos/UploadVideoDialog.vue";
 import { useVideos } from "@/composables/videos";
@@ -64,7 +48,7 @@ import { useUser } from "@/composables/user";
 
 export default {
   name: "Videos",
-  components: { RecordVideo, UploadVideo },
+  components: { RecordVideo, UploadVideo, VideosGrid },
   setup() {
     const {
       state,
@@ -76,7 +60,7 @@ export default {
       toggleUploadDialog,
     } = useVideos();
 
-    const { userType } = useUser();
+    const userType = useUser().userType();
 
     onMounted(() => initVideos());
 
@@ -116,9 +100,4 @@ export default {
 };
 </script>
 
-<style>
-.training-video {
-  width: 210px;
-  height: 118px;
-}
-</style>
+<style></style>

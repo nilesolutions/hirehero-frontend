@@ -147,6 +147,11 @@ export default {
 $nav-drawer-mini-width: 68px;
 
 .v-application {
+
+  .v-main{
+    background-color: #FAFAFA;
+  }
+
   .v-main,
   .v-footer {
     transition-duration: 0.3s;

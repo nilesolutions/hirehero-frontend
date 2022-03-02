@@ -102,4 +102,8 @@ export default {
     transform: translateX(-4px);
   }
 }
+
+.vertical-nav-header{
+  background-color: #FAFAFA;
+}
 </style>

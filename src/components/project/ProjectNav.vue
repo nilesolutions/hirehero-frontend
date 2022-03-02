@@ -3,7 +3,7 @@
     <router-link class="mr-4" to="/projects">
       <v-icon>{{ icons.mdiChevronLeft }}</v-icon>
     </router-link>
-    <h2>{{ projectName }}</h2>
+    <h2 class="cursive-font black--text">{{ projectName }}</h2>
 
     <div class="ml-auto" v-if="userType == 'client'">
       <v-btn color="primary" @click="isCreateDiagOpen = true">

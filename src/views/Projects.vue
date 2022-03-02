@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-row align-center mb-6">
-      <h2>Projects</h2>
+      <h2 class="cursive-font black--text">Projects</h2>
       <v-btn
         v-if="userType == 'client'"
         @click="isCreateDialogOpen = true"

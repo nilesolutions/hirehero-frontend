@@ -134,6 +134,7 @@ export default {
   height: 100%;
   .ps-nav-menu-items {
     height: calc(100% - 57px) !important;
+    background-color: #F1F0F0;
   }
 
   // menu scroll shadow
@@ -241,7 +242,11 @@ export default {
       .v-list-item__icon {
         .v-icon {
           transition: none !important;
+          color: #1C1F37;
         }
+      }
+      .vlist-item__title{
+        color: #1C1F37;
       }
     }
   }

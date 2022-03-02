@@ -6,33 +6,34 @@
     <div class="col-12 col-sm-6 col-md-4">
       <h4 class="mb-3">Active</h4>
 
-      <v-card>
+      <div>
         <task-item v-for="task in unfinishedTasks" :key="task.gid" :task="task"></task-item>
-
-        <v-card-text v-show="!unfinishedTasks.length">Nothing to show...</v-card-text>
-      </v-card>
+        <v-card>
+          <v-card-text v-show="!unfinishedTasks.length">Nothing to show...</v-card-text>
+        </v-card>
+      </div>
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
       <h4 class="mb-3">Due Soon</h4>
 
-      <v-card>
+      <div>
         <task-item v-for="task in dueSoonTasks" :key="task.gid" :task="task"></task-item>
-
-        <v-card-text v-show="!dueSoonTasks.length">Nothing to show...</v-card-text>
-      </v-card>
+        <v-card>
+          <v-card-text v-show="!dueSoonTasks.length">Nothing to show...</v-card-text>
+        </v-card>
+      </div>
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
       <h4 class="mb-3">Completed</h4>
 
-      <v-card>
-        <v-list>
-          <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
-        </v-list>
-
-        <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
-      </v-card>
+      <div>
+        <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
+        <v-card>
+          <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
+        </v-card>
+      </div>
     </div>
   </div>
 </template>

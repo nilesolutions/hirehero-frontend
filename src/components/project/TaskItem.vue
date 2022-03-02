@@ -1,25 +1,26 @@
 <template>
-  <v-list-item>
-    <v-list-item-content>
-      <v-list-item-title>
-        {{ task.name }}
-      </v-list-item-title>
-
-      <v-list-item-subtitle>
-        {{ task.notes }}
-      </v-list-item-subtitle>
-
-      <v-list-item-subtitle> Due on : {{ task.due_on || "Not specified" }} </v-list-item-subtitle>
-    </v-list-item-content>
-
-    <v-list-item-action class="ml-auto">
-      <v-btn icon @click="toggleStatus" :loading="isLoading">
+  <v-card class="mb-2">
+    <v-card-title>
+      {{ task.name }}
+      <v-btn class="ml-auto" icon @click="toggleStatus" :loading="isLoading">
         <v-icon :color="task.completed ? 'primary' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
       </v-btn>
-    </v-list-item-action>
-  </v-list-item>
+    </v-card-title>
+
+    <v-card-text>
+      <v-btn x-small color="" small disabled>{{ task.priority }}</v-btn>
+    </v-card-text>
+
+    <v-card-text v-show="task.notes">
+      {{ task.notes }}
+    </v-card-text>
+
+    <v-card-text>
+      {{ task.due_on }}
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
