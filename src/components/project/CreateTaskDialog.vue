@@ -40,6 +40,13 @@
         >
         </v-select>
 
+        <v-file-input
+          v-model="state.attachments"
+          outlined
+          label="Attachments"
+          multiple
+        ></v-file-input>
+
         <v-btn
           :loading="state.isLoading"
           :disabled="state.isLoading"
@@ -69,6 +76,7 @@ export default {
       dueOn: "",
       notes: "",
       priority: "",
+      attachments: [],
       isLoading: false,
       menu: false,
     });
@@ -78,6 +86,7 @@ export default {
       state.dueOn = "";
       state.notes = "";
       state.priority = null;
+      state.attachments = [];
     };
 
     const { addTask } = useTasks();
@@ -94,16 +103,25 @@ export default {
       state.priority = e;
     };
 
+    function generateFormData() {
+      const form = new FormData();
+      form.append("name", state.name);
+      form.append("due_on", state.dueOn);
+      form.append("notes", state.notes);
+      form.append("priority", state.priority);
+      for (var attachment of state.attachments) {
+        form.append("attachments", attachment);
+      }
+
+      return form;
+    }
+
     async function createTask() {
       try {
         const projectId = this.$route.params.id;
+        const form = generateFormData();
         state.isLoading = true;
-        var response = await axios.post(`projects/${projectId}/tasks`, {
-          name: state.name,
-          due_on: state.dueOn,
-          notes: state.notes,
-          priority: state.priority,
-        });
+        var response = await axios.post(`projects/${projectId}/tasks`, form);
         console.log(response);
         addTask(response.data);
         clearFields();

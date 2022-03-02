@@ -10,29 +10,48 @@
     </v-card-title>
 
     <v-card-text>
-      <v-btn x-small color="" small disabled>{{ task.priority }}</v-btn>
+      <v-btn x-small color="" small disabled>{{ task.priority }} Priority</v-btn>
     </v-card-text>
 
-    <v-card-text v-show="task.notes">
-      {{ task.notes }}
-    </v-card-text>
+    <v-card-text v-show="task.notes"> Notes : {{ task.notes }} </v-card-text>
+    <v-card-text v-show="task.due_on"> Due on : {{ task.due_on }} </v-card-text>
 
-    <v-card-text>
-      {{ task.due_on }}
-    </v-card-text>
+    <task-attachments
+      v-show="task.attachments.length"
+      :attachments="task.attachments"
+      :parentTask="task.id"
+    ></task-attachments>
+
+    <v-card-actions>
+      <v-btn icon x-small>
+        <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
+      </v-btn>
+      <v-btn icon x-small>
+        <v-icon>{{ icons.mdiDelete }} </v-icon>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import axios from "@axios";
+import TaskAttachments from "@/components/project/TaskAttachments.vue";
 import { ref } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks";
-import { mdiDeleteOutline, mdiCheckboxMarked, mdiCheckboxBlank } from "@mdi/js";
+import {
+  mdiDeleteOutline,
+  mdiCheckboxMarked,
+  mdiCheckboxBlank,
+  mdiDownload,
+  mdiDelete,
+  mdiTooltipEdit,
+} from "@mdi/js";
 
 export default {
   name: "TaskItem",
   props: { task: Object },
+  components: { TaskAttachments },
   setup(props) {
     const { updateTask } = useTasks();
     const isLoading = ref(false);
@@ -61,10 +80,13 @@ export default {
         mdiDeleteOutline,
         mdiCheckboxMarked,
         mdiCheckboxBlank,
+        mdiDownload,
+        mdiDelete,
+        mdiTooltipEdit,
       },
     };
   },
 };
 </script>
 
-<style></style>
+<style lang="scss"></style>
