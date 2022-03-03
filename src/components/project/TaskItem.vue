@@ -2,30 +2,34 @@
   <v-card class="mb-2">
     <v-card-title>
       {{ task.name }}
-      <v-btn class="ml-auto" icon @click="toggleStatus" :loading="isLoading">
+      <v-btn class="ml-auto" icon @click="toggleStatus" :loading="state.isLoading">
         <v-icon :color="task.completed ? 'primary' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
       </v-btn>
     </v-card-title>
 
-    <v-card-text>
-      <v-btn x-small color="" small disabled>{{ task.priority }} Priority</v-btn>
-    </v-card-text>
-
-    <v-card-text v-show="task.notes"> Notes : {{ task.notes }} </v-card-text>
-    <v-card-text v-show="task.due_on"> Due on : {{ task.due_on }} </v-card-text>
-
-    <task-attachments
-      v-show="task.attachments.length"
-      :attachments="task.attachments"
-      :parentTask="task.id"
-    ></task-attachments>
+    <task-details :task="task"></task-details>
+    <task-attachments v-show="task.attachments.length" :parentTask="task"></task-attachments>
 
     <v-card-actions>
+      <!-- Upload attachments -->
+      <v-btn :loading="state.isUploading" x-small icon>
+        <v-file-input
+          @change="uploadAttachments"
+          class="pt-0 mt-0"
+          v-model="state.files"
+          multiple
+          hide-input
+        ></v-file-input>
+      </v-btn>
+
+      <!-- Edit task -->
       <v-btn icon x-small>
         <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
       </v-btn>
+
+      <!-- Delete -->
       <v-btn icon x-small>
         <v-icon>{{ icons.mdiDelete }} </v-icon>
       </v-btn>
@@ -36,7 +40,8 @@
 <script>
 import axios from "@axios";
 import TaskAttachments from "@/components/project/TaskAttachments.vue";
-import { ref } from "@vue/composition-api";
+import TaskDetails from "@/components/project/TaskDetails.vue";
+import { reactive } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks";
 import {
@@ -51,30 +56,54 @@ import {
 export default {
   name: "TaskItem",
   props: { task: Object },
-  components: { TaskAttachments },
+  components: { TaskAttachments, TaskDetails },
   setup(props) {
-    const { updateTask } = useTasks();
-    const isLoading = ref(false);
-    const params = useRouter().routeParams();
+    const state = reactive({
+      isLoading: false,
+      isUploading: false,
+      files: [],
+    });
+
+    const taskId = props.task.id;
+    const { updateTask, updateTaskAttachments } = useTasks();
+    const projectId = useRouter().routeParams().id;
+
+    const taskUrl = `projects/${projectId}/tasks/${taskId}`;
+    const attachmentsUrl = taskUrl + "/attachments";
 
     async function toggleStatus() {
       try {
-        isLoading.value = true;
-        const url = `projects/${params.id}/tasks/${props.task.id}`;
-        var response = await axios.patch(url, {
+        state.isLoading = true;
+        var response = await axios.patch(taskUrl, {
           completed: !props.task.completed,
         });
         updateTask(response.data);
       } catch (err) {
         console.log(err);
       } finally {
-        isLoading.value = false;
+        state.isLoading = false;
+      }
+    }
+
+    async function uploadAttachments() {
+      try {
+        if (!state.files.length) return;
+        state.isUploading = true;
+        const form = new FormData();
+        for (var file of state.files) form.append("attachments", file);
+        const response = await axios.post(attachmentsUrl, form);
+        updateTaskAttachments(response.data, taskId);
+      } catch (err) {
+        console.log();
+      } finally {
+        state.isUploading = false;
       }
     }
 
     return {
+      state,
       toggleStatus,
-      isLoading,
+      uploadAttachments,
 
       icons: {
         mdiDeleteOutline,

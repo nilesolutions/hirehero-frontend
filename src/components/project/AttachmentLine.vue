@@ -2,12 +2,18 @@
   <v-list-item>
     <v-list-item-content>{{ attachment.name }}</v-list-item-content>
     <v-list-item-action>
-      <v-btn x-small icon :loading="isDownloading" @click="downloadAttachment(attachment)">
+      <v-btn
+        x-small
+        icon
+        :disabled="state.isDeleting"
+        :loading="state.isDownloading"
+        @click="downloadAttachment(attachment)"
+      >
         <v-icon>{{ icons.mdiDownload }}</v-icon>
       </v-btn>
     </v-list-item-action>
     <v-list-item-action>
-      <v-btn x-small icon>
+      <v-btn :loading="state.isDeleting" @click="deleteAttachment" x-small icon>
         <v-icon>{{ icons.mdiDeleteOutline }}</v-icon>
       </v-btn>
     </v-list-item-action>
@@ -15,33 +21,57 @@
 </template>
 
 <script>
-import defaultAxios from "axios";
+import axios from "@axios";
 import { saveAs } from "file-saver";
-import { ref } from "@vue/composition-api";
+import { reactive } from "@vue/composition-api";
+import { useRouter } from "@/composables/router";
+import { useTasks } from "@/composables/tasks";
 import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
+
 export default {
   name: "AttachmentLine",
-  props: { attachment: Object },
-  setup() {
-    const isDownloading = ref(false);
+  props: { attachment: Object, parentTask: Object },
+  setup(props, _) {
+    const state = reactive({
+      isDownloading: false,
+      isDeleting: false,
+    });
+    const { deleteTaskAttachment } = useTasks();
+
+    const attachmentId = props.attachment.id;
+    const projectId = useRouter().routeParams().id;
+    const parentTaskId = props.parentTask.id;
+    const taskUrl = `/projects/${projectId}/tasks/${parentTaskId}/attachments/${attachmentId}`;
 
     async function downloadAttachment(attachment) {
       try {
-        isDownloading.value = true;
-        const response = await defaultAxios.get(attachment.download_url, { responseType: "blob" });
-        console.log(response);
+        state.isDownloading = true;
+        var response = await axios.get(taskUrl);
         const blob = new Blob([response.data]);
         saveAs(blob, attachment.name);
       } catch (err) {
         console.log(err.response);
       } finally {
-        isDownloading.value = false;
+        state.isDownloading = false;
+      }
+    }
+
+    async function deleteAttachment() {
+      try {
+        state.isDeleting = true;
+        await axios.delete(taskUrl);
+        deleteTaskAttachment(attachmentId, parentTaskId);
+      } catch (err) {
+        console.log(err.response);
+      } finally {
+        state.isDeleting = false;
       }
     }
 
     return {
-      isDownloading,
+      state,
       downloadAttachment,
+      deleteAttachment,
       icons: { mdiDeleteOutline, mdiDownload },
     };
   },

@@ -23,6 +23,26 @@ const updateTask = (task) => {
   }
 };
 
+const updateTaskAttachments = (attachments, parentTaskId) => {
+  for (var i = 0; i < tasks.value.length; i++) {
+    if (tasks.value[i].id == parentTaskId) {
+      tasks.value[i].attachments = [...tasks.value[i].attachments, ...attachments];
+      break;
+    }
+  }
+};
+
+const deleteTaskAttachment = (attachmendId, parentTaskId) => {
+  for (var i = 0; i < tasks.value.length; i++) {
+    if (tasks.value[i].id == parentTaskId) {
+      tasks.value[i].attachments = tasks.value[i].attachments.filter(
+        (attachment) => attachment.id != attachmendId
+      );
+      break;
+    }
+  }
+};
+
 const doneTasks = computed(() => tasks.value.filter((t) => t.completed == true));
 const unfinishedTasks = computed(() => tasks.value.filter((t) => t.completed == false));
 const dueSoonTasks = computed(() => []);
@@ -33,6 +53,10 @@ export function useTasks() {
     addTask,
     deleteTask,
     updateTask,
+
+    updateTaskAttachments,
+    deleteTaskAttachment,
+
     doneTasks,
     unfinishedTasks,
     dueSoonTasks,
