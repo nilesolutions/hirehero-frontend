@@ -12,7 +12,7 @@
         <v-icon>{{ icons.mdiDownload }}</v-icon>
       </v-btn>
     </v-list-item-action>
-    <v-list-item-action>
+    <v-list-item-action v-show="userType == 'client'">
       <v-btn :loading="state.isDeleting" @click="deleteAttachment" x-small icon>
         <v-icon>{{ icons.mdiDeleteOutline }}</v-icon>
       </v-btn>
@@ -24,6 +24,7 @@
 import axios from "@axios";
 import { saveAs } from "file-saver";
 import { reactive } from "@vue/composition-api";
+import { useUser } from "@/composables/user";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks";
 import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
@@ -36,6 +37,7 @@ export default {
       isDownloading: false,
       isDeleting: false,
     });
+    const userType = useUser().userType();
     const { deleteTaskAttachment } = useTasks();
 
     const attachmentId = props.attachment.id;
@@ -70,6 +72,7 @@ export default {
 
     return {
       state,
+      userType,
       downloadAttachment,
       deleteAttachment,
       icons: { mdiDeleteOutline, mdiDownload },

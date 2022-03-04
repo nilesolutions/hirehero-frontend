@@ -33,7 +33,6 @@
           full-width
           label="Priority"
           outlined
-          clearable
           v-model="state.priority"
           :items="priorityOptions"
           @change="setPriority"
@@ -75,7 +74,7 @@ export default {
       name: "",
       dueOn: "",
       notes: "",
-      priority: "",
+      priority: "Low",
       attachments: [],
       isLoading: false,
       menu: false,
@@ -85,7 +84,7 @@ export default {
       state.name = "";
       state.dueOn = "";
       state.notes = "";
-      state.priority = null;
+      state.priority = "Low";
       state.attachments = [];
     };
 

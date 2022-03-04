@@ -2,7 +2,7 @@
   <div class="videos-container d-flex flex-row flex-wrap">
     <v-card class="video-card mb-2 mr-2" v-for="video in state.videos" :key="video.id">
       <video
-        @click="playVideo(video.url)"
+        @click="clickedVideoSrc = video.url"
         class="video-thumbnail"
         :src="video.url"
         preload="meta"
@@ -22,9 +22,9 @@
       </v-btn>
     </v-card>
 
-    <v-dialog v-model="clickedVideoSrc" @click:outside="clickedVideoSrc = false">
-      <v-card>
-        <video :src="clickedVideoSrc" controls></video>
+    <v-dialog v-model="clickedVideoSrc.length" @click:outside="clickedVideoSrc = ''">
+      <v-card class="video-player-container p-2 d-flex flex-column align-center">
+        <video class="m-2 video-player" :src="clickedVideoSrc" controls></video>
       </v-card>
     </v-dialog>
   </div>
@@ -32,7 +32,7 @@
 
 <script>
 import axios from "@axios";
-import { onMounted, ref } from "@vue/composition-api";
+import { ref } from "@vue/composition-api";
 import { mdiDelete } from "@mdi/js";
 import { useVideos } from "@/composables/videos";
 import { useUser } from "@/composables/user";
@@ -53,16 +53,10 @@ export default {
       }
     }
 
-    function playVideo(src) {
-      clickedVideoSrc.value = src;
-      console.log(clickedVideoSrc.value);
-    }
-
     return {
       state,
       userType,
       del,
-      playVideo,
       clickedVideoSrc,
 
       icons: {
@@ -81,5 +75,16 @@ export default {
 .video-thumbnail {
   width: 210px;
   height: 118px;
+}
+
+.video-player-container {
+  width: fit-content;
+  max-width: 90%;
+  margin: auto;
+}
+
+.video-player {
+  align-self: center;
+  max-width: 100%;
 }
 </style>

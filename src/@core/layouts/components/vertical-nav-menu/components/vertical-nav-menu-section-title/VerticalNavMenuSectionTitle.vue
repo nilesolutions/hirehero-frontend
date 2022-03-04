@@ -70,14 +70,15 @@ export default {
       // text-align: center;
       position: absolute;
       left: 0;
-      border-bottom: 1px solid map-deep-get($material, 'dividers');
+      //border-bottom: 1px solid map-deep-get($material, 'dividers');
       line-height: 0.1em;
       // margin: 10px 0 20px;
     }
   }
 
   .title-wrapper span {
-    background: map-deep-get($material, 'background');
+    color: #0C77F8;
+    //background: map-deep-get($material, 'background');
     padding: 0 10px;
     font-size: 0.75rem;
 

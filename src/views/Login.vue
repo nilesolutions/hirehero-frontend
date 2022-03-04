@@ -19,7 +19,7 @@
       <!--/ brand logo -->
 
       <v-row class="auth-row ma-0">
-        <v-col lg="8" class="d-none d-lg-block position-relative overflow-hidden pa-0">
+        <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
           <div class="auth-illustrator-wrapper">
             <!-- triangle bg -->
             <img
@@ -57,15 +57,15 @@
           </div>
         </v-col>
 
-        <v-col lg="4" class="d-flex align-center auth-bg pa-10 pb-0">
+        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0">
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
               <v-card flat>
                 <v-card-text>
-                  <p class="text-2xl font-weight-semibold text--primary mb-2">
-                    Welcome to HireHeroes!
+                  <p class="cursive-font text-2xl font-weight-semibold text--primary mb-1">
+                    Welcome Back!
                   </p>
-                  <p class="mb-2">Please sign-in to your account and start the adventure</p>
+                  <p class="cursive-font mb-2">Enter your email and password to sign in</p>
                 </v-card-text>
 
                 <!-- login form -->
@@ -110,7 +110,7 @@
                       :disabled="isLoading"
                       :loading="isLoading"
                     >
-                      Login
+                      Sign in
                     </v-btn>
                     <div v-show="errorMsg != ''" class="my-2 text-center">{{ errorMsg }}</div>
                   </v-form>

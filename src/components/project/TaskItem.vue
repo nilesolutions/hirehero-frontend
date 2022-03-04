@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-2">
+  <v-card class="mb-4">
     <v-card-title>
       {{ task.name }}
       <v-btn class="ml-auto" icon @click="toggleStatus" :loading="state.isLoading">
@@ -12,7 +12,7 @@
     <task-details :task="task"></task-details>
     <task-attachments v-show="task.attachments.length" :parentTask="task"></task-attachments>
 
-    <v-card-actions>
+    <v-card-actions v-show="userType == 'client'">
       <!-- Upload attachments -->
       <v-btn :loading="state.isUploading" x-small icon>
         <v-file-input
@@ -42,6 +42,7 @@ import axios from "@axios";
 import TaskAttachments from "@/components/project/TaskAttachments.vue";
 import TaskDetails from "@/components/project/TaskDetails.vue";
 import { reactive } from "@vue/composition-api";
+import { useUser } from "@/composables/user";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks";
 import {
@@ -63,6 +64,8 @@ export default {
       isUploading: false,
       files: [],
     });
+
+    const userType = useUser().userType();
 
     const taskId = props.task.id;
     const { updateTask, updateTaskAttachments } = useTasks();
@@ -102,6 +105,7 @@ export default {
 
     return {
       state,
+      userType,
       toggleStatus,
       uploadAttachments,
 
