@@ -1,4 +1,10 @@
-import { mdiBriefcaseOutline, mdiCogOutline, mdiMessageOutline, mdiVideoOutline } from "@mdi/js";
+import {
+  mdiAvTimer,
+  mdiBriefcaseOutline,
+  mdiCogOutline,
+  mdiMessageOutline,
+  mdiVideoOutline,
+} from "@mdi/js";
 
 export default [
   {
@@ -13,6 +19,11 @@ export default [
     title: "Training Videos",
     icon: mdiVideoOutline,
     to: "videos",
+  },
+  {
+    title: "Activity",
+    icon: mdiAvTimer,
+    to: "activity",
   },
   {
     subheader: "Personal",

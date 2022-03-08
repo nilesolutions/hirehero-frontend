@@ -48,6 +48,14 @@ const routes = [
     },
   },
   {
+    path: "/activity",
+    name: "activity",
+    component: () => import("@/views/Activity.vue"),
+    meta: {
+      layout: "content",
+    },
+  },
+  {
     path: "/login",
     name: "auth-login",
     component: () => import("@/views/Login.vue"),
