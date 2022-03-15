@@ -1,15 +1,18 @@
 <template>
   <div class="col-12 col-sm-6 col-lg-4">
     <v-card class="mb-2" @click="goToProject">
-      <v-card-title>
+      <v-card-title class="font-weight-black black--text">
         {{ project.name }}
       </v-card-title>
-      <v-card-text>Created at : {{ creationDate }}</v-card-text>
 
-      <v-card-actions v-if="userType == 'client'">
-        <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
-          <v-icon>{{ icons.mdiDelete }}</v-icon>
-        </v-btn>
+      <v-card-actions>
+        <small class="black--text font-weight-medium">{{ creationDate }}</small>
+
+        <div v-if="userType == 'client'" class="actions ml-auto">
+          <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
+            <v-icon>{{ icons.mdiDelete }}</v-icon>
+          </v-btn>
+        </div>
       </v-card-actions>
 
       <v-dialog v-model="isDeleteOpen" max-width="500">
@@ -54,7 +57,7 @@ export default {
     const userType = useUser().userType();
 
     const creationDate = computed(() => {
-      return new Date(props.project.created_at).toDateString();
+      return new Date(props.project.created_at).toLocaleString();
     });
 
     function goToProject() {

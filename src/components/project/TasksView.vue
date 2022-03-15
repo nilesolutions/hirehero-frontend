@@ -4,7 +4,7 @@
   </div>
   <div class="my-2 d-flex flex-wrap flex-row" v-else>
     <div class="col-12 col-sm-6 col-md-4">
-      <h4 class="mb-3">Active</h4>
+      <div class="section-heading red-heading">Not done</div>
 
       <div>
         <task-item v-for="task in unfinishedTasks" :key="task.gid" :task="task"></task-item>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
-      <h4 class="mb-3">Due Soon</h4>
+      <div class="section-heading blue-heading">Active</div>
 
       <div>
         <task-item v-for="task in dueSoonTasks" :key="task.gid" :task="task"></task-item>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
-      <h4 class="mb-3">Completed</h4>
+      <div class="section-heading green-heading">Completed</div>
 
       <div>
         <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
@@ -79,4 +79,32 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.section-heading {
+  width: 138px;
+  height: 34px;
+  color: white;
+  margin-bottom: 1rem;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 2rem;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.red-heading {
+  background: #eb5757;
+}
+
+.green-heading {
+  background: #30d988;
+}
+
+.blue-heading {
+  background: #017efa;
+}
+</style>

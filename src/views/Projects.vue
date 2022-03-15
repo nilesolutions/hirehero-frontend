@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="dashboard__content">
     <div class="d-flex flex-row align-center mb-6">
       <h2 class="cursive-font black--text">Projects</h2>
       <v-btn
         v-if="userType == 'client'"
         @click="isCreateDialogOpen = true"
-        class="ml-auto"
+        class="ml-auto py-2"
         color="primary"
       >
-        Add
+        Add Project
       </v-btn>
     </div>
 

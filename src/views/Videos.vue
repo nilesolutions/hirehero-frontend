@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dashboard__content">
     <div class="d-flex flex-row align-center mb-6">
       <h2 class="cursive-font black--text">Videos</h2>
 

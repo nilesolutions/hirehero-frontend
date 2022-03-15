@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column">
+  <div class="dashboard__content d-flex flex-column">
     <add-tasks></add-tasks>
     <tasks-view></tasks-view>
   </div>

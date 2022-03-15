@@ -16,7 +16,7 @@ const routes = [
     name: "home",
     component: () => import("@/views/Home.vue"),
     meta: {
-      layout: "content",
+      layout: "custom",
       requiresAuth: true,
     },
   },
@@ -25,7 +25,7 @@ const routes = [
     name: "projects",
     component: () => import("@/views/Projects.vue"),
     meta: {
-      layout: "content",
+      layout: "custom",
       requiresAuth: true,
     },
   },
@@ -35,7 +35,7 @@ const routes = [
     props: true,
     component: () => import("@/views/Project.vue"),
     meta: {
-      layout: "content",
+      layout: "custom",
       requiresAuth: true,
     },
   },
@@ -44,7 +44,7 @@ const routes = [
     name: "videos",
     component: () => import("@/views/Videos.vue"),
     meta: {
-      layout: "content",
+      layout: "custom",
     },
   },
   {
@@ -52,7 +52,7 @@ const routes = [
     name: "activity",
     component: () => import("@/views/Activity.vue"),
     meta: {
-      layout: "content",
+      layout: "custom",
     },
   },
   {
