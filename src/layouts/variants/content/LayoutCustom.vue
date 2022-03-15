@@ -24,6 +24,7 @@ export default {
 
 <style lang="scss">
 .dashboard--layout {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: row;
