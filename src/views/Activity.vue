@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column">
+  <div class="dashboard__content content d-flex flex-column">
     <h2 class="cursive-font black--text mb-2">Activity</h2>
 
     <v-tabs v-model="activeTab" background-color="transparent" fixed-tabs>

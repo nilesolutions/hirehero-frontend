@@ -6,7 +6,7 @@
     <h2 class="cursive-font black--text">{{ projectName }}</h2>
 
     <div class="ml-auto" v-if="userType == 'client'">
-      <v-btn color="primary" @click="isCreateDiagOpen = true">
+      <v-btn color="primary" large tile @click="isCreateDiagOpen = true">
         Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
       </v-btn>
     </div>

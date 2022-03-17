@@ -32,7 +32,6 @@ export default {
     const taskFields = computed(() => {
       const fields = {
         "Due on": task.due_on || null,
-        Priority: task.priority || null,
         Notes: task.notes || null,
         "Created at": new Date(task.created_at).toLocaleString(),
       };

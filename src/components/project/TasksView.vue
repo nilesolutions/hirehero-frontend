@@ -6,7 +6,7 @@
     <div class="col-12 col-sm-6 col-md-4">
       <div class="section-heading red-heading">Not done</div>
 
-      <div>
+      <div class="tasks-column">
         <task-item v-for="task in unfinishedTasks" :key="task.gid" :task="task"></task-item>
         <v-card>
           <v-card-text v-show="!unfinishedTasks.length">Nothing to show...</v-card-text>
@@ -17,7 +17,7 @@
     <div class="col-12 col-sm-6 col-md-4">
       <div class="section-heading blue-heading">Active</div>
 
-      <div>
+      <div class="tasks-column">
         <task-item v-for="task in dueSoonTasks" :key="task.gid" :task="task"></task-item>
         <v-card>
           <v-card-text v-show="!dueSoonTasks.length">Nothing to show...</v-card-text>
@@ -28,7 +28,7 @@
     <div class="col-12 col-sm-6 col-md-4">
       <div class="section-heading green-heading">Completed</div>
 
-      <div>
+      <div class="tasks-column">
         <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
         <v-card>
           <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
@@ -80,6 +80,12 @@ export default {
 </script>
 
 <style lang="scss">
+.tasks-column {
+  border-radius: 6px;
+  background-color: #dedede;
+  padding: 0.5rem;
+}
+
 .section-heading {
   width: 138px;
   height: 34px;
