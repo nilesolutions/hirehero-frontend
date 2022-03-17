@@ -1,108 +1,55 @@
 <template>
-  <div
-    class="navigation"
-    :class="menuClass"
-    @mouseover="state.isHovering = true"
-    @mouseleave="state.isHovering = false"
-    v-click-outside="closeMenu"
-  >
-    <div class="ml-auto mb-5" v-if="breakpoint == 'md'">
-      <v-btn @click="state.isMenuFixed = !state.isMenuFixed">Fix</v-btn>
-    </div>
+  <div class="navigation" :class="menuClass">
+    <v-btn
+      v-if="breakpoint == 'md'"
+      class="navigation__toggle"
+      @click="setMenuActive(!state.isMenuFixed)"
+      icon
+    >
+      <v-icon>{{ state.isMenuFixed ? icons.mdiChevronLeft : icons.mdiChevronRight }}</v-icon>
+    </v-btn>
 
     <ul class="navigation__menu">
-      <li class="navigation__item">
-        <v-icon color="black" class="navigation__item__icon">
-          {{ icons.mdiCalendar }}
-        </v-icon>
-        <div class="navigation__item__text">Dashboard</div>
-      </li>
-
-      <li class="navigation__item">
-        <v-icon color="black" class="navigation__item__icon">
-          {{ icons.mdiCalendar }}
-        </v-icon>
-        <div class="navigation__item__text">Dashboard</div>
-      </li>
-
-      <small class="navigation__subheader">Workspace</small>
-      <li class="navigation__item">
-        <v-icon color="black" class="navigation__item__icon">
-          {{ icons.mdiCalendar }}
-        </v-icon>
-        <div class="navigation__item__text">Dashboard</div>
-      </li>
-
-      <li class="navigation__item">
-        <v-icon color="black" class="navigation__item__icon">
-          {{ icons.mdiCalendar }}
-        </v-icon>
-        <div class="navigation__item__text">Dashboard</div>
-      </li>
-
-      <small class="navigation__subheader">General</small>
-      <li class="navigation__item">
-        <v-icon color="black" class="navigation__item__icon">
-          {{ icons.mdiCalendar }}
-        </v-icon>
-        <div class="navigation__item__text">Dashboard</div>
-      </li>
+      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item">
+      </component>
     </ul>
   </div>
 </template>
 
 <script>
-import { mdiChat, mdiCalendar, mdiChartArc } from "@mdi/js";
-import { reactive, computed, onMounted, onUnmounted } from "@vue/composition-api";
+import { useNavigation } from "@/composables/navigation";
+import { mdiChevronRight, mdiChevronLeft } from "@mdi/js";
+import { onMounted, onUnmounted } from "@vue/composition-api";
+import navItems from "@/components/layout/navigation/navigation-items";
+import NavigationItem from "@/components/layout/navigation/NavigationItem.vue";
+import NavigationSubheader from "@/components/layout/navigation/NavigationSubheader.vue";
 
 export default {
   name: "Navigation",
+  components: {
+    NavigationItem,
+    NavigationSubheader,
+  },
 
   setup() {
-    const state = reactive({
-      windowWidth: window.innerWidth,
-      isMenuFixed: false,
-      isHovering: false,
-    });
+    const { state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive } =
+      useNavigation();
 
-    const onWidthChange = () => {
-      if (window.innerWidth < 550 || window.innerWidth > 1200) state.isMenuFixed = false;
-      state.windowWidth = window.innerWidth;
-    };
-    onMounted(() => window.addEventListener("resize", onWidthChange));
-    onUnmounted(() => window.removeEventListener("resize", onWidthChange));
-
-    const breakpoint = computed(() => {
-      if (state.windowWidth < 550) {
-        return "sm";
-      }
-      if (state.windowWidth >= 550 && state.windowWidth < 1200) return "md";
-      if (state.windowWidth >= 1200) return "lg";
-      return null;
-    });
-
-    const menuClass = computed(() => {
-      if (breakpoint.value == "lg") return "navigation-lg";
-      if (breakpoint.value == "md") {
-        if (state.isMenuFixed || state.isHovering) return "navigation-lg";
-        return "navigation-md-collapsed";
-      }
-      if (breakpoint.value == "sm") {
-        if (state.isMenuFixed) return "navigation-sm-active";
-        return "navigation-sm-hidden";
-      }
-    });
-
-    const closeMenu = () => {
-      if (breakpoint.value == "sm" && state.isMenuFixed) state.isMenuFixed = false;
-    };
+    onMounted(() => window.addEventListener("resize", setWidth));
+    onUnmounted(() => window.removeEventListener("resize", setWidth));
 
     return {
       state,
       breakpoint,
+      setMenuActive,
       menuClass,
+      setHovering,
       closeMenu,
-      icons: { mdiChat, mdiCalendar, mdiChartArc },
+      navItems,
+      icons: {
+        mdiChevronRight,
+        mdiChevronLeft,
+      },
     };
   },
 };
@@ -140,28 +87,12 @@ export default {
   z-index: 9;
 }
 
-.navigation__subheader {
-  display: block;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #0c77f8;
-}
-
 .navigation__menu {
   list-style: none;
+  padding: 0px !important;
 }
 
-.navigation__item {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 1rem;
-}
-
-.navigation__item__icon {
-  color: #000;
-}
-
-.navigation__item__text {
-  margin-left: 1rem;
+.navigation__toggle {
+  padding-left: 22px;
 }
 </style>
