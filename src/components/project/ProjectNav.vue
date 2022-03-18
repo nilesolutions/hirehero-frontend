@@ -27,13 +27,6 @@ import CreateTaskDialog from "@/components/project/CreateTaskDialog.vue";
 
 export default {
   name: "AddTasks",
-  // Use options API to extract from route
-  // old Router ver & Vue 2 dont make it easy using composition
-  // data() {
-  //   return {
-  //     projectName: this.$router.currentRoute.params.projectName,
-  //   };
-  // },
   components: {
     CreateTaskDialog,
   },

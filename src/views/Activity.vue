@@ -1,8 +1,8 @@
 <template>
-  <div class="dashboard__content content d-flex flex-column">
+  <div class="dashboard__content">
     <h2 class="cursive-font black--text mb-2">Activity</h2>
-
-    <v-tabs v-model="activeTab" background-color="transparent" fixed-tabs>
+    <time-tracking></time-tracking>
+    <!-- <v-tabs v-model="activeTab" background-color="transparent" fixed-tabs>
       <v-tab class="cursive-font">Tracked Time</v-tab>
       <v-tab class="cursive-font">Screenshots</v-tab>
     </v-tabs>
@@ -14,7 +14,7 @@
       <v-tab-item class="py-4 px-4">
         <screenshots-tracking></screenshots-tracking>
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> -->
   </div>
 </template>
 
