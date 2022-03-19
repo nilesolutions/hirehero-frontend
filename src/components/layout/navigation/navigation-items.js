@@ -4,9 +4,16 @@ import {
   mdiCogOutline,
   mdiMessageOutline,
   mdiVideoOutline,
+  mdiViewDashboardOutline,
 } from "@mdi/js";
 
 export default [
+  {
+    type: "NavigationItem",
+    title: "Dashboard",
+    icon: mdiViewDashboardOutline,
+    to: "dashboard",
+  },
   {
     type: "NavigationSubheader",
     subheader: "Workspace",

@@ -1,8 +1,9 @@
 <template>
   <div class="navigation" :class="menuClass">
     <v-btn
+      small
       v-if="breakpoint == 'md'"
-      class="navigation__toggle"
+      class="navigation__toggle mb-4"
       @click="setMenuActive(!state.isMenuFixed)"
       icon
     >
@@ -65,11 +66,13 @@ export default {
 
 .navigation-lg {
   position: relative;
-  min-width: 200px;
+  width: 200px;
+  min-width: 199px;
 }
 
 .navigation-md-collapsed {
   width: 60px;
+  min-width: 60px;
 }
 
 .navigation-sm-hidden {

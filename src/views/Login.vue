@@ -133,7 +133,7 @@ export default {
         });
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("userData", JSON.stringify(response.data.userData));
-        this.$router.push({ name: "projects" });
+        this.$router.push({ name: "dashboard" });
       } catch (err) {
         errorMsg.value = err.response.data.message;
       } finally {
