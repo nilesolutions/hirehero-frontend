@@ -20,40 +20,8 @@
 
       <v-row class="auth-row ma-0">
         <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
-          <div class="auth-illustrator-wrapper">
-            <!-- triangle bg -->
-            <img
-              height="362"
-              class="auth-mask-bg"
-              :src="
-                require(`@/assets/images/misc/mask-v2-${
-                  $vuetify.theme.dark ? 'dark' : 'light'
-                }.png`)
-              "
-            />
-
-            <!-- tree -->
-            <v-img
-              height="226"
-              width="300"
-              class="auth-tree"
-              src="@/assets/images/misc/tree-4.png"
-            ></v-img>
-
-            <!-- 3d character -->
-            <div class="d-flex align-center h-full pa-16 pe-0">
-              <v-img
-                contain
-                max-width="100%"
-                height="692"
-                class="auth-3d-group"
-                :src="
-                  require(`@/assets/images/3d-characters/group-${
-                    $vuetify.theme.dark ? 'dark' : 'light'
-                  }.png`)
-                "
-              ></v-img>
-            </div>
+          <div class="auth-bg-wrapper">
+            <v-img :src="loginBg" alt="" />
           </div>
         </v-col>
 
@@ -105,7 +73,7 @@
                       block
                       color="primary"
                       type="submit"
-                      class="mt-6"
+                      class="mt-6 auth-submit-btn"
                       @click="login"
                       :disabled="isLoading"
                       :loading="isLoading"
@@ -118,14 +86,23 @@
 
                 <!-- create new account  -->
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-                  <p class="mb-0 me-2">New on our platform?</p>
-                  <router-link to="/signup"> Create an account </router-link>
+                  <p class="mb-0 me-2">or</p>
+                  <br />
+                  <router-link to="/signup"> Register </router-link>
                 </v-card-text>
               </v-card>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
+
+      <div class="auth-footer">
+        <ul>
+          <li>Privacy Policy</li>
+          <li>Contact us</li>
+          <li>FAQ</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -180,6 +157,7 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      loginBg: require("@/assets/images/login.svg"),
       login,
     };
   },

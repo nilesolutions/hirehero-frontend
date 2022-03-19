@@ -54,6 +54,8 @@
     align-items: flex-start;
 
     .auth-inner {
+      display: flex;
+      flex-direction: column;
       height: calc(var(--vh, 1vh) * 100);
       width: 100%;
       margin: 0;
@@ -96,6 +98,39 @@
       }
     }
   }
+}
+
+.auth-bg-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.auth-footer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #fff;
+  height: 10%;
+
+
+  ul{
+    margin-left: 2rem;
+    list-style: none;
+  }
+
+
+  li{
+    color: #000;
+    display: inline-block;
+    margin-right: 1rem;
+  }
+}
+
+.auth-submit-btn{
+  background-color: #f34c57 !important;
 }
 
 @include theme--child(auth-wrapper) using ($material) {

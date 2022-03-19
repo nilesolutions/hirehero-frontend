@@ -19,6 +19,12 @@
       <!--/ brand logo -->
 
       <v-row class="auth-row ma-0">
+        <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
+          <div class="auth-bg-wrapper">
+            <v-img :src="signupBg" alt="" />
+          </div>
+        </v-col>
+
         <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0">
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
@@ -90,7 +96,7 @@
                       block
                       color="primary"
                       type="submit"
-                      class="mt-6"
+                      class="mt-6 auth-submit-btn"
                       @click="signup"
                       :disabled="state.isLoading"
                       :loading="state.isLoading"
@@ -119,45 +125,15 @@
             </v-col>
           </v-row>
         </v-col>
-
-        <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
-          <div class="auth-illustrator-wrapper">
-            <!-- triangle bg -->
-            <img
-              height="362"
-              class="auth-mask-bg"
-              :src="
-                require(`@/assets/images/misc/mask-v2-${
-                  $vuetify.theme.dark ? 'dark' : 'light'
-                }.png`)
-              "
-            />
-
-            <!-- tree -->
-            <v-img
-              height="226"
-              width="300"
-              class="auth-tree"
-              src="@/assets/images/misc/tree-4.png"
-            ></v-img>
-
-            <!-- 3d character -->
-            <div class="d-flex align-center h-full pa-16 pe-0">
-              <v-img
-                contain
-                max-width="100%"
-                height="692"
-                class="auth-3d-group"
-                :src="
-                  require(`@/assets/images/3d-characters/group-${
-                    $vuetify.theme.dark ? 'dark' : 'light'
-                  }.png`)
-                "
-              ></v-img>
-            </div>
-          </div>
-        </v-col>
       </v-row>
+
+      <div class="auth-footer">
+        <ul>
+          <li>Privacy Policy</li>
+          <li>Contact us</li>
+          <li>FAQ</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -224,6 +200,7 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      signupBg: require("@/assets/images/signup.svg"),
       signup,
     };
   },
