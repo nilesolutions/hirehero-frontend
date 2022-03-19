@@ -33,41 +33,22 @@
           color="primary"
           depressed
           class="align-self-center"
-          @click="setActivityId(item)"
+          @click="setClickedActivityId(item.activityId)"
         >
           View
         </v-btn>
       </template>
     </v-data-table>
 
-    <!-- <screenshots-popup
-      :activityId="state.pickedActivity"
-      @close="clearActivityId"
-    ></screenshots-popup> -->
-    <v-dialog v-model="state.pickedActivity != ''" @click:outside="clearActivityId">
-      <v-card>
-        <v-card-title>Activity Details</v-card-title>
-        <div v-for="detail in state.activityDetails" :key="detail.activityId">
-          <v-card-title>Activity Level</v-card-title>
-          <v-card-text> {{ detail.activityLevel }} </v-card-text>
-
-          <v-card-title>Open Apps / Websites</v-card-title>
-          <v-card-text>
-            {{ detail.applications.map((app) => app.applicationName).join(",") }}
-          </v-card-text>
-
-          <v-card-title>Screenshot</v-card-title>
-          <v-card-text> <img :src="detail.url" alt="" /> </v-card-text>
-          <v-divider></v-divider>
-        </div>
-      </v-card>
-    </v-dialog>
+    <screenshots-popup v-if="isDetailsOpen"></screenshots-popup>
   </div>
 </template>
 
 <script>
 import axios from "@axios";
 import { mdiEye } from "@mdi/js";
+import { generateWeekRange } from "@/helpers";
+import { useActivity } from "@/composables/activity";
 import { reactive, ref, onMounted } from "@vue/composition-api";
 import ScreenshotsPopup from "@/components/activity/ScreenshotsPopup.vue";
 
@@ -77,12 +58,12 @@ export default {
     ScreenshotsPopup,
   },
   setup() {
+    const { setClickedActivityId, isDetailsOpen } = useActivity();
+
     const menu = ref(null);
     const state = reactive({
       tableData: [],
       dateRange: [],
-      pickedActivity: "",
-      activityDetails: [],
       isDatePickerActive: false,
       headers: [
         {
@@ -102,41 +83,23 @@ export default {
     });
 
     onMounted(() => {
-      var today = new Date();
-      var aWeekAgo = new Date();
-      aWeekAgo.setDate(today.getDate() - 7);
-      state.dateRange = [aWeekAgo.toISOString().split("T")[0], today.toISOString().split("T")[0]];
+      state.dateRange = generateWeekRange();
       fetchTableData();
     });
 
     const formatDate = (date) => new Date(date * 1000).toLocaleString();
-    const clearActivityId = () => {
-      state.pickedActivity = "";
-      state.activityDetails = [];
-    };
-    async function setActivityId(val) {
-      state.pickedActivity = val.activityId;
-      try {
-        const response = await axios.get("/tracker/screenshots", {
-          params: { activityId: state.pickedActivity },
-        });
-        state.activityDetails = response.data;
-      } catch (err) {
-        console.log(err);
-      }
-    }
 
     async function fetchTableData() {
       try {
         if (state.dateRange.length < 2) return;
         var [from, to] = state.dateRange;
-        var response = await axios.get("/tracker/activity", {
+        var { data } = await axios.get("/tracker/activity", {
           params: {
             from,
             to,
           },
         });
-        state.tableData = response.data;
+        state.tableData = data;
       } catch (err) {
         console.log(err);
       }
@@ -146,9 +109,9 @@ export default {
       state,
       formatDate,
       fetchTableData,
+      setClickedActivityId,
+      isDetailsOpen,
       menu,
-      setActivityId,
-      clearActivityId,
       icons: {
         mdiEye,
       },
