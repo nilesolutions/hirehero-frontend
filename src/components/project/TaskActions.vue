@@ -1,5 +1,5 @@
 <template>
-  <v-card-actions>
+  <v-card-actions class="d-flex col-12">
     <v-btn :loading="state.isUploading" x-small icon>
       <v-file-input
         @change="uploadAttachments"

@@ -1,21 +1,21 @@
 <template>
-  <v-card class="mb-4">
+  <v-card class="mb-4" @click="setActiveTaskId(task.id)">
     <v-card-text>
       <v-btn small depressed :color="colorFromPriority()"> {{ task.priority }}</v-btn>
     </v-card-text>
     <v-card-text class="d-flex flex-row align-center">
       <div>{{ task.name }}</div>
 
-      <v-btn class="ml-auto" x-small icon @click="toggleStatus" :loading="state.isLoading">
+      <!-- <v-btn class="ml-auto" x-small icon @click="toggleStatus" :loading="state.isLoading">
         <v-icon :color="task.completed ? 'primary' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-card-text>
 
-    <task-details :task="task"></task-details>
-    <task-attachments v-show="task.attachments.length" :parentTask="task"></task-attachments>
-    <task-actions v-if="userType == 'client'" :task="task"></task-actions>
+    <!-- <task-details :task="task"></task-details>
+    <task-attachments v-show="task.attachments.length" :parentTask="task"></task-attachments> -->
+    <!-- <task-actions v-if="userType == 'client'" :task="task"></task-actions> -->
   </v-card>
 </template>
 
@@ -51,7 +51,7 @@ export default {
     const userType = useUser().userType();
 
     const taskId = props.task.id;
-    const { updateTask } = useTasks();
+    const { setActiveTaskId, updateTask } = useTasks();
     const projectId = useRouter().routeParams().id;
 
     const taskUrl = `projects/${projectId}/tasks/${taskId}`;
@@ -81,6 +81,8 @@ export default {
       userType,
       toggleStatus,
       colorFromPriority,
+
+      setActiveTaskId,
 
       icons: {
         mdiDeleteOutline,

@@ -2,6 +2,7 @@
   <div class="dashboard__content d-flex flex-column">
     <add-tasks></add-tasks>
     <tasks-view></tasks-view>
+    <task-details-popup v-if="isTaskDetailsOpen"></task-details-popup>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import ProjectInfo from "@/components/project/ProjectInfo.vue";
 import AddTasks from "@/components/project/ProjectNav.vue";
 import TasksView from "@/components/project/TasksView.vue";
+import TaskDetailsPopup from "@/components/project/TaskDetailsPopup.vue";
 import { useTasks } from "@/composables/tasks";
 
 export default {
@@ -17,9 +19,12 @@ export default {
     ProjectInfo,
     AddTasks,
     TasksView,
+    TaskDetailsPopup,
   },
   setup() {
-    const { setTasks } = useTasks();
+    const { isTaskDetailsOpen } = useTasks();
+
+    return { isTaskDetailsOpen };
   },
 };
 </script>

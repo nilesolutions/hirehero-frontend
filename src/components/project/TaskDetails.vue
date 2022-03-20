@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <v-divider></v-divider>
+  <div class="d-flex flex-column col-12 col-md-6">
+    <!-- <v-card-title> Details </v-card-title>
+    <v-card-text v-for="(value, field) in taskFields" :key="field">
+      <b> {{ field }}</b> : {{ value }}
+    </v-card-text> -->
+
     <v-card-actions>
       Details
       <v-btn @click="showDetails = !showDetails" x-small class="ml-auto" icon>
@@ -27,7 +31,7 @@ export default {
   props: { task: Object },
   setup(props) {
     const { task } = props;
-    const showDetails = ref(false);
+    const showDetails = ref(true);
 
     const taskFields = computed(() => {
       const fields = {

@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
-      <div class="section-heading blue-heading">Active</div>
+      <div class="section-heading blue-heading">Due Soon</div>
 
       <div class="tasks-column">
         <task-item v-for="task in dueSoonTasks" :key="task.gid" :task="task"></task-item>
@@ -49,7 +49,7 @@ export default {
   name: "TasksView",
   components: { TaskItem },
   setup() {
-    const { setTasks, doneTasks, unfinishedTasks, dueSoonTasks } = useTasks();
+    const { setTasks, setActiveTaskId, doneTasks, unfinishedTasks, dueSoonTasks } = useTasks();
     const { routeParams } = useRouter();
     const isLoading = ref(true);
 
@@ -69,6 +69,8 @@ export default {
     onBeforeMount(() => setTasks([]));
 
     return {
+      setActiveTaskId,
+
       doneTasks,
       unfinishedTasks,
       dueSoonTasks,

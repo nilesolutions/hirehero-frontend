@@ -1,7 +1,6 @@
 <template>
   <div class="auth-wrapper auth-v2">
     <div class="auth-inner">
-      <!-- brand logo -->
       <router-link to="/" class="brand-logo d-flex align-center">
         <v-img
           :src="appLogo"
@@ -16,7 +15,6 @@
           {{ appName }}
         </h2>
       </router-link>
-      <!--/ brand logo -->
 
       <v-row class="auth-row ma-0">
         <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
@@ -36,7 +34,6 @@
                   <p class="cursive-font mb-2">Enter your email and password to sign in</p>
                 </v-card-text>
 
-                <!-- login form -->
                 <v-card-text>
                   <v-form @submit.prevent>
                     <v-text-field
@@ -65,7 +62,6 @@
                     <div class="d-flex align-center justify-space-between flex-wrap">
                       <v-checkbox hide-details label="Remember Me" class="mt-0"> </v-checkbox>
 
-                      <!-- forget link -->
                       <a class="ms-3" href="#"> Forgot Password? </a>
                     </div>
 
@@ -84,7 +80,6 @@
                   </v-form>
                 </v-card-text>
 
-                <!-- create new account  -->
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
                   <p class="mb-0 me-2">or</p>
                   <br />

@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <v-divider></v-divider>
+  <div class="d-flex flex-column col-12 col-md-6">
     <v-card-actions>
       Attachments
       <v-btn class="ml-auto" @click="showAttachments = !showAttachments" x-small icon>
@@ -30,7 +29,7 @@ export default {
   props: { parentTask: Object },
   components: { AttachmentLine },
   setup(props, _) {
-    const showAttachments = ref(false);
+    const showAttachments = ref(true);
     const attachments = computed(() => props.parentTask.attachments);
 
     return {

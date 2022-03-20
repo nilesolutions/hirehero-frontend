@@ -1,10 +1,13 @@
 import { computed, ref, set } from "@vue/composition-api";
 
 const tasks = ref([]);
+const activeTaskId = ref("");
 
 const setTasks = (entries) => {
   tasks.value = entries;
 };
+
+const setActiveTaskId = (val) => (activeTaskId.value = val);
 
 const addTask = (task) => {
   tasks.value = [task, ...tasks.value];
@@ -47,12 +50,22 @@ const doneTasks = computed(() => tasks.value.filter((t) => t.completed == true))
 const unfinishedTasks = computed(() => tasks.value.filter((t) => t.completed == false));
 const dueSoonTasks = computed(() => []);
 
+const activeTask = computed(() => tasks.value.find((t) => t.id == activeTaskId.value));
+const isTaskDetailsOpen = computed(() => {
+  if (!activeTaskId.value) return false;
+  return true;
+});
+
 export function useTasks() {
   return {
     setTasks,
     addTask,
     deleteTask,
     updateTask,
+
+    activeTask,
+    setActiveTaskId,
+    isTaskDetailsOpen,
 
     updateTaskAttachments,
     deleteTaskAttachment,
