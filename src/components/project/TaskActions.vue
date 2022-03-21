@@ -1,6 +1,6 @@
 <template>
   <v-card-actions class="d-flex col-12">
-    <v-btn :loading="state.isUploading" x-small icon>
+    <v-btn :loading="state.isUploading" icon>
       <v-file-input
         @change="uploadAttachments"
         class="pt-0 mt-0"
@@ -10,11 +10,11 @@
       ></v-file-input>
     </v-btn>
 
-    <v-btn icon x-small>
+    <v-btn @click="toggleEdit(true)" icon>
       <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
     </v-btn>
 
-    <v-btn icon x-small>
+    <v-btn icon>
       <v-icon>{{ icons.mdiDelete }} </v-icon>
     </v-btn>
   </v-card-actions>
@@ -34,10 +34,11 @@ export default {
     const state = reactive({
       isLoading: false,
       isUploading: false,
+      isDeleting: false,
       files: [],
     });
 
-    const { updateTaskAttachments } = useTasks();
+    const { updateTaskAttachments, toggleEdit } = useTasks();
 
     const taskId = props.task.id;
     const projectId = useRouter().routeParams().id;
@@ -62,6 +63,7 @@ export default {
 
     return {
       state,
+      toggleEdit,
       uploadAttachments,
 
       icons: {

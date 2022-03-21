@@ -1,10 +1,5 @@
 <template>
   <div class="d-flex flex-column col-12 col-md-6">
-    <!-- <v-card-title> Details </v-card-title>
-    <v-card-text v-for="(value, field) in taskFields" :key="field">
-      <b> {{ field }}</b> : {{ value }}
-    </v-card-text> -->
-
     <v-card-actions>
       Details
       <v-btn @click="showDetails = !showDetails" x-small class="ml-auto" icon>
@@ -23,14 +18,15 @@
 </template>
 
 <script>
+import { useTasks } from "@/composables/tasks";
 import { ref, computed } from "@vue/composition-api";
 import { mdiChevronUp, mdiChevronDown } from "@mdi/js";
 
 export default {
   name: "TaskDetails",
   props: { task: Object },
-  setup(props) {
-    const { task } = props;
+  setup() {
+    const task = useTasks().activeTask.value;
     const showDetails = ref(true);
 
     const taskFields = computed(() => {

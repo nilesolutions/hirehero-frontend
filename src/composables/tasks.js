@@ -2,12 +2,17 @@ import { computed, ref, set } from "@vue/composition-api";
 
 const tasks = ref([]);
 const activeTaskId = ref("");
+const isEditingTask = ref(false);
 
 const setTasks = (entries) => {
   tasks.value = entries;
 };
 
-const setActiveTaskId = (val) => (activeTaskId.value = val);
+const setActiveTaskId = (val) => {
+  if (!val) isEditingTask.value = false;
+  activeTaskId.value = val;
+};
+const toggleEdit = (val) => (isEditingTask.value = val);
 
 const addTask = (task) => {
   tasks.value = [task, ...tasks.value];
@@ -66,6 +71,8 @@ export function useTasks() {
     activeTask,
     setActiveTaskId,
     isTaskDetailsOpen,
+    isEditingTask,
+    toggleEdit,
 
     updateTaskAttachments,
     deleteTaskAttachment,

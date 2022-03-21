@@ -7,6 +7,7 @@ const routeName = () => route.value.name;
 const routeParams = () => route.value.params;
 
 const currRouteName = computed(() => route.value.name);
+const currRouteParams = computed(() => route.value.params);
 
 export function useRouter() {
   return {
@@ -14,5 +15,6 @@ export function useRouter() {
     routeName,
     routeParams,
     currRouteName,
+    currRouteParams,
   };
 }
