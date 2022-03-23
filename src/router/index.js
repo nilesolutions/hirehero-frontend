@@ -73,6 +73,14 @@ const routes = [
     },
   },
   {
+    path: "/inbox",
+    name: "inbox",
+    component: () => import("@/views/Inbox.vue"),
+    meta: {
+      layout: "custom",
+    },
+  },
+  {
     path: "/login",
     name: "auth-login",
     component: () => import("@/views/Login.vue"),

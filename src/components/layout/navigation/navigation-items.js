@@ -51,7 +51,7 @@ export default [
     type: "NavigationItem",
     title: "Inbox",
     icon: mdiMessageOutline,
-    to: "home",
+    to: "inbox",
   },
   {
     type: "NavigationItem",

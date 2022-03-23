@@ -1,7 +1,8 @@
 const userData = () => JSON.parse(localStorage.getItem("userData"));
 const userType = () => userData().type;
 const userName = () => userData().username;
-const userEmail = () => userData().username;
+const userEmail = () => userData().email;
+const accessToken = () => localStorage.getItem("accessToken");
 
 export function useUser() {
   return {
@@ -9,5 +10,6 @@ export function useUser() {
     userType,
     userName,
     userEmail,
+    accessToken,
   };
 }
