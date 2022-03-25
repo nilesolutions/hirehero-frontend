@@ -9,7 +9,7 @@
         dense
         placeholder="Type"
       ></v-text-field>
-      <v-btn @click="sendMsg" icon>
+      <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" icon>
         <v-icon>{{ icons.mdiSend }}</v-icon>
       </v-btn>
     </div>
@@ -17,7 +17,9 @@
     <div class="d-flex flex-row align-center justify-center mt-3">
       <div class="d-flex flex-row align-center audio-recorder">
         <v-btn @click="toggleRecording" icon small class="mr-2">
-          <v-icon>{{ icons.mdiMicrophone }}</v-icon>
+          <v-icon :color="state.isRecording ? '#F60000' : ''">
+            {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
+          </v-icon>
         </v-btn>
         <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
         <v-btn v-show="state.previewUrl" @click="clearRecording" icon>
@@ -53,17 +55,23 @@ export default {
       msgText: "",
       previewUrl: "",
       isRecording: false,
+      finalBlob: null,
       files: [],
     });
     const recordingPreview = ref(null);
+    const canSend = computed(() => {
+      if (state.isRecording) return false;
+      if (state.msgText || state.files.length || state.finalBlob) return true;
+      return false;
+    });
 
     var audioStream = null,
       mediaRecorder = null,
-      audioBlobs = [];
+      audioChunks = [];
 
     async function startRecording() {
       try {
-        audioBlobs = [];
+        audioChunks = [];
         audioStream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: true,
@@ -74,8 +82,7 @@ export default {
         mediaRecorder = new MediaRecorder(audioStream);
 
         mediaRecorder.ondataavailable = function (event) {
-          console.log("Recieved audio blob");
-          audioBlobs.push(event.data);
+          audioChunks.push(event.data);
         };
 
         mediaRecorder.onstop = handleStop;
@@ -94,7 +101,8 @@ export default {
       audioStream.getTracks().forEach(function (track) {
         track.stop();
       });
-      state.previewUrl = URL.createObjectURL(new Blob(audioBlobs, { type: "audio/webm" }));
+      state.finalBlob = new Blob(audioChunks, { type: "audio/webm" });
+      state.previewUrl = URL.createObjectURL(state.finalBlob);
       recordingPreview.value.src = state.previewUrl;
     }
 
@@ -106,7 +114,8 @@ export default {
 
     function clearRecording() {
       state.previewUrl = "";
-      audioBlobs = [];
+      audioChunks = [];
+      state.finalBlob = null;
     }
 
     const hideFileDetails = computed(() => {
@@ -116,12 +125,15 @@ export default {
 
     async function sendMsg() {
       try {
-        if (!state.msgText) return;
-        console.log("sending msg");
-        const response = await axios.post("/messages", {
-          group: activeGroup.value.id,
-          message: state.msgText,
-        });
+        if (!canSend.value) return;
+
+        const form = new FormData();
+        form.append("group", activeGroup.value.id);
+        form.append("message", state.msgText);
+        for (var file of state.files) form.append("attachments", file);
+        if (state.finalBlob) form.append("attachments", state.finalBlob, `${Date.now()}.mp3`);
+
+        const response = await axios.post("/messages", form);
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -138,6 +150,7 @@ export default {
     return {
       state,
       sendMsg,
+      canSend,
       hideFileDetails,
       recordingPreview,
       toggleRecording,

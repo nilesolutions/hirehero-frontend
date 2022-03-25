@@ -1,37 +1,61 @@
 <template>
   <div class="d-flex flex-column col-4">
     <v-card>
-      <v-btn @click="startChat">Start conversatiom</v-btn>
-      <v-btn @click="setActiveGroupId('')">Clear</v-btn>
-      <v-card-title>Conversations</v-card-title>
+      <v-card-title>
+        <span>Conversations</span>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="state.isCreateOpen = true" icon>
+          <v-icon>{{ icons.mdiPlus }}</v-icon>
+        </v-btn>
+      </v-card-title>
 
       <v-card-text
-        @click="setActiveGroupId(conversation.id)"
-        v-for="conversation in state.chatGroups"
-        :key="conversation.id"
+        @click="setActiveGroupId(group.id)"
+        v-for="group in msgsState.chatGroups"
+        :key="group.id"
+        class="pt-2 conversation-card"
+        :class="msgsState.activeGroupId == group.id ? 'active-conversation' : ''"
       >
-        {{ conversation.name }}
+        {{ group.name }}
       </v-card-text>
+
+      <v-dialog max-width="500" v-model="state.isCreateOpen">
+        <v-card class="d-flex flex-column align-center">
+          <v-card-title>Start A Conversation</v-card-title>
+          <v-text-field v-model="state.conversationName" placeholder="Name" outlined>
+          </v-text-field>
+          <v-card-actions>
+            <v-btn :loading="state.isLoading" @click="startChat" color="primary">Start</v-btn>
+            <v-btn :disabled="state.isLoading" @click="state.isCreateOpen = false">Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </div>
 </template>
 
 <script>
 import axios from "@axios";
+import { mdiPlus } from "@mdi/js";
+import { reactive } from "@vue/composition-api";
 import { onMounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/messages";
 
 export default {
   name: "InboxGroups",
   setup() {
-    const { state, setChatGroups, setActiveGroupId } = useMessages();
+    const { state: msgsState, setChatGroups, setActiveGroupId, activeGroup } = useMessages();
+    const state = reactive({
+      isLoading: false,
+      isCreateOpen: false,
+      conversationName: "",
+    });
 
     onMounted(() => fetchChatGroups());
 
     async function fetchChatGroups() {
       try {
         const { data } = await axios.get("/messages/groups");
-        console.log("Groups are", data);
         setChatGroups(data);
       } catch (err) {
         console.log(err);
@@ -40,21 +64,44 @@ export default {
 
     async function startChat() {
       try {
-        const response = await axios.post("/message/invite");
+        if (!state.conversationName) return;
+        state.isLoading = true;
+        const response = await axios.post("/messages/invite", {
+          group_name: state.conversationName,
+        });
         console.log(response);
+        state.isCreateOpen = false;
+        state.conversationName = "";
       } catch (err) {
         console.log(err);
+      } finally {
+        state.isLoading = false;
       }
     }
 
     return {
       state,
+      msgsState,
       startChat,
       fetchChatGroups,
       setActiveGroupId,
+      activeGroup,
+
+      icons: {
+        mdiPlus,
+      },
     };
   },
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.conversation-card {
+  cursor: pointer;
+}
+
+.active-conversation {
+  background-color: var(--v-primary-base);
+  color: #fff !important;
+}
+</style>
