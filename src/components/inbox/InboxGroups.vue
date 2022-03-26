@@ -2,7 +2,7 @@
   <div class="d-flex flex-column col-4">
     <v-card>
       <v-card-title>
-        <span>Conversations</span>
+        <h5>Ongoing Conversations</h5>
         <v-spacer></v-spacer>
         <v-btn color="primary" @click="state.isCreateOpen = true" icon>
           <v-icon>{{ icons.mdiPlus }}</v-icon>

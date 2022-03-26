@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column col-8">
     <v-card v-if="!activeGroup">
-      <v-card-text>Choose a group to start</v-card-text>
+      <v-card-text>Click a conversation to start</v-card-text>
     </v-card>
 
     <v-card class="chat-wrapper" v-else>

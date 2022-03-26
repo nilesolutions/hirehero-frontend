@@ -21,4 +21,27 @@ const groupEvents = [
   },
 ];
 
-export { msgEvents, groupEvents };
+const videoCallEvents = [
+  {
+    name: "client-call-candidate",
+    handler: (event) => console.log(event),
+  },
+  {
+    name: "client-call-sdp",
+    handler: (event) => console.log(event),
+  },
+  {
+    name: "client-call-answer",
+    handler: (event) => console.log(event),
+  },
+  {
+    name: "client-call-reject",
+    handler: (event) => console.log(event),
+  },
+  {
+    name: "client-call-end",
+    handler: (event) => console.log(event),
+  },
+];
+
+export { msgEvents, groupEvents, videoCallEvents };

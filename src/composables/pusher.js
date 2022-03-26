@@ -1,7 +1,7 @@
 import { reactive } from "@vue/composition-api";
 import Pusher from "pusher-js";
 import { useUser } from "./user";
-
+Pusher.logToConsole = true;
 const accessToken = useUser().accessToken();
 
 const state = reactive({
@@ -30,10 +30,14 @@ const updateAuthCreds = () => {
   };
 };
 
-const subscribeToChannel = (channelName, eventHandlers) => {
+const subscribeToChannel = async (channelName, eventHandlers) => {
   if (!channelName) return;
-  const channel = state.pusher.subscribe(channelName);
-  for (var event of eventHandlers) channel.bind(event.name, event.handler);
+  const channel = await state.pusher.subscribe(channelName);
+  if (eventHandlers) {
+    for (var event of eventHandlers) {
+      channel.bind(event.name, event.handler);
+    }
+  }
 };
 
 const unsubscribeFromChannel = (channelName) => {
@@ -45,9 +49,19 @@ const unsubscribeFromChannel = (channelName) => {
   }
 };
 
+const triggerEvent = (channelName, eventName, payload) => {
+  try {
+    const channel = state.pusher.channel(channelName);
+    console.log("sending stuff", channel, payload);
+    channel.trigger(eventName, payload);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const debugActiveChannels = (debugMsg) => {
   console.log(debugMsg);
-  console.log(state.pusher.allChannels().map((c) => c.name));
+  console.log(state.pusher.allChannels().map((c) => ({ name: c.name, status: c.subscribed })));
 };
 
 export function usePusher() {
@@ -55,6 +69,7 @@ export function usePusher() {
     state,
     subscribeToChannel,
     unsubscribeFromChannel,
+    triggerEvent,
     updateAuthCreds,
     debugActiveChannels,
   };
