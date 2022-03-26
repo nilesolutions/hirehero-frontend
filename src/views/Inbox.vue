@@ -21,12 +21,10 @@ export default {
     InboxMessages,
   },
   setup() {
-    useMessages().initPusher();
-    const { pusher, setActiveGroupId } = useMessages();
+    const { setActiveGroupId } = useMessages();
 
     onBeforeUnmount(() => {
       setActiveGroupId("");
-      pusher.value.disconnect();
     });
   },
 };

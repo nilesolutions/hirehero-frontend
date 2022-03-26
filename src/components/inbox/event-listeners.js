@@ -1,10 +1,10 @@
 import { useMessages } from "@/composables/messages";
-const { addMessage } = useMessages();
+const { addMessage, addGroup } = useMessages();
 
 const msgEvents = [
   {
     name: "send-message",
-    handler: (event) => addMessage(event),
+    handler: (msg) => addMessage(msg),
   },
   {
     name: "delete-message",
@@ -14,4 +14,11 @@ const msgEvents = [
   },
 ];
 
-export { msgEvents };
+const groupEvents = [
+  {
+    name: "chat-group-created",
+    handler: (group) => addGroup(group),
+  },
+];
+
+export { msgEvents, groupEvents };

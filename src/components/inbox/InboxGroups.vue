@@ -37,21 +37,35 @@
 <script>
 import axios from "@axios";
 import { mdiPlus } from "@mdi/js";
-import { reactive } from "@vue/composition-api";
+import { onUnmounted, reactive } from "@vue/composition-api";
 import { onMounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/messages";
+import { usePusher } from "@/composables/pusher";
+import { groupEvents } from "@/components/inbox/event-listeners";
+import { useUser } from "@/composables/user";
 
 export default {
   name: "InboxGroups",
   setup() {
     const { state: msgsState, setChatGroups, setActiveGroupId, activeGroup } = useMessages();
+    const pusher = usePusher();
     const state = reactive({
       isLoading: false,
       isCreateOpen: false,
       conversationName: "",
     });
 
-    onMounted(() => fetchChatGroups());
+    const userId = useUser().userData().id;
+    const groupCreationChannel = `private-invite-${userId}`;
+
+    onMounted(() => {
+      fetchChatGroups();
+      pusher.updateAuthCreds();
+      pusher.subscribeToChannel(groupCreationChannel, groupEvents);
+      pusher.debugActiveChannels("From Inbox Groups");
+    });
+
+    onUnmounted(() => pusher.unsubscribeFromChannel(groupCreationChannel));
 
     async function fetchChatGroups() {
       try {

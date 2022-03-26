@@ -1,6 +1,6 @@
 <template>
   <v-card-text class="d-flex flex-column">
-    <div class="d-flex flex-row align-center">
+    <form @submit.prevent="sendMsg" class="d-flex flex-row align-center">
       <v-text-field
         class="mr-2"
         v-model="state.msgText"
@@ -12,7 +12,7 @@
       <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" icon>
         <v-icon>{{ icons.mdiSend }}</v-icon>
       </v-btn>
-    </div>
+    </form>
 
     <div class="d-flex flex-row align-center justify-center mt-3">
       <div class="d-flex flex-row align-center audio-recorder">
@@ -134,6 +134,9 @@ export default {
         if (state.finalBlob) form.append("attachments", state.finalBlob, `${Date.now()}.mp3`);
 
         const response = await axios.post("/messages", form);
+        state.msgText = "";
+        state.finalBlob = null;
+        state.files = [];
         console.log(response);
       } catch (err) {
         console.log(err);

@@ -114,7 +114,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  console.log("before each", to);
   setRoute(to);
   const accessToken = localStorage.getItem("accessToken");
 
