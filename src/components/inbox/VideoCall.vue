@@ -4,10 +4,21 @@
       <v-card>
         <v-card-title class="d-flex flex-row align-center">
           <span>Call</span>
-          <v-btn class="ml-auto" icon @click="endCall">
+          <v-btn class="ml-auto" icon @click="handleCallTermination">
             <v-icon>{{ icons.mdiClose }}</v-icon>
           </v-btn>
         </v-card-title>
+
+        <div v-show="callState.isBeingCalled">
+          Call from {{ callState.incomingCallRequest.name }}
+          <v-btn @click="answerCall">Answer</v-btn>
+          <v-btn @click="handleCallTermination">Reject</v-btn>
+        </div>
+
+        <div class="d-flex flex-row">
+          <video class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
+          <video class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
+        </div>
       </v-card>
     </v-dialog>
   </div>
@@ -19,11 +30,22 @@ import { useVideoCall } from "@/composables/videocall";
 export default {
   name: "VideoCall",
   setup() {
-    const { endCall, state: callState } = useVideoCall();
+    const {
+      localVideoPreview,
+      remoteVideoPreview,
+      handleCallTermination,
+      answerCall,
+      state: callState,
+    } = useVideoCall();
 
     return {
-      endCall,
+      handleCallTermination,
       callState,
+      answerCall,
+
+      localVideoPreview,
+      remoteVideoPreview,
+
       icons: {
         mdiClose,
       },
@@ -38,5 +60,10 @@ export default {
   left: 0;
   background-color: #fff;
   top: 0;
+}
+
+.video-preview {
+  /* height: 200px;
+  width: 200px; */
 }
 </style>

@@ -50,7 +50,7 @@ import { useMessages } from "@/composables/messages";
 export default {
   name: "SendMessage",
   setup() {
-    const { activeGroup } = useMessages();
+    const { activeConversation } = useMessages();
     const state = reactive({
       msgText: "",
       previewUrl: "",
@@ -128,12 +128,12 @@ export default {
         if (!canSend.value) return;
 
         const form = new FormData();
-        form.append("group", activeGroup.value.id);
+        form.append("conversationId", activeConversation.value.id);
         form.append("message", state.msgText);
         for (var file of state.files) form.append("attachments", file);
         if (state.finalBlob) form.append("attachments", state.finalBlob, `${Date.now()}.mp3`);
 
-        const response = await axios.post("/messages", form);
+        const response = await axios.post("conversations/messages", form);
         state.msgText = "";
         state.finalBlob = null;
         state.files = [];

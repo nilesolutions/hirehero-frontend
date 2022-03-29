@@ -1,6 +1,11 @@
 <template>
   <li class="d-flex flex-column message-content" :class="msgAlignment">
-    <p v-show="msgData.message" class="message-content__text" :class="msgAlignment">
+    <small class="message-content__sender" :class="msgAlignment">{{ msgData.username }}</small>
+    <p
+      v-show="msgData.message"
+      class="message-content__text"
+      :class="[msgAlignment, msgArrowDirection]"
+    >
       {{ msgData.message }}
     </p>
 
@@ -17,7 +22,7 @@
       </a>
     </div>
 
-    <small class="message-content__date" :class="msgAlignment">{{ msgTime() }}</small>
+    <small class="message-content__date" :class="msgAlignment">{{ msgTime }}</small>
   </li>
 </template>
 
@@ -39,8 +44,13 @@ export default {
       return "their-message";
     };
 
+    const resolveArrow = () => {
+      if (msgData.user_id == userId) return "right-arrow";
+      return "left-arrow";
+    };
+
     const msgTime = () => {
-      return new Date(msgData.created_at).toLocaleTimeString();
+      return new Date(msgData.created_at).toLocaleString();
     };
 
     const extractAttachments = () => {
@@ -50,7 +60,8 @@ export default {
 
     return {
       msgAlignment: resolveAlignment(),
-      msgTime,
+      msgArrowDirection: resolveArrow(),
+      msgTime: msgTime(),
       msgAttachments: extractAttachments(),
     };
   },
@@ -64,11 +75,39 @@ export default {
 }
 
 .message-content__text {
+  position: relative;
   background-color: #1f70fd;
   color: #fff;
   padding: 0.5rem 1rem;
   margin-bottom: 4px !important;
   border-radius: 6px;
+  width: fit-content;
+}
+
+.right-arrow::after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0px;
+  right: -5px;
+  border-bottom: 10px solid #1f70fd;
+  border-right: 10px solid transparent;
+}
+
+.left-arrow::after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0px;
+  left: -5px;
+  border-bottom: 10px solid #1f70fd;
+  border-left: 10px solid transparent;
+}
+
+.message-content__sender {
+  margin-bottom: 0.15rem;
   width: fit-content;
 }
 

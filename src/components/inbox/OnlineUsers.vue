@@ -2,34 +2,15 @@
   <div class="d-flex flex-column col-4">
     <v-card>
       <v-card-title>
-        <h5>Ongoing Conversations</h5>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="state.isCreateOpen = true" icon>
-          <v-icon>{{ icons.mdiPlus }}</v-icon>
-        </v-btn>
+        <h5>Online Users</h5>
       </v-card-title>
 
-      <v-card-text
-        @click="setActiveGroupId(group.id)"
-        v-for="group in msgsState.chatGroups"
-        :key="group.id"
-        class="pt-2 conversation-card"
-        :class="msgsState.activeGroupId == group.id ? 'active-conversation' : ''"
-      >
-        {{ group.name }}
+      <v-card-text v-for="user in msgsState.onlineUsers" :key="user.id">
+        <v-avatar size="30" color="primary">
+          <span class="white--text">{{ user.name[0] }}</span>
+        </v-avatar>
+        <span class="black--text ml-1">{{ user.name }} ({{ user.type }})</span>
       </v-card-text>
-
-      <v-dialog max-width="500" v-model="state.isCreateOpen">
-        <v-card class="d-flex flex-column align-center">
-          <v-card-title>Start A Conversation</v-card-title>
-          <v-text-field v-model="state.conversationName" placeholder="Name" outlined>
-          </v-text-field>
-          <v-card-actions>
-            <v-btn :loading="state.isLoading" @click="startChat" color="primary">Start</v-btn>
-            <v-btn :disabled="state.isLoading" @click="state.isCreateOpen = false">Cancel</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
   </div>
 </template>
@@ -58,14 +39,13 @@ export default {
     const userId = useUser().userData().id;
     const groupCreationChannel = `private-invite-${userId}`;
 
-    onMounted(() => {
-      fetchChatGroups();
-      pusher.updateAuthCreds();
-      pusher.subscribeToChannel(groupCreationChannel, groupEvents);
-      pusher.debugActiveChannels("From Inbox Groups");
-    });
+    // onMounted(() => {
+    //   fetchChatGroups();
+    //   pusher.updateAuthCreds();
+    //   pusher.subscribeToChannel(groupCreationChannel, groupEvents);
+    // });
 
-    onUnmounted(() => pusher.unsubscribeFromChannel(groupCreationChannel));
+    //onUnmounted(() => pusher.unsubscribeFromChannel(groupCreationChannel));
 
     async function fetchChatGroups() {
       try {

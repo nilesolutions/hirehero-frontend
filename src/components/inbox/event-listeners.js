@@ -1,5 +1,9 @@
 import { useMessages } from "@/composables/messages";
-const { addMessage, addGroup } = useMessages();
+import { useVideoCall } from "@/composables/videocall";
+
+const { addMessage, setConversation, updateOnlineUsers } = useMessages();
+const { handleIncomingCall, handleIceCandidate, endCall, handleCallAnswer, handleCallRejection } =
+  useVideoCall();
 
 const msgEvents = [
   {
@@ -12,12 +16,24 @@ const msgEvents = [
       console.log("delete msg", event);
     },
   },
+  {
+    name: "pusher:subscription_succeeded",
+    handler: () => updateOnlineUsers(),
+  },
+  {
+    name: "pusher:member_added",
+    handler: () => updateOnlineUsers(),
+  },
+  {
+    name: "pusher:member_removed",
+    handler: () => updateOnlineUsers(),
+  },
 ];
 
-const groupEvents = [
+const conversationEvents = [
   {
-    name: "chat-group-created",
-    handler: (group) => addGroup(group),
+    name: "conversation-started",
+    handler: (group) => setConversation(group),
   },
 ];
 
@@ -28,20 +44,24 @@ const videoCallEvents = [
   },
   {
     name: "client-call-sdp",
-    handler: (event) => console.log(event),
+    handler: (event) => handleIncomingCall(event),
   },
   {
     name: "client-call-answer",
-    handler: (event) => console.log(event),
+    handler: (event) => handleCallAnswer(event),
   },
   {
     name: "client-call-reject",
-    handler: (event) => console.log(event),
+    handler: () => endCall(),
   },
   {
     name: "client-call-end",
-    handler: (event) => console.log(event),
+    handler: () => endCall(),
+  },
+  {
+    name: "client-candidate",
+    handler: (event) => handleIceCandidate(event),
   },
 ];
 
-export { msgEvents, groupEvents, videoCallEvents };
+export { msgEvents, conversationEvents, videoCallEvents };

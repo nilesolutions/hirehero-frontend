@@ -6,7 +6,7 @@ const accessToken = useUser().accessToken();
 
 const state = reactive({
   pusher: new Pusher("1d281727be4979719061", {
-    authEndpoint: "http://localhost:3000/api/messages/auth",
+    authEndpoint: "http://localhost:3000/api/conversations/auth",
     auth: {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -52,7 +52,6 @@ const unsubscribeFromChannel = (channelName) => {
 const triggerEvent = (channelName, eventName, payload) => {
   try {
     const channel = state.pusher.channel(channelName);
-    console.log("sending stuff", channel, payload);
     channel.trigger(eventName, payload);
   } catch (err) {
     console.log(err);
