@@ -2,13 +2,17 @@
   <div>
     <v-card-text class="d-flex flex-row align-center pt-3">
       <div>
-        <v-avatar color="primary">
-          <span class="white--text">{{ msgsState.associatedUser.username[0] }}</span>
+        <v-avatar size="50" color="primary">
+          <span class="white--text">
+            {{ msgsState.associatedUser.username[0].toUpperCase() }}
+          </span>
         </v-avatar>
       </div>
 
       <div class="ml-2">
-        <span class="d-block black--text">{{ msgsState.associatedUser.username }}</span>
+        <span class="d-block cursive-font black--text">
+          {{ msgsState.associatedUser.username }}
+        </span>
         <span class="d-block">{{ msgsState.associatedUser.email }}</span>
       </div>
 
@@ -19,9 +23,11 @@
       </div>
     </v-card-text>
 
+    <v-divider></v-divider>
+
     <div class="messages-wrapper">
       <ul class="messages-list" ref="msgsList">
-        <p v-show="!msgsState.messages.length">No messages yet</p>
+        <p class="py-4 px-4" v-show="!msgsState.messages.length">No messages yet</p>
         <chat-message v-for="msg in msgsState.messages" :key="msg.id" :msgData="msg"></chat-message>
       </ul>
     </div>
@@ -92,7 +98,7 @@ export default {
 
 .messages-list {
   list-style: none;
-  padding: 1rem;
+  padding: 0px !important;
   margin: 0px;
   height: 100%;
   overflow-y: scroll;

@@ -1,43 +1,84 @@
 <template>
-  <li class="d-flex flex-column message-content" :class="msgAlignment">
-    <small class="message-content__sender" :class="msgAlignment">{{ msgData.username }}</small>
-    <p
-      v-show="msgData.message"
-      class="message-content__text"
-      :class="[msgAlignment, msgArrowDirection]"
-    >
-      {{ msgData.message }}
-    </p>
-
-    <div v-show="msgAttachments.length" class="message-attachments" :class="msgAlignment">
-      <small class="d-block">Attachments</small>
-      <a
-        class="py-2 px-2 d-block"
-        v-for="attachment in msgAttachments"
-        :key="attachment.url"
-        :href="attachment.url"
-        target="blank"
+  <li
+    @mouseenter="state.isHovering = true"
+    @mouseleave="state.isHovering = false"
+    class="message-wrapper"
+    :class="state.isHovering ? 'message-hover' : ''"
+  >
+    <div class="d-flex flex-column message-content" :class="msgAlignment">
+      <small class="message-content__sender" :class="msgAlignment">{{ msgData.username }}</small>
+      <p
+        v-show="msgData.message"
+        class="message-content__text"
+        :class="[msgAlignment, msgArrowDirection]"
       >
-        {{ attachment.name }}
-      </a>
-    </div>
+        {{ msgData.message }}
+      </p>
 
-    <small class="message-content__date" :class="msgAlignment">{{ msgTime }}</small>
+      <div v-show="msgAttachments.length" class="message-attachments" :class="msgAlignment">
+        <small class="d-block">Attachments</small>
+        <a
+          class="py-2 px-2 d-block"
+          v-for="attachment in msgAttachments"
+          :key="attachment.url"
+          :href="attachment.url"
+          target="blank"
+        >
+          {{ attachment.name }}
+        </a>
+      </div>
+
+      <div v-if="showControls" class="message-controls">
+        <v-btn
+          small
+          icon
+          tile
+          elevation="2"
+          color="warning"
+          @click="state.isConfirmDeleteOpen = true"
+        >
+          <v-icon small>{{ icons.mdiTrashCanOutline }}</v-icon>
+        </v-btn>
+      </div>
+
+      <v-dialog width="fit-content" v-model="state.isConfirmDeleteOpen">
+        <v-card>
+          <v-card-title>Delete Message ?</v-card-title>
+          <v-card-actions>
+            <v-btn @click="deleteMsg" color="warning" outlined>Delete</v-btn>
+            <v-btn @click="state.isConfirmDeleteOpen = false" outlined>Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <small class="message-content__date" :class="msgAlignment">{{ msgTime }}</small>
+    </div>
   </li>
 </template>
 
 <script>
-import Popper from "vue-popperjs";
-import "vue-popperjs/dist/vue-popper.css";
+import axios from "@axios";
+import { reactive } from "@vue/composition-api";
 import { useUser } from "@/composables/user";
+import { mdiTrashCanOutline } from "@mdi/js";
 import { computed } from "@vue/composition-api";
+import { useMessages } from "@/composables/messages";
 
 export default {
   name: "ChatMessage",
-  components: { popper: Popper },
   props: { msgData: Object },
   setup({ msgData }) {
     const userId = useUser().userData().id;
+    const { state: msgsState } = useMessages();
+    const state = reactive({
+      isHovering: false,
+      isConfirmDeleteOpen: false,
+    });
+
+    const showControls = computed(() => {
+      if (state.isHovering && msgData.user_id == userId) return true;
+      return false;
+    });
 
     const resolveAlignment = () => {
       if (msgData.user_id == userId) return "our-message";
@@ -58,11 +99,26 @@ export default {
       return JSON.parse(msgData.files);
     };
 
+    async function deleteMsg() {
+      try {
+        await axios.delete(`/conversations/${msgsState.conversation.id}/messages/${msgData.id}`);
+        state.isConfirmDeleteOpen = false;
+      } catch (err) {}
+    }
+
     return {
+      state,
+      showControls,
+      deleteMsg,
+
       msgAlignment: resolveAlignment(),
       msgArrowDirection: resolveArrow(),
       msgTime: msgTime(),
       msgAttachments: extractAttachments(),
+
+      icons: {
+        mdiTrashCanOutline,
+      },
     };
   },
 };
@@ -82,6 +138,15 @@ export default {
   margin-bottom: 4px !important;
   border-radius: 6px;
   width: fit-content;
+}
+
+.message-wrapper {
+  position: relative;
+  padding: 1rem;
+}
+
+.message-hover {
+  background-color: #cccccca2;
 }
 
 .right-arrow::after {
@@ -115,6 +180,7 @@ export default {
   padding: 0.25rem;
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
+  border-radius: 6px;
   font-size: small;
   background-color: #f7f7f7;
   width: 200px;
@@ -130,6 +196,11 @@ export default {
 
 .message-content__date {
   display: inline-block;
+}
+
+.message-controls {
+  position: absolute;
+  left: 10px;
 }
 
 .our-message {

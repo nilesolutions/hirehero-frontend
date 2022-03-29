@@ -136,6 +136,7 @@ export default {
         const response = await axios.post("conversations/messages", form);
         state.msgText = "";
         state.finalBlob = null;
+        state.previewUrl = "";
         state.files = [];
         console.log(response);
       } catch (err) {

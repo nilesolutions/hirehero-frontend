@@ -1,7 +1,7 @@
 import { reactive } from "@vue/composition-api";
 import Pusher from "pusher-js";
 import { useUser } from "./user";
-Pusher.logToConsole = true;
+//Pusher.logToConsole = true;
 const accessToken = useUser().accessToken();
 
 const state = reactive({

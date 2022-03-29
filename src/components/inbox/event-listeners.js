@@ -1,7 +1,7 @@
 import { useMessages } from "@/composables/messages";
 import { useVideoCall } from "@/composables/videocall";
 
-const { addMessage, setConversation, updateOnlineUsers } = useMessages();
+const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
 const { handleIncomingCall, handleIceCandidate, endCall, handleCallAnswer, handleCallRejection } =
   useVideoCall();
 
@@ -12,9 +12,7 @@ const msgEvents = [
   },
   {
     name: "delete-message",
-    handler: (event) => {
-      console.log("delete msg", event);
-    },
+    handler: (event) => deleteMessage(event.id),
   },
   {
     name: "pusher:subscription_succeeded",

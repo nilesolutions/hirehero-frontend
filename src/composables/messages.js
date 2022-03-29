@@ -15,6 +15,7 @@ const setAssociatedUser = (val) => (state.associatedUser = val);
 
 const setMessages = (val) => (state.messages = val);
 const addMessage = (val) => (state.messages = [...state.messages, val]);
+const deleteMessage = (msgId) => (state.messages = state.messages.filter((msg) => msg.id != msgId));
 
 const updateOnlineUsers = () => {
   const channel = pusherState.pusher.channel(`presence-${state.conversation.id}`);
@@ -47,5 +48,6 @@ export function useMessages() {
 
     addMessage,
     setMessages,
+    deleteMessage,
   };
 }

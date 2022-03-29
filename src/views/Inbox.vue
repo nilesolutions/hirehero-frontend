@@ -5,10 +5,8 @@
     </h2>
     <div v-show="!state.isLoading && !activeConversation"></div>
     <div class="d-flex flex-row flex-wrap" v-if="!state.isLoading">
-      <!-- <start-video-call></start-video-call> -->
-
       <inbox-messages></inbox-messages>
-      <inbox-groups></inbox-groups>
+      <online-users></online-users>
     </div>
     <div v-else>
       <v-progress-circular></v-progress-circular>
@@ -19,7 +17,7 @@
 <script>
 import axios from "@axios";
 import { mdiCamera } from "@mdi/js";
-import InboxGroups from "@/components/inbox/OnlineUsers.vue";
+import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
 import InboxMessages from "@/components/inbox/InboxMessages.vue";
 import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
 import { useMessages } from "@/composables/messages";
@@ -31,7 +29,7 @@ import { conversationEvents } from "@/components/inbox/event-listeners";
 export default {
   name: "Inbox",
   components: {
-    InboxGroups,
+    OnlineUsers,
     InboxMessages,
     StartVideoCall,
   },
