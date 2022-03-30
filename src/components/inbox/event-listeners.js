@@ -2,8 +2,14 @@ import { useMessages } from "@/composables/messages";
 import { useVideoCall } from "@/composables/videocall";
 
 const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
-const { handleIncomingCall, handleIceCandidate, endCall, handleCallAnswer, handleCallRejection } =
-  useVideoCall();
+const {
+  handleIncomingCall,
+  handleIceCandidate,
+  endCall,
+  handleCallAnswer,
+  handleCallRejection,
+  updatePeerStatus,
+} = useVideoCall();
 
 const msgEvents = [
   {
@@ -35,10 +41,35 @@ const conversationEvents = [
   },
 ];
 
+const videoCallPresenceEvents = [
+  {
+    name: "pusher:subscription_succeeded",
+    handler: (members) => {
+      console.log("subscription succeeded, present members are", members);
+      if (members.count == 2) updatePeerStatus(true);
+      else updatePeerStatus(false);
+    },
+  },
+  {
+    name: "pusher:member_added",
+    handler: () => {
+      console.log("member added");
+      updatePeerStatus(true);
+    },
+  },
+  {
+    name: "pusher:member_removed",
+    handler: () => {
+      console.log("member removed");
+      updatePeerStatus(false);
+    },
+  },
+];
+
 const videoCallEvents = [
   {
     name: "client-call-candidate",
-    handler: (event) => console.log(event),
+    handler: (event) => updatePeerStatus(event),
   },
   {
     name: "client-call-sdp",
@@ -62,4 +93,6 @@ const videoCallEvents = [
   },
 ];
 
-export { msgEvents, conversationEvents, videoCallEvents };
+const notificationEvents = [];
+
+export { msgEvents, conversationEvents, videoCallPresenceEvents, videoCallEvents };

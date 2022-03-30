@@ -10,6 +10,7 @@ const state = reactive({
   isInCall: false,
   isBeingCalled: false,
   incomingCallRequest: {},
+  isPeerOnline: false,
   associatedUser: {},
   recepientId: null,
   rtc: new RTCPeerConnection(),
@@ -28,10 +29,11 @@ state.rtc.onicecandidate = (event) => {
 };
 
 state.rtc.onaddstream = (event) => {
-  console.log("STREAM ADDED", event);
   remoteVideoPreview.value.srcObject = event;
   console.log(remoteVideoPreview.value.srcObject);
 };
+
+const updatePeerStatus = (status) => (state.isPeerOnline = status);
 
 const recepientUserChannel = computed(() => {
   return `private-video-call-${state.associatedUser.id}`;
@@ -149,14 +151,18 @@ async function endCall() {
 export function useVideoCall() {
   return {
     state,
+
     initCall,
+    answerCall,
+    endCall,
+
     handleCallAnswer,
     handleCallRejection,
     handleIncomingCall,
     handleIceCandidate,
     handleCallTermination,
-    answerCall,
-    endCall,
+
+    updatePeerStatus,
 
     localVideoPreview,
     remoteVideoPreview,

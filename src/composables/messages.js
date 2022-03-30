@@ -31,6 +31,11 @@ const updateOnlineUsers = () => {
   state.onlineUsers = onlineUsers;
 };
 
+const associatedUser = computed(() => {
+  if (Object.keys(state.associatedUser).length) return state.associatedUser;
+  return false;
+});
+
 const activeConversation = computed(() => {
   if (Object.keys(state.conversation).length) return state.conversation;
   return false;
@@ -39,6 +44,7 @@ const activeConversation = computed(() => {
 export function useMessages() {
   return {
     state: readonly(state),
+    associatedUser,
 
     setConversation,
     setAssociatedUser,

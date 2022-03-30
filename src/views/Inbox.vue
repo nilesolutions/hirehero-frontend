@@ -21,10 +21,14 @@ import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
 import InboxMessages from "@/components/inbox/InboxMessages.vue";
 import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
 import { useMessages } from "@/composables/messages";
-import { onMounted, reactive } from "@vue/composition-api";
+import { onMounted, onUnmounted, reactive } from "@vue/composition-api";
 import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user";
-import { conversationEvents } from "@/components/inbox/event-listeners";
+import {
+  conversationEvents,
+  videoCallPresenceEvents,
+  videoCallEvents,
+} from "@/components/inbox/event-listeners";
 
 export default {
   name: "Inbox",
@@ -34,8 +38,10 @@ export default {
     StartVideoCall,
   },
   setup() {
-    const { setConversation, setAssociatedUser, activeConversation } = useMessages();
-    const { subscribeToChannel } = usePusher();
+    const { setConversation, setAssociatedUser, activeConversation, associatedUser } =
+      useMessages();
+    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
+
     const state = reactive({
       isLoading: true,
     });
@@ -48,20 +54,35 @@ export default {
     async function initInbox() {
       try {
         state.isLoading = true;
-        const { data: activeConversation } = await axios.get("/conversations");
-        const { data: associatedUser } = await axios.get("/users/associate");
+        const { data: fetchedConversation } = await axios.get("/conversations");
+        const { data: fetchedAssocUser } = await axios.get("/users/associate");
 
-        if (userType == "va" && !Object.keys(activeConversation).length)
+        setConversation(fetchedConversation);
+        setAssociatedUser(fetchedAssocUser);
+
+        if (userType == "va" && !activeConversation) {
           subscribeToChannel(`priavte-conversation-${userId}`, conversationEvents);
+        }
 
-        setConversation(activeConversation);
-        setAssociatedUser(associatedUser);
+        if (associatedUser) {
+          subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
+            ...videoCallPresenceEvents,
+            ...videoCallEvents,
+          ]);
+        }
+
+        debugActiveChannels("From Inbox");
       } catch (err) {
         console.log(err);
       } finally {
         state.isLoading = false;
       }
     }
+
+    onUnmounted(() => {
+      unsubscribeFromChannel(`priavte-conversation-${userId}`);
+      unsubscribeFromChannel(`presence-video-call-${associatedUser.value.id}`);
+    });
 
     return {
       state,

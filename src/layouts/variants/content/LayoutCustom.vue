@@ -12,12 +12,34 @@
 <script>
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
+import { onMounted, onUnmounted } from "@vue/composition-api";
+import { usePusher } from "@/composables/pusher";
+import { useUser } from "@/composables/user";
+import { videoCallEvents, notificationEvents } from "@/components/inbox/event-listeners";
 
 export default {
   name: "LayoutCustom",
   components: {
     Navbar,
     Navigation,
+  },
+  setup() {
+    const userId = useUser().userData().id;
+    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
+
+    const videoCallChannel = `presence-video-call-${userId}`;
+    const notificationsChannel = `private-notifications-${userId}`;
+
+    onMounted(() => {
+      subscribeToChannel(videoCallChannel, videoCallEvents);
+      subscribeToChannel(notificationsChannel, notificationEvents);
+      debugActiveChannels("From Layout");
+    });
+
+    onUnmounted(() => {
+      unsubscribeFromChannel(videoCallChannel);
+      unsubscribeFromChannel(notificationsChannel);
+    });
   },
 };
 </script>

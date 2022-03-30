@@ -2,11 +2,13 @@
   <div>
     <v-card-text class="d-flex flex-row align-center pt-3">
       <div>
-        <v-avatar size="50" color="primary">
-          <span class="white--text">
-            {{ msgsState.associatedUser.username[0].toUpperCase() }}
-          </span>
-        </v-avatar>
+        <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
+          <v-avatar rounded color="primary">
+            <span class="white--text">
+              {{ msgsState.associatedUser.username[0].toUpperCase() }}
+            </span>
+          </v-avatar>
+        </v-badge>
       </div>
 
       <div class="ml-2">
@@ -42,14 +44,18 @@ import { msgEvents } from "@/components/inbox/event-listeners";
 import { useMessages } from "@/composables/messages";
 import { mdiPhone } from "@mdi/js";
 import { onMounted, reactive, ref, nextTick, onUnmounted } from "@vue/composition-api";
+import { useVideoCall } from "@/composables/videocall";
 
 export default {
   name: "MessagesLog",
   components: { ChatMessage },
   setup() {
+    const { state: vidCallState } = useVideoCall();
     const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
     const { activeConversation, setMessages, state: msgsState } = useMessages();
+
     const msgsList = ref(null);
+
     const state = reactive({
       isLoading: false,
       msgText: "",
@@ -67,7 +73,6 @@ export default {
         setMessages(messages);
         nextTick(() => scrollToBottom());
         subscribeToChannel(`presence-${conversationId}`, msgEvents);
-        debugActiveChannels();
       } catch (err) {
         console.log(err);
       } finally {
@@ -82,6 +87,8 @@ export default {
       state,
       msgsState,
       msgsList,
+
+      vidCallState,
 
       icons: {
         mdiPhone,

@@ -2,7 +2,7 @@
   <div class="d-flex flex-column col-12 col-md-4">
     <v-card>
       <v-card-title>
-        <h5>Online Users</h5>
+        <h5>Online Chat Users</h5>
       </v-card-title>
 
       <v-card-text
