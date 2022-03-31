@@ -28,7 +28,8 @@ import {
   conversationEvents,
   videoCallPresenceEvents,
   videoCallEvents,
-} from "@/components/inbox/event-listeners";
+} from "@/composables/event-listeners";
+import { useNotifications } from "@/composables/notifications";
 
 export default {
   name: "Inbox",
@@ -38,6 +39,7 @@ export default {
     StartVideoCall,
   },
   setup() {
+    const { setNotification } = useNotifications();
     const { setConversation, setAssociatedUser, activeConversation, associatedUser } =
       useMessages();
     const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
@@ -50,6 +52,7 @@ export default {
     const userId = useUser().userData().id;
 
     onMounted(() => initInbox());
+    onUnmounted(() => clearNotifications());
 
     async function initInbox() {
       try {
@@ -77,6 +80,16 @@ export default {
       } finally {
         state.isLoading = false;
       }
+    }
+
+    async function clearNotifications() {
+      try {
+        axios.delete("/conversations/notifications");
+        setNotification({
+          unreadCount: 0,
+          earliestUnread: null,
+        });
+      } catch (err) {}
     }
 
     onUnmounted(() => {

@@ -1,18 +1,21 @@
 <template>
   <div class="navbar">
-    <div class="navbar__logo">
-      <v-btn v-show="breakpoint == 'sm'" icon @click="setMenuActive(!navMenuState.isMenuFixed)">
-        <v-icon>{{ icons.mdiMenu }}</v-icon>
-      </v-btn>
-      <img :src="require('@/assets/images/logo.svg')" alt="" />
-    </div>
-    <div class="navbar__divider"></div>
+    <router-link to="/dashboard">
+      <div class="navbar__logo">
+        <v-btn v-show="breakpoint == 'sm'" icon @click="setMenuActive(!navMenuState.isMenuFixed)">
+          <v-icon>{{ icons.mdiMenu }}</v-icon>
+        </v-btn>
+        <img :src="require('@/assets/images/logo.svg')" alt="" />
+      </div>
+    </router-link>
+
+    <div v-show="breakpoint == 'md'" class="navbar__divider"></div>
     <div class="navbar__user-profile">
       <app-bar-user-menu></app-bar-user-menu>
     </div>
-    <!-- <div class="navbar__divider"></div> -->
+    <div class="navbar__divider"></div>
     <!-- <div class="navbar__search">C</div> -->
-    <!-- <navbar-actions></navbar-actions> -->
+    <navbar-actions></navbar-actions>
   </div>
 </template>
 

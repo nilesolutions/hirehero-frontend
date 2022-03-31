@@ -5,7 +5,7 @@
       <v-card-text>
         <v-btn @click="initCall(state.associatedUser.id)" color="primary" small>
           Call
-          <v-icon class="ml-2" small>{{ icons.mdiPhonePlus }}</v-icon>
+          <v-icon class="ml-2" small>{{ icons.mdiPhonePlusOutline }}</v-icon>
         </v-btn>
       </v-card-text>
     </v-card>
@@ -18,8 +18,8 @@
 import axios from "@axios";
 import VideoCall from "@/components/inbox/VideoCall.vue";
 import { reactive, onMounted } from "@vue/composition-api";
-import { videoCallEvents } from "@/components/inbox/event-listeners";
-import { mdiPhonePlus } from "@mdi/js";
+import { videoCallEvents } from "@/composables/event-listeners";
+import { mdiPhonePlusOutline } from "@mdi/js";
 import { useVideoCall } from "@/composables/videocall";
 import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user";
@@ -61,7 +61,7 @@ export default {
       callState,
       initCall,
       icons: {
-        mdiPhonePlus,
+        mdiPhonePlusOutline,
       },
     };
   },

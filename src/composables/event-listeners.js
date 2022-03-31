@@ -1,7 +1,9 @@
 import { useMessages } from "@/composables/messages";
 import { useVideoCall } from "@/composables/videocall";
+import { useNotifications } from "./notifications";
 
 const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
+const { handleNotification } = useNotifications();
 const {
   handleIncomingCall,
   handleIceCandidate,
@@ -45,24 +47,17 @@ const videoCallPresenceEvents = [
   {
     name: "pusher:subscription_succeeded",
     handler: (members) => {
-      console.log("subscription succeeded, present members are", members);
       if (members.count == 2) updatePeerStatus(true);
       else updatePeerStatus(false);
     },
   },
   {
     name: "pusher:member_added",
-    handler: () => {
-      console.log("member added");
-      updatePeerStatus(true);
-    },
+    handler: () => updatePeerStatus(true),
   },
   {
     name: "pusher:member_removed",
-    handler: () => {
-      console.log("member removed");
-      updatePeerStatus(false);
-    },
+    handler: () => updatePeerStatus(false),
   },
 ];
 
@@ -93,6 +88,17 @@ const videoCallEvents = [
   },
 ];
 
-const notificationEvents = [];
+const notificationEvents = [
+  {
+    name: "new-message",
+    handler: (event) => handleNotification(event),
+  },
+];
 
-export { msgEvents, conversationEvents, videoCallPresenceEvents, videoCallEvents };
+export {
+  msgEvents,
+  conversationEvents,
+  videoCallPresenceEvents,
+  videoCallEvents,
+  notificationEvents,
+};

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-6">
+  <div class="d-flex flex-column col-12 col-md-6">
     <v-card :loading="state.isLoading">
       <v-card-title>
         <v-icon class="mr-2">{{ icons.mdiChartDonut }}</v-icon> Tasks Progress

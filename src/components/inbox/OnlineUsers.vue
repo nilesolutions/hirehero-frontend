@@ -30,7 +30,7 @@ import { onUnmounted, reactive } from "@vue/composition-api";
 import { onMounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/messages";
 import { usePusher } from "@/composables/pusher";
-import { groupEvents } from "@/components/inbox/event-listeners";
+import { groupEvents } from "@/composables/event-listeners";
 import { useUser } from "@/composables/user";
 
 export default {

@@ -20,7 +20,7 @@
 
       <div class="ml-auto">
         <v-btn elevation="2" icon>
-          <v-icon>{{ icons.mdiPhone }}</v-icon>
+          <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
         </v-btn>
       </div>
     </v-card-text>
@@ -40,9 +40,9 @@
 import axios from "@axios";
 import ChatMessage from "@/components/inbox/ChatMessage.vue";
 import { usePusher } from "@/composables/pusher";
-import { msgEvents } from "@/components/inbox/event-listeners";
+import { msgEvents } from "@/composables/event-listeners";
 import { useMessages } from "@/composables/messages";
-import { mdiPhone } from "@mdi/js";
+import { mdiPhoneOutline } from "@mdi/js";
 import { onMounted, reactive, ref, nextTick, onUnmounted } from "@vue/composition-api";
 import { useVideoCall } from "@/composables/videocall";
 
@@ -91,7 +91,7 @@ export default {
       vidCallState,
 
       icons: {
-        mdiPhone,
+        mdiPhoneOutline,
       },
     };
   },
