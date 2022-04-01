@@ -38,6 +38,7 @@
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="email"
+                      type="email"
                       outlined
                       label="Email"
                       placeholder="email"

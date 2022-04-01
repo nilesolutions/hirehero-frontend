@@ -57,6 +57,6 @@ export default [
     type: "NavigationItem",
     title: "Settings",
     icon: mdiCogOutline,
-    to: "home",
+    to: "settings",
   },
 ];

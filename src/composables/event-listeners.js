@@ -4,14 +4,8 @@ import { useNotifications } from "./notifications";
 
 const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
 const { handleNotification } = useNotifications();
-const {
-  handleIncomingCall,
-  handleIceCandidate,
-  endCall,
-  handleCallAnswer,
-  handleCallRejection,
-  updatePeerStatus,
-} = useVideoCall();
+const { handleIncomingHandshake, handleIceCandidate, endCall, handleCallAnswer, updatePeerStatus } =
+  useVideoCall();
 
 const msgEvents = [
   {
@@ -67,8 +61,8 @@ const videoCallEvents = [
     handler: (event) => updatePeerStatus(event),
   },
   {
-    name: "client-call-sdp",
-    handler: (event) => handleIncomingCall(event),
+    name: "client-call-handshake",
+    handler: (event) => handleIncomingHandshake(event),
   },
   {
     name: "client-call-answer",

@@ -1,17 +1,18 @@
 import { usePusher } from "@/composables/pusher";
 import { computed, reactive, ref } from "@vue/composition-api";
+import { useMessages } from "./messages";
 import { useUser } from "./user";
 
 const username = useUser().userName();
-const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels, triggerEvent } =
-  usePusher();
+
+const { state: msgsState } = useMessages();
+const { debugActiveChannels, triggerEvent } = usePusher();
 
 const state = reactive({
   isInCall: false,
   isBeingCalled: false,
   incomingCallRequest: {},
   isPeerOnline: false,
-  associatedUser: {},
   recepientId: null,
   rtc: new RTCPeerConnection(),
   activeMediaStream: null,
@@ -22,21 +23,21 @@ const remoteVideoPreview = ref(null);
 
 state.rtc.onicecandidate = (event) => {
   if (event.candidate) {
-    triggerEvent(recepientUserChannel.value, "client-candidate", {
+    triggerEvent(peerChannel.value, "client-candidate", {
       candidate: event.candidate,
     });
   }
 };
 
 state.rtc.onaddstream = (event) => {
-  remoteVideoPreview.value.srcObject = event;
-  console.log(remoteVideoPreview.value.srcObject);
+  console.log("Stream added", event);
+  remoteVideoPreview.value.srcObject = event.stream;
 };
 
 const updatePeerStatus = (status) => (state.isPeerOnline = status);
 
-const recepientUserChannel = computed(() => {
-  return `private-video-call-${state.associatedUser.id}`;
+const peerChannel = computed(() => {
+  return `presence-video-call-${msgsState.associatedUser.id}`;
 });
 
 async function readyMediaStream() {
@@ -58,20 +59,18 @@ function clearMediaStream() {
   }
 }
 
-async function initCall(recepientId) {
+async function initCall() {
   try {
     state.isInCall = true;
+
     await readyMediaStream();
     state.rtc.addStream(state.activeMediaStream);
     localVideoPreview.value.srcObject = state.activeMediaStream;
-    console.log("LOCAL STREAM", state.activeMediaStream);
 
     const callOffer = await state.rtc.createOffer();
     await state.rtc.setLocalDescription(new RTCSessionDescription(callOffer));
 
-    //state.recepientId = recepientId;
-
-    triggerEvent(recepientUserChannel.value, "client-call-sdp", {
+    triggerEvent(peerChannel.value, "client-call-handshake", {
       sdp: callOffer,
       name: username,
     });
@@ -81,23 +80,16 @@ async function initCall(recepientId) {
   }
 }
 
-async function handleIncomingCall(request) {
-  state.isInCall = true;
+function handleIncomingHandshake(request) {
+  console.log("Handling Handshake");
   state.isBeingCalled = true;
   state.incomingCallRequest = request;
 }
 
 async function handleCallAnswer(event) {
   try {
+    console.log("Handling answer and setting remote description");
     await state.rtc.setRemoteDescription(new RTCSessionDescription(event.sdp));
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-async function handleCallRejection(event) {
-  try {
-    console.log("Handling rejection hhh", event);
   } catch (err) {
     console.log(err);
   }
@@ -111,31 +103,27 @@ function handleIceCandidate(event) {
 
 async function answerCall() {
   try {
-    // Prepare media devices
-    // & set remote connection from incoming call
+    state.isInCall = true;
     await readyMediaStream();
     localVideoPreview.value.srcObject = state.activeMediaStream;
-    console.log("REMOTE STREAM TO BE SENT", state.activeMediaStream);
+
+    console.log("Adding from answerCall", state.activeMediaStream);
     state.rtc.addStream(state.activeMediaStream);
     state.rtc.setRemoteDescription(new RTCSessionDescription(state.incomingCallRequest.sdp));
 
-    // Send answer and set it as local description
     const answer = await state.rtc.createAnswer();
     state.rtc.setLocalDescription(new RTCSessionDescription(answer));
-    triggerEvent(recepientUserChannel.value, "client-call-answer", {
+    triggerEvent(peerChannel.value, "client-call-answer", {
       sdp: answer,
     });
-
-    console.log("Connection after sending the answer", state.rtc);
   } catch (err) {
     console.log(err);
   }
 }
 
 function handleCallTermination() {
-  console.log("terminating call", recepientUserChannel.value);
   debugActiveChannels();
-  triggerEvent(recepientUserChannel.value, "client-call-end", {});
+  triggerEvent(peerChannel.value, "client-call-end", {});
   endCall();
 }
 
@@ -146,6 +134,8 @@ async function endCall() {
   state.incomingCallRequest = {};
   state.rtc = null;
   state.rtc = new RTCPeerConnection();
+  localVideoPreview.value.srcObject = null;
+  remoteVideoPreview.value.srcObject = null;
 }
 
 export function useVideoCall() {
@@ -157,8 +147,7 @@ export function useVideoCall() {
     endCall,
 
     handleCallAnswer,
-    handleCallRejection,
-    handleIncomingCall,
+    handleIncomingHandshake,
     handleIceCandidate,
     handleCallTermination,
 

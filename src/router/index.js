@@ -81,6 +81,14 @@ const routes = [
     },
   },
   {
+    path: "/settings",
+    name: "settings",
+    component: () => import("@/views/Settings.vue"),
+    meta: {
+      layout: "custom",
+    },
+  },
+  {
     path: "/login",
     name: "auth-login",
     component: () => import("@/views/Login.vue"),

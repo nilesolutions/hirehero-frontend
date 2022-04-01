@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-card-text class="d-flex flex-row align-center pt-3">
+    <messages-log-header></messages-log-header>
+    <!-- <v-card-text class="d-flex flex-row align-center pt-3">
       <div>
         <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
           <v-avatar rounded color="primary">
@@ -23,7 +24,7 @@
           <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
         </v-btn>
       </div>
-    </v-card-text>
+    </v-card-text> -->
 
     <v-divider></v-divider>
 
@@ -39,6 +40,7 @@
 <script>
 import axios from "@axios";
 import ChatMessage from "@/components/inbox/ChatMessage.vue";
+import MessagesLogHeader from "@/components/inbox/MessagesLogHeader.vue";
 import { usePusher } from "@/composables/pusher";
 import { msgEvents } from "@/composables/event-listeners";
 import { useMessages } from "@/composables/messages";
@@ -48,7 +50,10 @@ import { useVideoCall } from "@/composables/videocall";
 
 export default {
   name: "MessagesLog",
-  components: { ChatMessage },
+  components: {
+    ChatMessage,
+    MessagesLogHeader,
+  },
   setup() {
     const { state: vidCallState } = useVideoCall();
     const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();

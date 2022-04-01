@@ -67,12 +67,12 @@ export default {
           subscribeToChannel(`priavte-conversation-${userId}`, conversationEvents);
         }
 
-        if (associatedUser) {
-          subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
-            ...videoCallPresenceEvents,
-            ...videoCallEvents,
-          ]);
-        }
+        // if (associatedUser) {
+        //   subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
+        //     ...videoCallPresenceEvents,
+        //     ...videoCallEvents,
+        //   ]);
+        // }
 
         debugActiveChannels("From Inbox");
       } catch (err) {
