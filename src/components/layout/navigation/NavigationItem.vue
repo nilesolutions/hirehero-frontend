@@ -63,6 +63,7 @@ export default {
   flex-direction: row;
   color: #000 !important;
   text-decoration: none;
+  width: 100%;
 }
 
 .navigation__item__icon {
