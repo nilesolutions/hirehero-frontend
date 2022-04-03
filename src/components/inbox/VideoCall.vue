@@ -16,8 +16,8 @@
         </div>
 
         <div class="d-flex flex-row">
-          <video class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
-          <video class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
+          <video src="" class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
+          <video src="" class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
         </div>
       </v-card>
     </v-dialog>

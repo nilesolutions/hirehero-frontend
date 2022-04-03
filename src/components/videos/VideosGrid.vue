@@ -20,9 +20,11 @@
       >
         <v-icon>{{ icons.mdiDelete }}</v-icon>
       </v-btn>
+
+      <v-card-text class="mt-2 black--text">{{ video.title || "No Title" }}</v-card-text>
     </v-card>
 
-    <v-dialog v-model="clickedVideoSrc.length" @click:outside="clickedVideoSrc = ''">
+    <v-dialog v-model="isViewingVideo" @click:outside="clickedVideoSrc = ''">
       <v-card class="video-player-container p-2 d-flex flex-column align-center">
         <video class="m-2 video-player" :src="clickedVideoSrc" controls></video>
       </v-card>
@@ -32,7 +34,7 @@
 
 <script>
 import axios from "@axios";
-import { ref } from "@vue/composition-api";
+import { ref, computed } from "@vue/composition-api";
 import { mdiDelete } from "@mdi/js";
 import { useVideos } from "@/composables/videos";
 import { useUser } from "@/composables/user";
@@ -43,6 +45,11 @@ export default {
     const userType = useUser().userType();
     const { state, deleteVideo } = useVideos();
     const clickedVideoSrc = ref("");
+
+    const isViewingVideo = computed(() => {
+      if (clickedVideoSrc.value) return true;
+      return false;
+    });
 
     async function del(videoId) {
       try {
@@ -58,6 +65,7 @@ export default {
       userType,
       del,
       clickedVideoSrc,
+      isViewingVideo,
 
       icons: {
         mdiDelete,

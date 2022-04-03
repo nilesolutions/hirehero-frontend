@@ -29,9 +29,9 @@ state.rtc.onicecandidate = (event) => {
   }
 };
 
-state.rtc.onaddstream = (event) => {
-  console.log("Stream added", event);
-  remoteVideoPreview.value.srcObject = event.stream;
+state.rtc.ontrack = (event) => {
+  console.log("Track added", event.streams[0]);
+  remoteVideoPreview.value.srcObject = event.streams[0];
 };
 
 const updatePeerStatus = (status) => (state.isPeerOnline = status);
@@ -64,7 +64,10 @@ async function initCall() {
     state.isInCall = true;
 
     await readyMediaStream();
-    state.rtc.addStream(state.activeMediaStream);
+    state.activeMediaStream
+      .getTracks()
+      .forEach((track) => state.rtc.addTrack(track, state.activeMediaStream));
+
     localVideoPreview.value.srcObject = state.activeMediaStream;
 
     const callOffer = await state.rtc.createOffer();
@@ -105,10 +108,11 @@ async function answerCall() {
   try {
     state.isInCall = true;
     await readyMediaStream();
-    localVideoPreview.value.srcObject = state.activeMediaStream;
+    state.activeMediaStream
+      .getTracks()
+      .forEach((track) => state.rtc.addTrack(track, state.activeMediaStream));
 
-    console.log("Adding from answerCall", state.activeMediaStream);
-    state.rtc.addStream(state.activeMediaStream);
+    localVideoPreview.value.srcObject = state.activeMediaStream;
     state.rtc.setRemoteDescription(new RTCSessionDescription(state.incomingCallRequest.sdp));
 
     const answer = await state.rtc.createAnswer();

@@ -2,6 +2,10 @@
   <v-card class="my-3">
     <v-card-title>Record video</v-card-title>
 
+    <v-card-text>
+      <v-text-field v-model="title" outlined placeholder="Title"></v-text-field>
+    </v-card-text>
+
     <v-card-text class="d-flex flex-row">
       <video
         class="feedback-video black"
@@ -64,7 +68,9 @@ export default {
       isCtrlDisabled,
       addVideo,
     } = useVideos();
+
     const feedbackPlayer = ref(null);
+    const title = ref("");
 
     var vidStream = null,
       audioStream = null,
@@ -164,6 +170,7 @@ export default {
       try {
         var data = new FormData();
         data.append("file", finalBlob, "video.mp4");
+        data.append("title", title.value);
         var response = await axios.post("/media", data);
         addVideo(response.data);
         toggleRecordDialog(false);
@@ -176,6 +183,7 @@ export default {
 
     return {
       state,
+      title,
 
       clear,
       upload,

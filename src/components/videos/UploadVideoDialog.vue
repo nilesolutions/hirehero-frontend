@@ -3,6 +3,7 @@
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Upload a video</v-card-title>
 
+      <v-text-field v-model="title" outlined placeholder="Title"></v-text-field>
       <v-file-input v-model="file" accept="video/*" label="File"></v-file-input>
 
       <v-card-actions>
@@ -30,7 +31,7 @@ export default {
   setup() {
     const { state, toggleUploadDialog, toggleUpload, addVideo } = useVideos();
     const file = ref(null);
-    console.log("Mounted");
+    const title = ref("");
 
     const closeDialog = () => {
       if (!state.isUploading) toggleUploadDialog(false);
@@ -43,6 +44,7 @@ export default {
         toggleUpload(true);
         const form = new FormData();
         form.append("file", file.value);
+        form.append("title", title.value);
         var response = await axios.post("/media", form);
         addVideo(response.data);
         file.value = null;
@@ -60,6 +62,7 @@ export default {
       closeDialog,
       upload,
       file,
+      title,
     };
   },
 };
