@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar__actions">
+  <div class="navbar__actions" v-show="breakpoint != 'sm'">
     <router-link to="/inbox">
       <v-badge overlap :content="notificationsCount" :value="notificationsCount">
         <v-btn icon outlined elevation="2">
@@ -15,10 +15,12 @@ import { mdiBellOutline } from "@mdi/js";
 import { computed } from "@vue/composition-api";
 import { useNotifications } from "@/composables/notifications";
 import { useRouter } from "@/composables/router";
+import { useNavigation } from "@/composables/navigation";
 
 export default {
   name: "NavbarActions",
   setup() {
+    const { breakpoint } = useNavigation();
     const { state: notificationsState } = useNotifications();
     const { currRouteName } = useRouter();
 
@@ -30,6 +32,7 @@ export default {
 
     return {
       notificationsCount,
+      breakpoint,
       icons: { mdiBellOutline },
     };
   },

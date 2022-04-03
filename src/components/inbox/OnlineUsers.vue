@@ -13,7 +13,7 @@
         <v-avatar size="30" color="primary">
           <span class="white--text">{{ user.name[0].toUpperCase() }}</span>
         </v-avatar>
-        <span class="black--text ml-1">{{ user.name }} ({{ user.type }})</span>
+        <span class="black--text ml-1">{{ user.name }} {{ user.id == userId ? "(You)" : "" }}</span>
 
         <v-badge class="ml-auto" color="#30d988" inline dot left>
           <span style="color: #30d988"> Online </span>
@@ -24,74 +24,18 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { mdiPlus } from "@mdi/js";
-import { onUnmounted, reactive } from "@vue/composition-api";
-import { onMounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/messages";
-import { usePusher } from "@/composables/pusher";
-import { groupEvents } from "@/composables/event-listeners";
 import { useUser } from "@/composables/user";
 
 export default {
-  name: "InboxGroups",
+  name: "OnlineUsers",
   setup() {
-    const { state: msgsState, setChatGroups, setActiveGroupId, activeGroup } = useMessages();
-    const pusher = usePusher();
-    const state = reactive({
-      isLoading: false,
-      isCreateOpen: false,
-      conversationName: "",
-    });
-
+    const { state: msgsState } = useMessages();
     const userId = useUser().userData().id;
-    const groupCreationChannel = `private-invite-${userId}`;
-
-    // onMounted(() => {
-    //   fetchChatGroups();
-    //   pusher.updateAuthCreds();
-    //   pusher.subscribeToChannel(groupCreationChannel, groupEvents);
-    // });
-
-    //onUnmounted(() => pusher.unsubscribeFromChannel(groupCreationChannel));
-
-    async function fetchChatGroups() {
-      try {
-        const { data } = await axios.get("/messages/groups");
-        setChatGroups(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    async function startChat() {
-      try {
-        if (!state.conversationName) return;
-        state.isLoading = true;
-        const response = await axios.post("/messages/invite", {
-          group_name: state.conversationName,
-        });
-        console.log(response);
-        state.isCreateOpen = false;
-        state.conversationName = "";
-      } catch (err) {
-        console.log(err);
-      } finally {
-        state.isLoading = false;
-      }
-    }
 
     return {
-      state,
       msgsState,
-      startChat,
-      fetchChatGroups,
-      setActiveGroupId,
-      activeGroup,
-
-      icons: {
-        mdiPlus,
-      },
+      userId,
     };
   },
 };

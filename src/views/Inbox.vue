@@ -42,7 +42,7 @@ export default {
     const { setNotification } = useNotifications();
     const { setConversation, setAssociatedUser, activeConversation, associatedUser } =
       useMessages();
-    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
+    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
 
     const state = reactive({
       isLoading: true,
@@ -66,15 +66,6 @@ export default {
         if (userType == "va" && !activeConversation) {
           subscribeToChannel(`priavte-conversation-${userId}`, conversationEvents);
         }
-
-        // if (associatedUser) {
-        //   subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
-        //     ...videoCallPresenceEvents,
-        //     ...videoCallEvents,
-        //   ]);
-        // }
-
-        debugActiveChannels("From Inbox");
       } catch (err) {
         console.log(err);
       } finally {

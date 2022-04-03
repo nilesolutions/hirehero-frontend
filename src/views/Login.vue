@@ -109,9 +109,11 @@ import { mdiEyeOutline, mdiEyeOffOutline } from "@mdi/js";
 import { ref } from "@vue/composition-api";
 import themeConfig from "@themeConfig";
 import axios from "@axios";
+import { usePusher } from "@/composables/pusher";
 
 export default {
   setup() {
+    const { updateAuthCreds } = usePusher();
     const isPasswordVisible = ref(false);
     const isLoading = ref(false);
     const errorMsg = ref("");
@@ -129,6 +131,7 @@ export default {
         });
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("userData", JSON.stringify(response.data.userData));
+        updateAuthCreds();
         this.$router.push({ name: "dashboard" });
       } catch (err) {
         errorMsg.value = err.response.data.message;

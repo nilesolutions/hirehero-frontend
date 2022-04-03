@@ -127,7 +127,7 @@ export default {
 <style lang="scss">
 .message-content {
   width: fit-content;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .message-content__text {
@@ -142,7 +142,7 @@ export default {
 
 .message-wrapper {
   position: relative;
-  padding: 1rem;
+  padding: 0.25rem 1rem;
 }
 
 .message-hover {

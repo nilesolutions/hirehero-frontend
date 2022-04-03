@@ -1,13 +1,18 @@
 <template>
   <div class="navbar">
-    <router-link to="/dashboard">
-      <div class="navbar__logo">
-        <v-btn v-show="breakpoint == 'sm'" icon @click="setMenuActive(!navMenuState.isMenuFixed)">
-          <v-icon>{{ icons.mdiMenu }}</v-icon>
-        </v-btn>
-        <img :src="require('@/assets/images/logo.svg')" alt="" />
-      </div>
-    </router-link>
+    <div class="navbar__logo">
+      <v-btn
+        v-show="breakpoint == 'sm'"
+        class="mr-4"
+        icon
+        @click="setMenuActive(!navMenuState.isMenuFixed)"
+      >
+        <v-icon>{{ icons.mdiMenu }}</v-icon>
+      </v-btn>
+      <router-link to="/dashboard">
+        <img class="navbar__logo-img" :src="require('@/assets/images/logo.svg')" alt="" />
+      </router-link>
+    </div>
 
     <div v-show="breakpoint == 'md'" class="navbar__divider"></div>
     <div class="navbar__user-profile">
@@ -76,13 +81,17 @@ export default {
   height: 35px;
   padding-right: 2rem;
 
+  a {
+    height: 100%;
+  }
+
+  a img {
+    max-height: 100%;
+  }
+
   @media (max-width: 550px) {
     padding-right: 0.5rem;
   }
-}
-
-.navbar__logo img {
-  max-height: 100%;
 }
 
 .navbar__user-profile {

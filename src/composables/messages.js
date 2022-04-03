@@ -1,7 +1,9 @@
 import { usePusher } from "@/composables/pusher";
 import { computed, reactive, readonly } from "@vue/composition-api";
+import { useNotifications } from "./notifications";
 
 const { state: pusherState } = usePusher();
+const { state: notificationsState } = useNotifications();
 
 const state = reactive({
   conversation: {},
@@ -23,6 +25,7 @@ const updateOnlineUsers = () => {
 
   channel.members.each((member) => {
     onlineUsers.push({
+      id: member.info.id,
       name: member.info.name,
       type: member.info.type,
     });
@@ -41,10 +44,27 @@ const activeConversation = computed(() => {
   return false;
 });
 
+const readMsgs = computed(() => {
+  const earliestUnread = notificationsState.notification.earliestUnread;
+  if (!earliestUnread) return state.messages;
+  const earliestDate = new Date(earliestUnread);
+  return state.messages.filter((msg) => new Date(msg.created_at) < earliestDate);
+});
+
+const unreadMsgs = computed(() => {
+  const earliestUnread = notificationsState.notification.earliestUnread;
+  if (!earliestUnread) return [];
+  const earliestDate = new Date(earliestUnread);
+  return state.messages.filter((msg) => new Date(msg.created_at) > earliestDate);
+});
+
 export function useMessages() {
   return {
     state: readonly(state),
     associatedUser,
+
+    readMsgs,
+    unreadMsgs,
 
     setConversation,
     setAssociatedUser,

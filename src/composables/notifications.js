@@ -5,7 +5,7 @@ const { currRouteName } = useRouter();
 const state = reactive({
   notification: {
     unreadCount: 0,
-    earliestUnread: null,
+    earliestUnread: "2001-01-01",
   },
 });
 

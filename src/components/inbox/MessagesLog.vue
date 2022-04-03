@@ -1,31 +1,6 @@
 <template>
   <div>
     <messages-log-header></messages-log-header>
-    <!-- <v-card-text class="d-flex flex-row align-center pt-3">
-      <div>
-        <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
-          <v-avatar rounded color="primary">
-            <span class="white--text">
-              {{ msgsState.associatedUser.username[0].toUpperCase() }}
-            </span>
-          </v-avatar>
-        </v-badge>
-      </div>
-
-      <div class="ml-2">
-        <span class="d-block cursive-font black--text">
-          {{ msgsState.associatedUser.username }}
-        </span>
-        <span class="d-block">{{ msgsState.associatedUser.email }}</span>
-      </div>
-
-      <div class="ml-auto">
-        <v-btn elevation="2" icon>
-          <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
-        </v-btn>
-      </div>
-    </v-card-text> -->
-
     <v-divider></v-divider>
 
     <div class="messages-wrapper">
@@ -56,8 +31,17 @@ export default {
   },
   setup() {
     const { state: vidCallState } = useVideoCall();
-    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
-    const { activeConversation, setMessages, state: msgsState } = useMessages();
+    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
+    const {
+      activeConversation,
+      setMessages,
+      state: msgsState,
+      readMsgs,
+      unreadMsgs,
+    } = useMessages();
+
+    console.log("read msgs", readMsgs);
+    console.log("unread msgs", unreadMsgs);
 
     const msgsList = ref(null);
 
@@ -92,6 +76,9 @@ export default {
       state,
       msgsState,
       msgsList,
+
+      readMsgs,
+      unreadMsgs,
 
       vidCallState,
 

@@ -8,16 +8,17 @@
           </v-avatar>
         </v-badge>
 
-        <div class="font-weight-black ml-2">
+        <div class="font-weight-black ml-2" v-show="breakpoint != 'sm'">
           {{ userData.username }} <br />
           <small>{{ userData.email }}</small>
         </div>
 
-        <div class="ml-2">
+        <div class="ml-2" v-show="breakpoint != 'sm'">
           <v-icon>{{ icons.mdiChevronDown }}</v-icon>
         </div>
       </div>
     </template>
+
     <v-list>
       <div class="pb-3 pt-2">
         <v-badge bottom color="success" overlap offset-x="12" offset-y="12" class="ms-4" dot>
@@ -32,6 +33,20 @@
       </div>
 
       <v-divider class="my-2"></v-divider>
+
+      <!-- Unread messages -->
+      <v-list-item @click="goToInbox" v-show="notificationsState.notification.unreadCount">
+        <v-list-item-icon class="me-2">
+          <v-icon size="22">
+            {{ icons.mdiBell }}
+          </v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            {{ notificationsState.notification.unreadCount }} New Messages
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
       <!-- Logout -->
       <v-list-item @click="logout">
@@ -50,20 +65,14 @@
 
 <script>
 import { useUser } from "@/composables/user";
-import {
-  mdiAccountOutline,
-  mdiEmailOutline,
-  mdiCheckboxMarkedOutline,
-  mdiChatOutline,
-  mdiCogOutline,
-  mdiCurrencyUsd,
-  mdiHelpCircleOutline,
-  mdiLogoutVariant,
-  mdiChevronDown,
-} from "@mdi/js";
+import { useNavigation } from "@/composables/navigation";
+import { useNotifications } from "@/composables/notifications";
+import { mdiBell, mdiLogoutVariant, mdiChevronDown } from "@mdi/js";
 
 export default {
   setup() {
+    const { breakpoint } = useNavigation();
+    const { state: notificationsState } = useNotifications();
     const userData = useUser().userData();
 
     function logout() {
@@ -71,18 +80,19 @@ export default {
       this.$router.push({ name: "auth-login" });
     }
 
+    function goToInbox() {
+      this.$router.push({ name: "inbox" });
+    }
+
     return {
       logout,
       userData,
+      breakpoint,
+      notificationsState,
+      goToInbox,
 
       icons: {
-        mdiAccountOutline,
-        mdiEmailOutline,
-        mdiCheckboxMarkedOutline,
-        mdiChatOutline,
-        mdiCogOutline,
-        mdiCurrencyUsd,
-        mdiHelpCircleOutline,
+        mdiBell,
         mdiLogoutVariant,
         mdiChevronDown,
       },
