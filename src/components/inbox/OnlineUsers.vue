@@ -31,7 +31,7 @@ export default {
   name: "OnlineUsers",
   setup() {
     const { state: msgsState } = useMessages();
-    const userId = useUser().userData().id;
+    const { userId } = useUser();
 
     return {
       msgsState,

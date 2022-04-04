@@ -21,7 +21,7 @@ export default {
   name: "Dashboard",
   components: { RecentTasks, HourlyReports, TasksProgress },
   setup() {
-    const userName = useUser().userName();
+    const { userName } = useUser();
 
     return {
       userName,

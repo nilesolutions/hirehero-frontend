@@ -3,7 +3,7 @@ import { computed, reactive, ref } from "@vue/composition-api";
 import { useMessages } from "./messages";
 import { useUser } from "./user";
 
-const username = useUser().userName();
+const { userName } = useUser();
 
 const { state: msgsState } = useMessages();
 const { debugActiveChannels, triggerEvent } = usePusher();
@@ -75,7 +75,7 @@ async function initCall() {
 
     triggerEvent(peerChannel.value, "client-call-handshake", {
       sdp: callOffer,
-      name: username,
+      name: userName.value,
     });
     console.log(callOffer);
   } catch (err) {

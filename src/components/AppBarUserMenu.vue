@@ -73,7 +73,7 @@ export default {
   setup() {
     const { breakpoint } = useNavigation();
     const { state: notificationsState } = useNotifications();
-    const userData = useUser().userData();
+    const { userData } = useUser();
 
     function logout() {
       localStorage.removeItem("accessToken");

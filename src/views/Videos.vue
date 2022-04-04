@@ -60,7 +60,7 @@ export default {
       toggleUploadDialog,
     } = useVideos();
 
-    const userType = useUser().userType();
+    const { userType } = useUser();
 
     onMounted(() => initVideos());
 

@@ -43,25 +43,31 @@ export default {
     VideoCallPrompt,
   },
   setup() {
-    const userId = useUser().userData().id;
+    //const userId = useUser().userData().id;
     const state = reactive({
       isLoading: true,
     });
+
+    const { setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
-    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
+    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
 
-    const videoCallChannel = `presence-video-call-${userId}`;
-    const notificationsChannel = `private-notifications-${userId}`;
+    var videoCallChannel = `presence-video-call-`;
+    var notificationsChannel = `private-notifications-`;
 
     async function initApp() {
       try {
-        const { data: notifications } = await axios.get("/conversations/notifications");
+        const { data: userData } = await axios.get("/users/me");
         const { data: fetchedAssocUser } = await axios.get("/users/associate");
-        console.log("Got associated user", fetchedAssocUser);
+        const { data: notifications } = await axios.get("/conversations/notifications");
 
+        setUserData(userData);
         setAssociatedUser(fetchedAssocUser);
         setNotification(notifications);
+
+        videoCallChannel += userData.id;
+        notificationsChannel += userData.id;
 
         subscribeToChannel(videoCallChannel, videoCallEvents);
         subscribeToChannel(notificationsChannel, notificationEvents);

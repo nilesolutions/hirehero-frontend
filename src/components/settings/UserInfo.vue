@@ -1,16 +1,42 @@
 <template>
-  <div class="col-12 col-md-6">
-    <p>User Info</p>
-    <v-card>
+  <div class="col-12">
+    <div class="d-flex flex-row align-center mb-2">
+      <div class="black--text">User Info</div>
+    </div>
+
+    <v-card :loading="state.isLoading" :disabled="state.isUpdating">
       <v-card-text>
-        <v-text-field dense outlined disabled label="Username" v-model="state.userInfo.username">
+        <v-text-field
+          hide-details=""
+          dense
+          outlined
+          label="Username"
+          v-model="state.userInfo.username"
+        >
         </v-text-field>
       </v-card-text>
 
       <v-card-text>
-        <v-text-field dense outlined disabled label="Email" v-model="state.userInfo.email">
+        <v-text-field
+          hide-details=""
+          dense
+          outlined
+          :disabled="!state.isEditing"
+          label="Email"
+          v-model="state.userInfo.email"
+        >
           {{ state.userInfo.email }}
         </v-text-field>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn @click="updateInfo" :loading="state.isUpdating" color="primary">Update Info</v-btn>
+      </v-card-actions>
+
+      <v-card-text>
+        <v-btn v-show="state.updateSuccessful" color="success" class="cursive-font" small>
+          Update Successfull
+        </v-btn>
       </v-card-text>
     </v-card>
   </div>
@@ -19,12 +45,18 @@
 <script>
 import axios from "@axios";
 import { onMounted, reactive } from "@vue/composition-api";
+import { useUser } from "@/composables/user";
 
 export default {
   name: "UserInfo",
   setup() {
+    const { setUserData, userData } = useUser();
+
     const state = reactive({
       isLoading: true,
+      isEditing: false,
+      isUpdating: false,
+      updateSuccessful: false,
       userInfo: {},
     });
 
@@ -33,7 +65,9 @@ export default {
     async function fetchUserInfo() {
       try {
         const { data: userInfo } = await axios.get("/users/me");
+
         state.userInfo = userInfo;
+        setUserData(JSON.parse(JSON.stringify(userInfo)));
       } catch (err) {
         console.log(err);
       } finally {
@@ -41,8 +75,34 @@ export default {
       }
     }
 
+    async function updateInfo() {
+      try {
+        if (!state.userInfo.username) return;
+        state.isUpdating = true;
+
+        const info = {
+          username: state.userInfo.username,
+        };
+        const { data: updatedUser } = await axios.patch("/users/me", info);
+
+        state.userInfo = updatedUser;
+        setUserData(JSON.parse(JSON.stringify(updatedUser)));
+
+        state.updateSuccessful = true;
+        setTimeout(() => {
+          state.updateSuccessful = false;
+        }, 2500);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        state.isUpdating = false;
+      }
+    }
+
     return {
       state,
+      userData,
+      updateInfo,
     };
   },
 };

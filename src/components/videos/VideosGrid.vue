@@ -42,7 +42,7 @@ import { useUser } from "@/composables/user";
 export default {
   name: "VideosGrid",
   setup() {
-    const userType = useUser().userType();
+    const { userType } = useUser();
     const { state, deleteVideo } = useVideos();
     const clickedVideoSrc = ref("");
 

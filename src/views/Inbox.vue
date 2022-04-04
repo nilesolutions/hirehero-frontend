@@ -48,8 +48,7 @@ export default {
       isLoading: true,
     });
 
-    const userType = useUser().userType();
-    const userId = useUser().userData().id;
+    const { userType, userId } = useUser();
 
     onMounted(() => initInbox());
     onUnmounted(() => clearNotifications());
@@ -63,8 +62,8 @@ export default {
         setConversation(fetchedConversation);
         setAssociatedUser(fetchedAssocUser);
 
-        if (userType == "va" && !activeConversation) {
-          subscribeToChannel(`priavte-conversation-${userId}`, conversationEvents);
+        if (userType.value == "va" && !activeConversation) {
+          subscribeToChannel(`priavte-conversation-${userId.value}`, conversationEvents);
         }
       } catch (err) {
         console.log(err);
@@ -84,7 +83,7 @@ export default {
     }
 
     onUnmounted(() => {
-      unsubscribeFromChannel(`priavte-conversation-${userId}`);
+      unsubscribeFromChannel(`priavte-conversation-${userId.value}`);
       unsubscribeFromChannel(`presence-video-call-${associatedUser.value.id}`);
     });
 

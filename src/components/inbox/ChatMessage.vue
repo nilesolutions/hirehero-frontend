@@ -68,7 +68,7 @@ export default {
   name: "ChatMessage",
   props: { msgData: Object },
   setup({ msgData }) {
-    const userId = useUser().userData().id;
+    const { userId } = useUser();
     const { state: msgsState } = useMessages();
     const state = reactive({
       isHovering: false,
@@ -76,17 +76,17 @@ export default {
     });
 
     const showControls = computed(() => {
-      if (state.isHovering && msgData.user_id == userId) return true;
+      if (state.isHovering && msgData.user_id == userId.value) return true;
       return false;
     });
 
     const resolveAlignment = () => {
-      if (msgData.user_id == userId) return "our-message";
+      if (msgData.user_id == userId.value) return "our-message";
       return "their-message";
     };
 
     const resolveArrow = () => {
-      if (msgData.user_id == userId) return "right-arrow";
+      if (msgData.user_id == userId.value) return "right-arrow";
       return "left-arrow";
     };
 

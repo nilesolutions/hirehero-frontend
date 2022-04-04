@@ -54,7 +54,7 @@ export default {
     const isLoading = ref(true);
     const isCreateDialogOpen = ref(false);
     const projects = ref([]);
-    const userType = useUser().userType();
+    const { userType } = useUser();
 
     const addProject = (proj) => projects.value.push(proj);
     const deleteProject = (projId) => {
