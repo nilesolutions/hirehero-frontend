@@ -33,6 +33,7 @@ import {
   videoCallPresenceEvents,
   notificationEvents,
 } from "@/composables/event-listeners";
+import { useSubscription } from "@/composables/subscription";
 
 export default {
   name: "LayoutCustom",
@@ -49,6 +50,7 @@ export default {
     });
 
     const { setUserData } = useUser();
+    const { setActivePlan } = useSubscription();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
     const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
@@ -61,10 +63,12 @@ export default {
         const { data: userData } = await axios.get("/users/me");
         const { data: fetchedAssocUser } = await axios.get("/users/associate");
         const { data: notifications } = await axios.get("/conversations/notifications");
+        const { data: activePlan } = await axios.get("/subscriptions/");
 
         setUserData(userData);
         setAssociatedUser(fetchedAssocUser);
         setNotification(notifications);
+        setActivePlan(activePlan);
 
         videoCallChannel += userData.id;
         notificationsChannel += userData.id;

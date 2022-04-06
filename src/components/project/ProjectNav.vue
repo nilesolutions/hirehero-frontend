@@ -32,10 +32,8 @@ export default {
   },
   setup() {
     const isCreateDiagOpen = ref(false);
-    const userType = useUser().userType();
+    const { userType } = useUser();
     const routeParams = useRouter().routeParams();
-    console.log(routeParams);
-    console.log(userType);
 
     return {
       isCreateDiagOpen,

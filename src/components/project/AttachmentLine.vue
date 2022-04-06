@@ -37,19 +37,19 @@ export default {
       isDownloading: false,
       isDeleting: false,
     });
-    const userType = useUser().userType();
+    const { userType } = useUser();
     const { deleteTaskAttachment } = useTasks();
 
     const attachmentId = props.attachment.id;
     const projectId = useRouter().routeParams().id;
     const parentTaskId = props.parentTask.id;
-    const taskUrl = `/projects/${projectId}/tasks/${parentTaskId}/attachments/${attachmentId}`;
+    const attachmentUrl = `/projects/${projectId}/tasks/${parentTaskId}/attachments/${attachmentId}`;
 
     async function downloadAttachment(attachment) {
       try {
         state.isDownloading = true;
-        var response = await axios.get(taskUrl);
-        const blob = new Blob([response.data]);
+        var { data: downloadedAttachment } = await axios.get(attachmentUrl);
+        const blob = new Blob([downloadedAttachment]);
         saveAs(blob, attachment.name);
       } catch (err) {
         console.log(err.response);
@@ -61,7 +61,7 @@ export default {
     async function deleteAttachment() {
       try {
         state.isDeleting = true;
-        await axios.delete(taskUrl);
+        await axios.delete(attachmentUrl);
         deleteTaskAttachment(attachmentId, parentTaskId);
       } catch (err) {
         console.log(err.response);

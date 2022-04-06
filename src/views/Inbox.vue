@@ -3,13 +3,12 @@
     <h2 class="d-flex flex-row align-center black--text mb-2">
       <span class="cursive-font">Inbox</span>
     </h2>
-    <div v-show="!state.isLoading && !activeConversation"></div>
     <div class="d-flex flex-row flex-wrap" v-if="!state.isLoading">
       <inbox-messages></inbox-messages>
       <online-users></online-users>
     </div>
     <div v-else>
-      <v-progress-circular></v-progress-circular>
+      <v-progress-circular indeterminate></v-progress-circular>
     </div>
   </div>
 </template>

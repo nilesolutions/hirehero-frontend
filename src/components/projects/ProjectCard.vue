@@ -54,7 +54,7 @@ export default {
   setup(props, { emit }) {
     const isDeleteOpen = ref(false);
     const isLoading = ref(false);
-    const userType = useUser().userType();
+    const { userType } = useUser();
 
     const creationDate = computed(() => {
       return new Date(props.project.created_at).toLocaleString();

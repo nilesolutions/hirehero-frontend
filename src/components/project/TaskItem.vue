@@ -48,7 +48,7 @@ export default {
       files: [],
     });
 
-    const userType = useUser().userType();
+    const { userType } = useUser();
 
     const taskId = props.task.id;
     const { setActiveTaskId, updateTask } = useTasks();

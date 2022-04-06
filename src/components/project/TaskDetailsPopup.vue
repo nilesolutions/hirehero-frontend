@@ -44,7 +44,7 @@ export default {
       isEditing: false,
     });
 
-    const userType = useUser().userType();
+    const { userType } = useUser();
 
     return {
       state,
