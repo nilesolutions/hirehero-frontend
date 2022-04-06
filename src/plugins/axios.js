@@ -2,7 +2,7 @@
 import axios from "axios";
 import Vue from "vue";
 
-const baseURL = "http://localhost:3000/api";
+const baseURL = process.env.VUE_APP_API_URL;
 
 const axiosIns = axios.create({
   // You can add your headers here
