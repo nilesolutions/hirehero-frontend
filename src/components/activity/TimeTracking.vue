@@ -83,7 +83,7 @@ export default {
     });
 
     onMounted(() => {
-      state.dateRange = generateWeekRange();
+      state.dateRange = generateWeekRange(1);
       fetchTableData();
     });
 
