@@ -20,7 +20,7 @@
       </v-date-picker>
     </v-menu>
 
-    <v-data-table :items="state.tableData" :headers="state.headers">
+    <v-data-table :loading="state.isLoading" :items="state.tableData" :headers="state.headers">
       <template v-slot:item.from="{ item }">
         <span>{{ formatDate(item.from) }}</span>
       </template>
@@ -65,6 +65,7 @@ export default {
       tableData: [],
       dateRange: [],
       isDatePickerActive: false,
+      isLoading: false,
       headers: [
         {
           text: "Start",
@@ -92,6 +93,7 @@ export default {
     async function fetchTableData() {
       try {
         if (state.dateRange.length < 2) return;
+        state.isLoading = true;
         var [from, to] = state.dateRange;
         var { data } = await axios.get("/tracker/activity", {
           params: {
@@ -102,6 +104,8 @@ export default {
         state.tableData = data;
       } catch (err) {
         console.log(err);
+      } finally {
+        state.isLoading = false;
       }
     }
 

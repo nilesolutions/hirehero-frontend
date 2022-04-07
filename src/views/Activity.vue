@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { ref } from "@vue/composition-api";
 import TimeTracking from "@/components/activity/TimeTracking.vue";
 import ScreenshotsTracking from "@/components/activity/ScreenshotsTracking.vue";
 
