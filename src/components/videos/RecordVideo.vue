@@ -3,7 +3,7 @@
     <v-card-title>Record video</v-card-title>
 
     <v-card-text>
-      <v-text-field v-model="title" outlined placeholder="Title"></v-text-field>
+      <v-text-field v-model="title" outlined label="Video Title" placeholder="Title"></v-text-field>
     </v-card-text>
 
     <v-card-text class="d-flex flex-row">
@@ -105,6 +105,15 @@ export default {
         feedbackPlayer.value.srcObject = vidStream;
         feedbackPlayer.value.play();
       } catch (err) {
+        if (audioStream) {
+          audioStream.getTracks().forEach((track) => track.stop());
+          audioStream = null;
+        }
+        if (vidStream) {
+          vidStream.getTracks().forEach((track) => track.stop());
+          vidStream = null;
+        }
+        alert("Please Check Audio & Video Permissions");
         throw err;
       }
     }
@@ -140,7 +149,7 @@ export default {
       recorder.stop();
     }
 
-    function handleStop(event) {
+    function handleStop() {
       finalBlob = new Blob(chunks, { type: "video/mp4" });
 
       URL.revokeObjectURL(state.recordedVidUrl);

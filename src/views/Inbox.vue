@@ -3,32 +3,31 @@
     <h2 class="d-flex flex-row align-center black--text mb-2">
       <span class="cursive-font">Inbox</span>
     </h2>
-    <div class="d-flex flex-row flex-wrap" v-if="!state.isLoading">
+    <div class="d-flex flex-row flex-wrap" v-if="!state.isLoading && associatedUser">
       <inbox-messages></inbox-messages>
       <online-users></online-users>
     </div>
-    <div v-else>
+    <div v-else-if="state.isLoading">
       <v-progress-circular indeterminate></v-progress-circular>
     </div>
+    <div v-else>No {{ userType == "client" ? "VA" : "Client" }} assigned yet</div>
   </div>
 </template>
 
 <script>
 import axios from "@axios";
 import { mdiCamera } from "@mdi/js";
+import { onMounted, onUnmounted, reactive } from "@vue/composition-api";
+
 import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
 import InboxMessages from "@/components/inbox/InboxMessages.vue";
 import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
+
 import { useMessages } from "@/composables/messages";
-import { onMounted, onUnmounted, reactive } from "@vue/composition-api";
 import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user";
-import {
-  conversationEvents,
-  videoCallPresenceEvents,
-  videoCallEvents,
-} from "@/composables/event-listeners";
 import { useNotifications } from "@/composables/notifications";
+import { conversationEvents } from "@/composables/event-listeners";
 
 export default {
   name: "Inbox",
@@ -61,9 +60,9 @@ export default {
         setConversation(fetchedConversation);
         setAssociatedUser(fetchedAssocUser);
 
-        if (userType.value == "va" && !activeConversation) {
-          subscribeToChannel(`priavte-conversation-${userId.value}`, conversationEvents);
-        }
+        // if (userType.value == "va" && !activeConversation) {
+        //   subscribeToChannel(`priavte-conversation-${userId.value}`, conversationEvents);
+        // }
       } catch (err) {
         console.log(err);
       } finally {
@@ -89,6 +88,9 @@ export default {
     return {
       state,
       activeConversation,
+
+      associatedUser,
+      userType,
 
       icons: {
         mdiCamera,

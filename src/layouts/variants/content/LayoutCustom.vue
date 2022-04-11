@@ -1,6 +1,14 @@
 <template>
   <v-app>
     <navbar></navbar>
+    <div class="info-bar" v-if="state.isInfoVisible && infoMsg">
+      {{ infoMsg }}
+      <v-btn class="ml-auto" x-small icon @click="state.isInfoVisible = false">
+        <v-icon x-small color="white">
+          {{ icons.mdiClose }}
+        </v-icon>
+      </v-btn>
+    </div>
 
     <div class="dashboard--layout">
       <video-call-prompt></video-call-prompt>
@@ -16,7 +24,6 @@
 </template>
 
 <script>
-import axios from "@axios";
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
@@ -26,14 +33,16 @@ import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user";
 import { useNotifications } from "@/composables/notifications";
 import { useMessages } from "@/composables/messages";
-
-import { reactive, onMounted, onUnmounted } from "@vue/composition-api";
+import { useSubscription } from "@/composables/subscription";
 import {
   videoCallEvents,
   videoCallPresenceEvents,
   notificationEvents,
 } from "@/composables/event-listeners";
-import { useSubscription } from "@/composables/subscription";
+
+import axios from "@axios";
+import { mdiClose } from "@mdi/js";
+import { reactive, onMounted, onUnmounted, computed } from "@vue/composition-api";
 
 export default {
   name: "LayoutCustom",
@@ -44,16 +53,16 @@ export default {
     VideoCallPrompt,
   },
   setup() {
-    //const userId = useUser().userData().id;
     const state = reactive({
       isLoading: true,
+      isInfoVisible: true,
     });
 
-    const { setUserData } = useUser();
-    const { setActivePlan } = useSubscription();
+    const { setActivePlan, isSubscribed } = useSubscription();
+    const { userType, setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
-    const { subscribeToChannel, unsubscribeFromChannel, debugActiveChannels } = usePusher();
+    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
 
     var videoCallChannel = `presence-video-call-`;
     var notificationsChannel = `private-notifications-`;
@@ -95,8 +104,26 @@ export default {
       unsubscribeFromChannel(notificationsChannel);
     });
 
+    const infoMsg = computed(() => {
+      var msg = [];
+
+      if (!associatedUser.value) {
+        if (userType.value == "client") msg.push("No VA Assigned");
+        else msg.push("No Client Assigned");
+      }
+      if (!isSubscribed.value) msg.push("You are not subscribed to a plan");
+
+      if (msg.length) return msg.join(" | ");
+      return "";
+    });
+
     return {
       state,
+      infoMsg,
+
+      icons: {
+        mdiClose,
+      },
     };
   },
 };
@@ -114,5 +141,14 @@ export default {
   max-height: 100%;
   padding: 2rem;
   flex-grow: 1;
+}
+
+.info-bar {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid;
+  color: white;
+  background-color: #4895d8bb;
 }
 </style>
