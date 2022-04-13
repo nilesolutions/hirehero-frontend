@@ -7,23 +7,13 @@
       <v-card-text>Ends on : {{ planEnd }}</v-card-text>
 
       <v-card-text>
-        <v-btn @click="state.isCancelOpen = true" outlined color="warning"
-          >Cancel subscription</v-btn
-        >
+        <v-btn @click="startPortalSession" :loading="state.isLoading" outlined color="primary">
+          Manage Plan
+        </v-btn>
       </v-card-text>
-    </v-card>
 
-    <v-dialog v-model="state.isCancelOpen" width="fit-content">
-      <v-card>
-        <v-card-text>Are you sure you want to cancel your plan ?</v-card-text>
-        <v-card-actions>
-          <v-btn :loading="state.isCancelling" @click="cancelSubscription" color="warning">
-            Yes, I really want to cancel
-          </v-btn>
-          <v-btn @click="isCancelOpen = false">No</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <a ref="portalLink" style="display: none" target="_blank"></a>
+    </v-card>
 
     <v-card v-show="!isSubscribed">
       <v-card-text></v-card-text>
@@ -33,16 +23,32 @@
 
 <script>
 import axios from "@axios";
-import { reactive, computed } from "@vue/composition-api";
+import { reactive, computed, ref } from "@vue/composition-api";
 import { useSubscription } from "@/composables/subscription";
 export default {
   name: "CurrentPlan",
   setup() {
     const { state: subscriptionState, isSubscribed, setActivePlan } = useSubscription();
+    const portalLink = ref(null);
     const state = reactive({
       isCancelOpen: false,
       isCancelling: false,
+      isLoading: false,
     });
+
+    async function startPortalSession() {
+      try {
+        state.isLoading = true;
+        const { data: session } = await axios.post("/subscriptions/portal");
+
+        portalLink.value.setAttribute("href", session.url);
+        portalLink.value.click();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        state.isLoading = false;
+      }
+    }
 
     const planStart = computed(() => {
       const startDate = new Date(subscriptionState.activePlan.current_period_start * 1000);
@@ -71,6 +77,7 @@ export default {
 
     return {
       state,
+      portalLink,
       subscriptionState,
 
       isSubscribed,
@@ -78,6 +85,7 @@ export default {
       planEnd,
 
       cancelSubscription,
+      startPortalSession,
     };
   },
 };

@@ -29,6 +29,7 @@
 
       <v-file-input
         v-model="state.files"
+        :rules="attachmentsValidation"
         class="pt-0 mt-0"
         clearable
         small-chips
@@ -43,6 +44,7 @@
 
 <script>
 import axios from "@axios";
+import { validateFileSizes } from "@/helpers";
 import { mdiSend, mdiMicrophone, mdiStop, mdiDelete } from "@mdi/js";
 import { computed, ref, reactive, onUnmounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/messages";
@@ -52,16 +54,27 @@ export default {
   setup() {
     const { activeConversation } = useMessages();
     const state = reactive({
+      sizeError: false,
       msgText: "",
       previewUrl: "",
       isRecording: false,
       finalBlob: null,
       files: [],
     });
+
     const recordingPreview = ref(null);
+
+    const uploadSizeLimit = 30;
+    const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
+
     const canSend = computed(() => {
       if (state.isRecording) return false;
+
+      const filesAboveLimit = state.files.some((file) => file.size > uploadSizeLimit * 1000 * 1000);
+      if (filesAboveLimit) return false;
+
       if (state.msgText || state.files.length || state.finalBlob) return true;
+
       return false;
     });
 
@@ -153,9 +166,13 @@ export default {
 
     return {
       state,
+
       sendMsg,
       canSend,
+
       hideFileDetails,
+      attachmentsValidation,
+
       recordingPreview,
       toggleRecording,
       clearRecording,

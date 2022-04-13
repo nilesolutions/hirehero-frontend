@@ -8,4 +8,11 @@ function generateWeekRange(futureOffset = 0) {
   return [aWeekAgo.toISOString().split("T")[0], today.toISOString().split("T")[0]];
 }
 
-export { generateWeekRange };
+function validateFileSizes(files, size) {
+  for (var file of files) {
+    if (file.size > size * 1000 * 1000) return `Size limit is ${size} MB`;
+  }
+  return true;
+}
+
+export { generateWeekRange, validateFileSizes };

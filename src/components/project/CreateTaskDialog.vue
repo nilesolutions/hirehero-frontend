@@ -41,6 +41,8 @@
 
         <v-file-input
           v-model="state.attachments"
+          :rules="attachmentsValidation"
+          show-size=""
           outlined
           label="Attachments"
           multiple
@@ -62,8 +64,9 @@
 </template>
 
 <script>
+import { validateFileSizes } from "@/helpers";
 import { useTasks } from "@/composables/tasks";
-import { reactive } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 import axios from "@axios";
 
 export default {
@@ -88,10 +91,14 @@ export default {
       state.attachments = [];
     };
 
+    const uploadSizeLimit = 100;
+
     const { addTask } = useTasks();
 
     const minDate = new Date().toISOString();
     const priorityOptions = ["Low", "Medium", "High"];
+
+    const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
 
     const closeDialog = () => {
       emit("close");
@@ -101,6 +108,17 @@ export default {
     const setPriority = (e) => {
       state.priority = e;
     };
+
+    const canCreate = computed(() => {
+      if (!state.name) return false;
+
+      const filesAboveLimit = state.attachments.some(
+        (attachment) => attachment.size > uploadSizeLimit * 1000 * 1000
+      );
+      if (filesAboveLimit) return false;
+
+      return true;
+    });
 
     function generateFormData() {
       const form = new FormData();
@@ -117,6 +135,7 @@ export default {
 
     async function createTask() {
       try {
+        if (!canCreate.value) return;
         const projectId = this.$route.params.id;
         const form = generateFormData();
         state.isLoading = true;
@@ -133,9 +152,13 @@ export default {
 
     return {
       state,
+
       closeDialog,
       createTask,
+
+      attachmentsValidation,
       minDate,
+
       setPriority,
       priorityOptions,
     };
