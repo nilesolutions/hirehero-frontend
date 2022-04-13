@@ -13,13 +13,27 @@
           <video class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
           <video class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
         </div>
+
+        <v-card-actions class="d-flex flex-row justify-center">
+          <v-btn @click="muteMic" icon color="primary" large outlined>
+            <v-icon>
+              {{ vidCallState.isMicEnabled ? icons.mdiMicrophone : icons.mdiMicrophoneOff }}
+            </v-icon>
+          </v-btn>
+
+          <v-btn @click="disableCam" icon color="primary" large outlined>
+            <v-icon>
+              {{ vidCallState.isCamEnabled ? icons.mdiCamera : icons.mdiCameraOff }}
+            </v-icon>
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
-import { mdiClose } from "@mdi/js";
+import { mdiClose, mdiMicrophone, mdiMicrophoneOff, mdiCamera, mdiCameraOff } from "@mdi/js";
 import { useVideoCall } from "@/composables/videocall";
 export default {
   name: "VideoCall",
@@ -28,20 +42,27 @@ export default {
       localVideoPreview,
       remoteVideoPreview,
       handleCallTermination,
-      answerCall,
+      disableCam,
+      muteMic,
       state: vidCallState,
     } = useVideoCall();
 
     return {
       handleCallTermination,
       vidCallState,
-      answerCall,
+
+      muteMic,
+      disableCam,
 
       localVideoPreview,
       remoteVideoPreview,
 
       icons: {
         mdiClose,
+        mdiMicrophone,
+        mdiMicrophoneOff,
+        mdiCamera,
+        mdiCameraOff,
       },
     };
   },

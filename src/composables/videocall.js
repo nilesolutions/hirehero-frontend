@@ -8,31 +8,72 @@ const { userName } = useUser();
 const { state: msgsState } = useMessages();
 const { debugActiveChannels, triggerEvent } = usePusher();
 
+window.RTCIceCandidate =
+  window.RTCIceCandidate ||
+  window.webkitRTCIceCandidate ||
+  window.mozRTCIceCandidate ||
+  window.msRTCIceCandidate;
+
+window.RTCPeerConnection =
+  window.RTCPeerConnection ||
+  window.webkitRTCPeerConnection ||
+  window.mozRTCPeerConnection ||
+  window.msRTCPeerConnection;
+
+window.RTCSessionDescription =
+  window.RTCSessionDescription ||
+  window.webkitRTCSessionDescription ||
+  window.mozRTCSessionDescription ||
+  window.msRTCSessionDescription;
+
 const state = reactive({
   isInCall: false,
   isBeingCalled: false,
-  incomingCallRequest: {},
   isPeerOnline: false,
-  recepientId: null,
-  rtc: new RTCPeerConnection(),
+
   activeMediaStream: null,
+  isMicEnabled: false,
+  isCamEnabled: false,
+
+  recepientId: null,
+  incomingCallRequest: {},
+
+  rtc: new RTCPeerConnection(),
+  candidateBuffer: [],
 });
 
 const localVideoPreview = ref(null);
 const remoteVideoPreview = ref(null);
 
-state.rtc.onicecandidate = (event) => {
-  if (event.candidate) {
-    triggerEvent(peerChannel.value, "client-candidate", {
-      candidate: event.candidate,
-    });
-  }
-};
+const micStatus = computed(() => {
+  if (!state.activeMediaStream) return false;
+  return state.activeMediaStream.getAudioTracks()[0].enabled;
+});
 
-state.rtc.ontrack = (event) => {
-  console.log("Track added", event.streams[0]);
-  remoteVideoPreview.value.srcObject = event.streams[0];
-};
+const isCamDisabled = computed(() => {
+  if (!state.activeMediaStream) return false;
+  return state.activeMediaStream.getVideoTracks()[0].enabled;
+});
+
+function initRTC() {
+  state.rtc = null;
+  state.rtc = new RTCPeerConnection();
+
+  state.rtc.onicecandidate = (event) => {
+    if (event.candidate) {
+      triggerEvent(peerChannel.value, "client-candidate", {
+        candidate: event.candidate,
+      });
+    }
+  };
+
+  state.rtc.ontrack = (event) => {
+    console.log("Track added", event.streams[0]);
+    remoteVideoPreview.value.srcObject = event.streams[0];
+  };
+}
+
+initRTC();
 
 const updatePeerStatus = (status) => (state.isPeerOnline = status);
 
@@ -47,8 +88,13 @@ async function readyMediaStream() {
       video: true,
     });
     state.activeMediaStream = stream;
+    state.isCamEnabled = stream.getVideoTracks()[0].enabled;
+    state.isMicEnabled = stream.getAudioTracks()[0].enabled;
   } catch (err) {
     console.log(err);
+    alert("Please check camera & mic permissions");
+    handleCallTermination();
+    throw err;
   }
 }
 
@@ -57,6 +103,20 @@ function clearMediaStream() {
     state.activeMediaStream.getTracks().forEach((track) => track.stop());
     state.activeMediaStream = null;
   }
+}
+
+function muteMic() {
+  const micStatus = state.activeMediaStream.getAudioTracks()[0].enabled;
+
+  state.activeMediaStream.getAudioTracks()[0].enabled = !micStatus;
+  state.isMicEnabled = !micStatus;
+}
+
+function disableCam() {
+  const camStatus = state.activeMediaStream.getVideoTracks()[0].enabled;
+
+  state.activeMediaStream.getVideoTracks()[0].enabled = !camStatus;
+  state.isCamEnabled = !camStatus;
 }
 
 async function initCall() {
@@ -84,7 +144,6 @@ async function initCall() {
 }
 
 function handleIncomingHandshake(request) {
-  console.log("Handling Handshake");
   state.isBeingCalled = true;
   state.incomingCallRequest = request;
 }
@@ -99,9 +158,20 @@ async function handleCallAnswer(event) {
 }
 
 function handleIceCandidate(event) {
-  if (state.rtc.remoteDescription) {
-    state.rtc.addIceCandidate(new RTCIceCandidate(event.candidate));
+  if (!state.rtc.remoteDescription) {
+    state.candidateBuffer.push(event.candidate);
+    return;
   }
+
+  if (state.candidateBuffer.length) {
+    console.log("Buffer is", state.candidateBuffer);
+    for (var candidate of state.candidateBuffer) {
+      state.rtc.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+    state.candidateBuffer = [];
+  }
+
+  state.rtc.addIceCandidate(new RTCIceCandidate(event.candidate));
 }
 
 async function answerCall() {
@@ -134,10 +204,11 @@ function handleCallTermination() {
 async function endCall() {
   state.isInCall = false;
   state.isBeingCalled = false;
+
   clearMediaStream();
+  initRTC();
+
   state.incomingCallRequest = {};
-  state.rtc = null;
-  state.rtc = new RTCPeerConnection();
   localVideoPreview.value.srcObject = null;
   remoteVideoPreview.value.srcObject = null;
 }
@@ -149,6 +220,9 @@ export function useVideoCall() {
     initCall,
     answerCall,
     endCall,
+
+    muteMic,
+    disableCam,
 
     handleCallAnswer,
     handleIncomingHandshake,
