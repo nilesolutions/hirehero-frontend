@@ -150,7 +150,6 @@ function handleIncomingHandshake(request) {
 
 async function handleCallAnswer(event) {
   try {
-    console.log("Handling answer and setting remote description");
     await state.rtc.setRemoteDescription(new RTCSessionDescription(event.sdp));
   } catch (err) {
     console.log(err);
@@ -164,7 +163,6 @@ function handleIceCandidate(event) {
   }
 
   if (state.candidateBuffer.length) {
-    console.log("Buffer is", state.candidateBuffer);
     for (var candidate of state.candidateBuffer) {
       state.rtc.addIceCandidate(new RTCIceCandidate(candidate));
     }

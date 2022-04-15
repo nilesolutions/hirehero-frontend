@@ -31,7 +31,6 @@ export default {
       try {
         state.isLoading = true;
         const { data: plans } = await axios.get("subscriptions/plans");
-        console.log(plans);
         state.plans = plans;
       } catch (err) {
         console.log(err);

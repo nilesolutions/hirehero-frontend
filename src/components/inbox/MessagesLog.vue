@@ -40,9 +40,6 @@ export default {
       unreadMsgs,
     } = useMessages();
 
-    console.log("read msgs", readMsgs);
-    console.log("unread msgs", unreadMsgs);
-
     const msgsList = ref(null);
 
     const state = reactive({

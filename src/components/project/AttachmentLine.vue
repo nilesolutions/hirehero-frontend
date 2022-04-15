@@ -22,6 +22,7 @@
 
 <script>
 import axios from "@axios";
+import axiosDefault from "axios";
 import { saveAs } from "file-saver";
 import { reactive } from "@vue/composition-api";
 import { useUser } from "@/composables/user";
@@ -48,9 +49,11 @@ export default {
     async function downloadAttachment(attachment) {
       try {
         state.isDownloading = true;
-        var { data: downloadedAttachment } = await axios.get(attachmentUrl);
-        const blob = new Blob([downloadedAttachment]);
-        saveAs(blob, attachment.name);
+        var { data } = await axios.get(attachmentUrl);
+        var { data: fileBlob } = await axiosDefault.get(data.download_url, {
+          responseType: "blob",
+        });
+        saveAs(fileBlob, attachment.name);
       } catch (err) {
         console.log(err.response);
       } finally {
