@@ -37,7 +37,7 @@
 <script>
 import axios from "@axios";
 import { onMounted, reactive, computed } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "AssociateInfo",

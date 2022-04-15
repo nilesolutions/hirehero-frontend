@@ -39,7 +39,7 @@
 
 <script>
 import { onMounted, ref } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog.vue";
 import ProjectCard from "@/components/projects/ProjectCard.vue";

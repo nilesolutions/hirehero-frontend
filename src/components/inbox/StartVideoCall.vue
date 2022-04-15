@@ -20,9 +20,9 @@ import VideoCall from "@/components/inbox/VideoCall.vue";
 import { reactive, onMounted } from "@vue/composition-api";
 import { videoCallEvents } from "@/composables/event-listeners";
 import { mdiPhonePlusOutline } from "@mdi/js";
-import { useVideoCall } from "@/composables/videocall";
+import { useVideoCall } from "@/composables/chat/videocall";
 import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "StartVideoCall",

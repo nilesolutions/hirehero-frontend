@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import { useMessages } from "@/composables/messages";
-import { useUser } from "@/composables/user";
+import { useMessages } from "@/composables/chat/messages";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "OnlineUsers",

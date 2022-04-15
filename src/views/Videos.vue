@@ -43,8 +43,8 @@ import { mdiDelete } from "@mdi/js";
 import VideosGrid from "@/components/videos/VideosGrid.vue";
 import RecordVideo from "@/components/videos/RecordVideo.vue";
 import UploadVideo from "@/components/videos/UploadVideoDialog.vue";
-import { useVideos } from "@/composables/videos";
-import { useUser } from "@/composables/user";
+import { useVideos } from "@/composables/videos/videos";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "Videos",

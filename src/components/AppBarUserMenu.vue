@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import { useNavigation } from "@/composables/navigation";
-import { useNotifications } from "@/composables/notifications";
+import { useNotifications } from "@/composables/chat/notifications";
 import { mdiBell, mdiLogoutVariant, mdiChevronDown } from "@mdi/js";
 
 export default {

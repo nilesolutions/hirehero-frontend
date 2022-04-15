@@ -27,7 +27,7 @@
 import { ref, computed } from "@vue/composition-api";
 import { mdiChevronUp, mdiChevronDown, mdiPlus } from "@mdi/js";
 import AttachmentLine from "@/components/project/AttachmentLine.vue";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 export default {
   name: "TaskAttachments",
   components: { AttachmentLine },

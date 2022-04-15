@@ -26,7 +26,7 @@
 
 <script>
 import { mdiClose } from "@mdi/js";
-import { useVideoCall } from "@/composables/videocall";
+import { useVideoCall } from "@/composables/chat/videocall";
 export default {
   name: "VideoCall",
   setup() {

@@ -47,7 +47,7 @@ import axios from "@axios";
 import { validateFileSizes } from "@/helpers";
 import { mdiSend, mdiMicrophone, mdiStop, mdiDelete } from "@mdi/js";
 import { computed, ref, reactive, onUnmounted } from "@vue/composition-api";
-import { useMessages } from "@/composables/messages";
+import { useMessages } from "@/composables/chat/messages";
 
 export default {
   name: "SendMessage",

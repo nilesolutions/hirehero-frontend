@@ -21,7 +21,7 @@
 <script>
 import { ref } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import { mdiChevronLeft, mdiPlus } from "@mdi/js";
 import CreateTaskDialog from "@/components/project/CreateTaskDialog.vue";
 

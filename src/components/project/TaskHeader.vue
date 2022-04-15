@@ -15,8 +15,8 @@
 
 <script>
 import axios from "@axios";
-import { useUser } from "@/composables/user";
-import { useTasks } from "@/composables/tasks";
+import { useUser } from "@/composables/user/user";
+import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
 import { reactive } from "@vue/composition-api";
 import { mdiCheckboxMarked, mdiCheckboxBlank } from "@mdi/js";

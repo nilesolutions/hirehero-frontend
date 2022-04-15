@@ -23,10 +23,10 @@ import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
 import InboxMessages from "@/components/inbox/InboxMessages.vue";
 import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
 
-import { useMessages } from "@/composables/messages";
+import { useMessages } from "@/composables/chat/messages";
 import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user";
-import { useNotifications } from "@/composables/notifications";
+import { useUser } from "@/composables/user/user";
+import { useNotifications } from "@/composables/chat/notifications";
 import { conversationEvents } from "@/composables/event-listeners";
 
 export default {

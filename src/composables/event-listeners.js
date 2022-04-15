@@ -1,6 +1,6 @@
-import { useMessages } from "@/composables/messages";
-import { useVideoCall } from "@/composables/videocall";
-import { useNotifications } from "./notifications";
+import { useMessages } from "@/composables/chat/messages";
+import { useVideoCall } from "@/composables/chat/videocall";
+import { useNotifications } from "./chat/notifications";
 
 const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
 const { handleNotification } = useNotifications();

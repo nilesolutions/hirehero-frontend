@@ -18,10 +18,10 @@ import ChatMessage from "@/components/inbox/ChatMessage.vue";
 import MessagesLogHeader from "@/components/inbox/MessagesLogHeader.vue";
 import { usePusher } from "@/composables/pusher";
 import { msgEvents } from "@/composables/event-listeners";
-import { useMessages } from "@/composables/messages";
+import { useMessages } from "@/composables/chat/messages";
 import { mdiPhoneOutline } from "@mdi/js";
 import { onMounted, reactive, ref, nextTick, onUnmounted } from "@vue/composition-api";
-import { useVideoCall } from "@/composables/videocall";
+import { useVideoCall } from "@/composables/chat/videocall";
 
 export default {
   name: "MessagesLog",

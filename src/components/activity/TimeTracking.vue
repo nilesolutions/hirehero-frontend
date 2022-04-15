@@ -48,7 +48,7 @@
 import axios from "@axios";
 import { mdiEye } from "@mdi/js";
 import { generateWeekRange } from "@/helpers";
-import { useActivity } from "@/composables/activity";
+import { useActivity } from "@/composables/activity/activity";
 import { reactive, ref, onMounted } from "@vue/composition-api";
 import ScreenshotsPopup from "@/components/activity/ScreenshotsPopup.vue";
 

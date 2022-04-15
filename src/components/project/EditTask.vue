@@ -63,7 +63,7 @@
 import axios from "@axios";
 import { mdiChevronLeft } from "@mdi/js";
 import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { reactive } from "@vue/composition-api";
 
 export default {

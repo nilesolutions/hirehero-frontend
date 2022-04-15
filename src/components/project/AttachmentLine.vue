@@ -25,9 +25,9 @@ import axios from "@axios";
 import axiosDefault from "axios";
 import { saveAs } from "file-saver";
 import { reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
 
 export default {

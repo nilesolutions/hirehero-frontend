@@ -25,9 +25,9 @@ import TaskActions from "@/components/project/TaskActions.vue";
 import TaskAttachments from "@/components/project/TaskAttachments.vue";
 import TaskDetails from "@/components/project/TaskDetails.vue";
 import { reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import {
   mdiDeleteOutline,
   mdiCheckboxMarked,

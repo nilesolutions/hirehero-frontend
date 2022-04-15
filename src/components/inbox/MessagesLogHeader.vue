@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import { useMessages } from "@/composables/messages";
+import { useMessages } from "@/composables/chat/messages";
 import { mdiPhoneOutline } from "@mdi/js";
 import { reactive, computed } from "@vue/composition-api";
-import { useVideoCall } from "@/composables/videocall";
+import { useVideoCall } from "@/composables/chat/videocall";
 
 export default {
   name: "MessagesLogHeader",

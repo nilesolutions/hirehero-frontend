@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import { useUser } from "@/composables/user";
-import { useTasks } from "@/composables/tasks";
+import { useUser } from "@/composables/user/user";
+import { useTasks } from "@/composables/tasks/tasks";
 import { reactive } from "@vue/composition-api";
 import TaskDetails from "@/components/project/TaskDetails.vue";
 import TaskHeader from "@/components/project/TaskHeader.vue";

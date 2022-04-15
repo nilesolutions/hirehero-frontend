@@ -1,11 +1,11 @@
 import { reactive, readonly } from "@vue/composition-api";
-import { useRouter } from "./router";
+import { useRouter } from "../router";
 
 const { currRouteName } = useRouter();
 const state = reactive({
   notification: {
     unreadCount: 0,
-    earliestUnread: "2001-01-01",
+    earliestUnread: "",
   },
 });
 

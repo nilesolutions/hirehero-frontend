@@ -11,7 +11,7 @@ import ProjectInfo from "@/components/project/ProjectInfo.vue";
 import AddTasks from "@/components/project/ProjectNav.vue";
 import TasksView from "@/components/project/TasksView.vue";
 import TaskDetailsPopup from "@/components/project/TaskDetailsPopup.vue";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 
 export default {
   name: "Project",

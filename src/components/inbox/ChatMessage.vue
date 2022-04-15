@@ -59,10 +59,10 @@
 <script>
 import axios from "@axios";
 import { reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import { mdiTrashCanOutline } from "@mdi/js";
 import { computed } from "@vue/composition-api";
-import { useMessages } from "@/composables/messages";
+import { useMessages } from "@/composables/chat/messages";
 
 export default {
   name: "ChatMessage",

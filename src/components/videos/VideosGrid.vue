@@ -36,8 +36,8 @@
 import axios from "@axios";
 import { ref, computed } from "@vue/composition-api";
 import { mdiDelete } from "@mdi/js";
-import { useVideos } from "@/composables/videos";
-import { useUser } from "@/composables/user";
+import { useVideos } from "@/composables/videos/videos";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "VideosGrid",

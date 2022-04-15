@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { ref, computed } from "@vue/composition-api";
 import { mdiChevronUp, mdiChevronDown } from "@mdi/js";
 

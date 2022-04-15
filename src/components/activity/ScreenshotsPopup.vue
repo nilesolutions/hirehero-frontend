@@ -29,7 +29,7 @@
 
 <script>
 import axios from "@axios";
-import { useActivity } from "@/composables/activity";
+import { useActivity } from "@/composables/activity/activity";
 import { ref, onMounted } from "@vue/composition-api";
 
 export default {

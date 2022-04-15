@@ -65,7 +65,7 @@
 
 <script>
 import { validateFileSizes } from "@/helpers";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { reactive, computed } from "@vue/composition-api";
 import axios from "@axios";
 

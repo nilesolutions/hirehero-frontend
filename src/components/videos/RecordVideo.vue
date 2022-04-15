@@ -54,7 +54,7 @@
 import axios from "@axios";
 import { onBeforeUnmount, ref, computed } from "@vue/composition-api";
 import { mdiRecord, mdiPause, mdiCancel, mdiCloudUpload } from "@mdi/js";
-import { useVideos } from "@/composables/videos";
+import { useVideos } from "@/composables/videos/videos";
 
 export default {
   name: "RecordVideo",

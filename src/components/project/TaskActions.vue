@@ -29,7 +29,7 @@ import axios from "@axios";
 import { validateFileSizes } from "@/helpers";
 import { reactive, computed } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { mdiDownload, mdiDelete, mdiTooltipEdit } from "@mdi/js";
 
 export default {

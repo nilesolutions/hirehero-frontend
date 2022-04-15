@@ -40,7 +40,7 @@
 
 <script>
 import { onMounted, onBeforeMount, ref } from "@vue/composition-api";
-import { useTasks } from "@/composables/tasks";
+import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
 import TaskItem from "@/components/project/TaskItem.vue";
 import axios from "@axios";

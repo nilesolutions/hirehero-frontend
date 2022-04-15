@@ -1,7 +1,7 @@
 import { usePusher } from "@/composables/pusher";
 import { computed, reactive, ref } from "@vue/composition-api";
+import { useUser } from "../user/user";
 import { useMessages } from "./messages";
-import { useUser } from "./user";
 
 const { userName } = useUser();
 

@@ -42,7 +42,7 @@
 
 <script>
 import { computed, ref } from "@vue/composition-api";
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiDelete } from "@mdi/js";
 

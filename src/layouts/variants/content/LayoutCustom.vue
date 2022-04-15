@@ -30,10 +30,10 @@ import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
 
 import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user";
-import { useNotifications } from "@/composables/notifications";
-import { useMessages } from "@/composables/messages";
-import { useSubscription } from "@/composables/subscription";
+import { useUser } from "@/composables/user/user";
+import { useNotifications } from "@/composables/chat/notifications";
+import { useMessages } from "@/composables/chat/messages";
+import { useSubscription } from "@/composables/user/subscription";
 import {
   videoCallEvents,
   videoCallPresenceEvents,

@@ -24,7 +24,7 @@
 <script>
 import axios from "@axios";
 import { reactive, computed, ref } from "@vue/composition-api";
-import { useSubscription } from "@/composables/subscription";
+import { useSubscription } from "@/composables/user/subscription";
 export default {
   name: "CurrentPlan",
   setup() {

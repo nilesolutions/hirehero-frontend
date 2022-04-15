@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { useUser } from "@/composables/user";
+import { useUser } from "@/composables/user/user";
 import RecentTasks from "@/components/dashboard/RecentTasks.vue";
 import HourlyReports from "@/components/dashboard/HourlyReports.vue";
 import TasksProgress from "@/components/dashboard/TasksProgress.vue";

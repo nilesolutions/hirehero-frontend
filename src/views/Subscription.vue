@@ -15,7 +15,7 @@
 import axios from "@axios";
 import AvailablePlans from "@/components/subscriptions/AvailablePlans.vue";
 import CurrentPlan from "@/components/subscriptions/CurrentPlan.vue";
-import { useSubscription } from "@/composables/subscription";
+import { useSubscription } from "@/composables/user/subscription";
 import { onMounted, reactive } from "@vue/composition-api";
 
 export default {

@@ -13,7 +13,7 @@
 <script>
 import { mdiBellOutline } from "@mdi/js";
 import { computed } from "@vue/composition-api";
-import { useNotifications } from "@/composables/notifications";
+import { useNotifications } from "@/composables/chat/notifications";
 import { useRouter } from "@/composables/router";
 import { useNavigation } from "@/composables/navigation";
 

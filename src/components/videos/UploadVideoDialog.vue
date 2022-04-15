@@ -24,7 +24,7 @@
 <script>
 import { ref } from "@vue/composition-api";
 import axios from "@axios";
-import { useVideos } from "@/composables/videos";
+import { useVideos } from "@/composables/videos/videos";
 
 export default {
   name: "UploadVideo",
