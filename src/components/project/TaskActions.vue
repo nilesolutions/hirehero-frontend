@@ -1,6 +1,6 @@
 <template>
   <v-card-actions class="d-flex col-12">
-    <v-btn :loading="state.isUploading" icon>
+    <v-btn :loading="state.isUploading">
       <v-file-input
         @change="uploadAttachments"
         :rules="attachmentsValidation"
@@ -9,14 +9,17 @@
         multiple
         hide-input
       ></v-file-input>
+      <span class="ml-2">Attach</span>
     </v-btn>
 
-    <v-btn @click="toggleEdit(true)" icon>
+    <v-btn @click="toggleEdit(true)">
       <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
+      <span class="ml-2">Edit</span>
     </v-btn>
 
-    <v-btn icon>
+    <v-btn>
       <v-icon>{{ icons.mdiDelete }} </v-icon>
+      <span class="ml-2">Delete</span>
     </v-btn>
 
     <small v-show="state.sizeError"> Attachment size limit is {{ uploadSizeLimit }}MB </small>
@@ -31,6 +34,7 @@ import { reactive, computed } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks/tasks";
 import { mdiDownload, mdiDelete, mdiTooltipEdit } from "@mdi/js";
+import { useAttachments } from "@/composables/tasks/attachments";
 
 export default {
   name: "TaskActions",
@@ -45,7 +49,8 @@ export default {
       files: [],
     });
 
-    const { updateTaskAttachments, toggleEdit } = useTasks();
+    const { toggleEdit } = useTasks();
+    const { addAttachment } = useAttachments();
 
     const uploadSizeLimit = 100;
 
@@ -74,12 +79,15 @@ export default {
       try {
         if (!canUploadAttachment.value) return;
         state.isUploading = true;
+
         const form = new FormData();
         for (var file of state.files) form.append("attachments", file);
-        const response = await axios.post(attachmentsUrl, form);
-        updateTaskAttachments(response.data, taskId);
+
+        const { data: createdAttachment } = await axios.post(attachmentsUrl, form);
+        console.log(createdAttachment);
+        addAttachment(createdAttachment);
       } catch (err) {
-        console.log(err);
+        state.files = [];
         state.error = "Error while uploading attachment";
       } finally {
         state.isUploading = false;

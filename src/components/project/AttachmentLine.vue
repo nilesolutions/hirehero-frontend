@@ -1,6 +1,8 @@
 <template>
   <v-list-item>
-    <v-list-item-content>{{ attachment.name }}</v-list-item-content>
+    <v-list-item-content>
+      <small class="black--text">{{ attachment.name }}</small>
+    </v-list-item-content>
     <v-list-item-action>
       <v-btn
         x-small
@@ -13,7 +15,7 @@
       </v-btn>
     </v-list-item-action>
     <v-list-item-action v-show="userType == 'client'">
-      <v-btn :loading="state.isDeleting" @click="deleteAttachment" x-small icon>
+      <v-btn :loading="state.isDeleting" @click="del" x-small icon>
         <v-icon>{{ icons.mdiDeleteOutline }}</v-icon>
       </v-btn>
     </v-list-item-action>
@@ -24,11 +26,14 @@
 import axios from "@axios";
 import axiosDefault from "axios";
 import { saveAs } from "file-saver";
-import { reactive } from "@vue/composition-api";
+
 import { useUser } from "@/composables/user/user";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks/tasks";
 import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
+
+import { reactive } from "@vue/composition-api";
+import { useAttachments } from "@/composables/tasks/attachments";
 
 export default {
   name: "AttachmentLine",
@@ -39,11 +44,12 @@ export default {
       isDeleting: false,
     });
     const { userType } = useUser();
-    const { deleteTaskAttachment } = useTasks();
+    const { activeTask } = useTasks();
+    const { deleteAttachment } = useAttachments();
 
     const attachmentId = props.attachment.id;
     const projectId = useRouter().routeParams().id;
-    const parentTaskId = props.parentTask.id;
+    const parentTaskId = activeTask.value.id;
     const attachmentUrl = `/projects/${projectId}/tasks/${parentTaskId}/attachments/${attachmentId}`;
 
     async function downloadAttachment(attachment) {
@@ -61,11 +67,11 @@ export default {
       }
     }
 
-    async function deleteAttachment() {
+    async function del() {
       try {
         state.isDeleting = true;
         await axios.delete(attachmentUrl);
-        deleteTaskAttachment(attachmentId, parentTaskId);
+        deleteAttachment(attachmentId);
       } catch (err) {
         console.log(err.response);
       } finally {
@@ -76,9 +82,14 @@ export default {
     return {
       state,
       userType,
+
       downloadAttachment,
-      deleteAttachment,
-      icons: { mdiDeleteOutline, mdiDownload },
+      del,
+
+      icons: {
+        mdiDeleteOutline,
+        mdiDownload,
+      },
     };
   },
 };

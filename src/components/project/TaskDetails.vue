@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-6">
+  <div class="d-flex flex-column col-12">
     <v-card-actions>
       Details
       <v-btn @click="showDetails = !showDetails" x-small class="ml-auto" icon>
