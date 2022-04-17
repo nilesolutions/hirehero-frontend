@@ -9,7 +9,7 @@
         dense
         placeholder="Type"
       ></v-text-field>
-      <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" icon>
+      <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" :loading="state.isSending" icon>
         <v-icon>{{ icons.mdiSend }}</v-icon>
       </v-btn>
     </form>
@@ -57,6 +57,7 @@ export default {
       sizeError: false,
       msgText: "",
       previewUrl: "",
+      isSending: false,
       isRecording: false,
       finalBlob: null,
       files: [],
@@ -64,14 +65,14 @@ export default {
 
     const recordingPreview = ref(null);
 
-    const uploadSizeLimit = 30;
+    const uploadSizeLimit = 50;
     const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
 
     const canSend = computed(() => {
       if (state.isRecording) return false;
 
-      const filesAboveLimit = state.files.some((file) => file.size > uploadSizeLimit * 1000 * 1000);
-      if (filesAboveLimit) return false;
+      //const filesAboveLimit = state.files.some((file) => file.size > uploadSizeLimit * 1000 * 1000);
+      //if (filesAboveLimit) return false;
 
       if (state.msgText || state.files.length || state.finalBlob) return true;
 
@@ -139,6 +140,7 @@ export default {
     async function sendMsg() {
       try {
         if (!canSend.value) return;
+        state.isSending = true;
 
         const form = new FormData();
         form.append("conversationId", activeConversation.value.id);
@@ -154,6 +156,8 @@ export default {
         console.log(response);
       } catch (err) {
         console.log(err);
+      } finally {
+        state.isSending = false;
       }
     }
 
@@ -166,6 +170,7 @@ export default {
 
     return {
       state,
+      //uploadSizeLimit,
 
       sendMsg,
       canSend,

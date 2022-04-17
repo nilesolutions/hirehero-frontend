@@ -4,7 +4,17 @@
       <v-card-title>Upload a video</v-card-title>
 
       <v-text-field v-model="title" outlined placeholder="Title"></v-text-field>
-      <v-file-input v-model="file" accept="video/*" label="File"></v-file-input>
+
+      <v-file-input
+        v-model="file"
+        accept="video/*"
+        label="Video"
+        outlined
+        show-size=""
+        clearable
+        :hide-input="false"
+        placeholder="Choose video"
+      ></v-file-input>
 
       <v-card-actions>
         <v-btn
