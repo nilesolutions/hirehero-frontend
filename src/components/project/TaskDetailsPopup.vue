@@ -33,6 +33,7 @@ import { useTasks } from "@/composables/tasks/tasks";
 
 import { reactive, onUnmounted } from "@vue/composition-api";
 import { mdiCheckboxMarked, mdiCheckboxBlank } from "@mdi/js";
+import { useComments } from "@/composables/tasks/commnets";
 
 export default {
   name: "TaskDetailsPopup",
@@ -52,9 +53,11 @@ export default {
 
     const { userType } = useUser();
     const { setAttachments } = useAttachments();
+    const { setComments } = useComments();
 
     onUnmounted(() => {
       setAttachments([]);
+      setComments([]);
     });
 
     return {
