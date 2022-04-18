@@ -3,6 +3,7 @@ import { computed, ref, set } from "@vue/composition-api";
 const tasks = ref([]);
 const activeTaskId = ref("");
 const isEditingTask = ref(false);
+const dueSoonThreshold = 3 * 24 * 60 * 60 * 1000;
 
 const setTasks = (entries) => {
   tasks.value = entries;
@@ -31,29 +32,34 @@ const updateTask = (task) => {
   }
 };
 
-const updateTaskAttachments = (attachments, parentTaskId) => {
-  for (var i = 0; i < tasks.value.length; i++) {
-    if (tasks.value[i].id == parentTaskId) {
-      tasks.value[i].attachments = [...tasks.value[i].attachments, ...attachments];
-      break;
-    }
-  }
-};
-
-const deleteTaskAttachment = (attachmendId, parentTaskId) => {
-  for (var i = 0; i < tasks.value.length; i++) {
-    if (tasks.value[i].id == parentTaskId) {
-      tasks.value[i].attachments = tasks.value[i].attachments.filter(
-        (attachment) => attachment.id != attachmendId
-      );
-      break;
-    }
-  }
-};
-
 const doneTasks = computed(() => tasks.value.filter((t) => t.completed == true));
-const unfinishedTasks = computed(() => tasks.value.filter((t) => t.completed == false));
-const dueSoonTasks = computed(() => []);
+
+const unfinishedTasks = computed(() => {
+  const today = new Date();
+
+  const unfinished = tasks.value.filter((task) => {
+    if (!task.due_on) return true;
+    if (task.completed) return false;
+
+    const dueDate = new Date(task.due_on);
+    if (Math.abs(dueDate - today) > dueSoonThreshold) return true;
+  });
+  return unfinished;
+});
+
+const dueSoonTasks = computed(() => {
+  const today = new Date();
+
+  const dueSoon = tasks.value.filter((task) => {
+    if (!task.due_on) return false;
+    if (task.completed) return false;
+
+    const dueDate = new Date(task.due_on);
+    if (Math.abs(dueDate - today) < dueSoonThreshold) return true;
+  });
+
+  return dueSoon;
+});
 
 const activeTask = computed(() => tasks.value.find((t) => t.id == activeTaskId.value));
 const isTaskDetailsOpen = computed(() => {
@@ -73,9 +79,6 @@ export function useTasks() {
     isTaskDetailsOpen,
     isEditingTask,
     toggleEdit,
-
-    updateTaskAttachments,
-    deleteTaskAttachment,
 
     doneTasks,
     unfinishedTasks,

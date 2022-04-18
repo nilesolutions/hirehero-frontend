@@ -1,14 +1,17 @@
 <template>
   <v-card-actions class="d-flex col-12">
-    <v-btn :loading="state.isUploading">
-      <v-file-input
-        @change="uploadAttachments"
-        :rules="attachmentsValidation"
-        class="pt-0 mt-0"
-        v-model="state.files"
-        multiple
-        hide-input
-      ></v-file-input>
+    <v-file-input
+      ref="filePicker"
+      @change="uploadAttachments"
+      :rules="attachmentsValidation"
+      class="pt-0 mt-0 d-none"
+      v-model="state.files"
+      multiple
+      hide-input
+    ></v-file-input>
+
+    <v-btn :loading="state.isUploading" @click="openFilePicker">
+      <v-icon>{{ icons.mdiAttachment }}</v-icon>
       <span class="ml-2">Attach</span>
     </v-btn>
 
@@ -17,24 +20,27 @@
       <span class="ml-2">Edit</span>
     </v-btn>
 
-    <v-btn>
+    <v-btn @click="del" :loading="state.isDeleting">
       <v-icon>{{ icons.mdiDelete }} </v-icon>
       <span class="ml-2">Delete</span>
     </v-btn>
 
-    <small v-show="state.sizeError"> Attachment size limit is {{ uploadSizeLimit }}MB </small>
+    <br />
+    <small class="ml-2"> Attachment size limit is {{ uploadSizeLimit }}MB </small>
     <small v-show="state.error"> {{ state.error }} </small>
   </v-card-actions>
 </template>
 
 <script>
 import axios from "@axios";
-import { validateFileSizes } from "@/helpers";
-import { reactive, computed } from "@vue/composition-api";
+
+import { reactive, computed, ref } from "@vue/composition-api";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks/tasks";
-import { mdiDownload, mdiDelete, mdiTooltipEdit } from "@mdi/js";
 import { useAttachments } from "@/composables/tasks/attachments";
+
+import { validateFileSizes } from "@/helpers";
+import { mdiDownload, mdiDelete, mdiTooltipEdit, mdiAttachment } from "@mdi/js";
 
 export default {
   name: "TaskActions",
@@ -49,7 +55,9 @@ export default {
       files: [],
     });
 
-    const { toggleEdit } = useTasks();
+    const filePicker = ref(null);
+
+    const { toggleEdit, deleteTask, setActiveTaskId } = useTasks();
     const { addAttachment } = useAttachments();
 
     const uploadSizeLimit = 100;
@@ -60,6 +68,13 @@ export default {
 
     const attachmentsUrl = taskUrl + "/attachments";
     const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
+
+    function openFilePicker() {
+      const pickerElem = filePicker.value.$el;
+      const button = pickerElem.querySelector("button");
+
+      button.click();
+    }
 
     const canUploadAttachment = computed(() => {
       if (!state.files.length) return false;
@@ -94,10 +109,32 @@ export default {
       }
     }
 
+    async function del() {
+      const confirm = await this.$confirm("Are you sure you want to delete Task?", {
+        title: "warning",
+      });
+      if (!confirm) return;
+      state.isDeleting = true;
+      try {
+        await axios.delete(`/projects/${projectId}/tasks/${taskId}`);
+        setActiveTaskId("");
+        deleteTask(taskId);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        state.isDeleting = false;
+      }
+    }
+
     return {
       state,
+
       toggleEdit,
+      filePicker,
+      openFilePicker,
+
       uploadAttachments,
+      del,
 
       attachmentsValidation,
       uploadSizeLimit,
@@ -106,6 +143,7 @@ export default {
         mdiDownload,
         mdiDelete,
         mdiTooltipEdit,
+        mdiAttachment,
       },
     };
   },

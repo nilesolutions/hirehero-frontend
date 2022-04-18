@@ -1,63 +1,84 @@
 <template>
-  <v-dialog @click:outside="closeDialog" v-model="state.isUploadDialogOpen" max-width="500">
+  <v-dialog
+    @click:outside="closeDialog"
+    v-model="videosState.isUploadDialogOpen"
+    persistent
+    max-width="500"
+  >
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Upload a video</v-card-title>
 
-      <v-text-field v-model="title" outlined placeholder="Title"></v-text-field>
+      <v-text-field v-model="state.title" outlined placeholder="Title"></v-text-field>
 
+      <label for="">Choose video</label>
       <v-file-input
-        v-model="file"
+        v-model="state.file"
         accept="video/*"
         label="Video"
-        outlined
         show-size=""
         clearable
         :hide-input="false"
-        placeholder="Choose video"
       ></v-file-input>
 
       <v-card-actions>
         <v-btn
           @click="upload"
-          :disabled="state.isUploading"
-          :loading="state.isUploading"
+          :disabled="videosState.isUploading"
+          :loading="videosState.isUploading"
           color="primary"
         >
           Upload
         </v-btn>
-        <v-btn @click="toggleUploadDialog(false)" :disabled="state.isUploading">Cancel</v-btn>
+        <v-btn @click="toggleUploadDialog(false)" :disabled="videosState.isUploading">Cancel</v-btn>
       </v-card-actions>
+
+      <v-progress-linear
+        v-show="videosState.isUploading"
+        :value="state.uploadProgress"
+      ></v-progress-linear>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { ref } from "@vue/composition-api";
+import { ref, reactive } from "@vue/composition-api";
 import axios from "@axios";
 import { useVideos } from "@/composables/videos/videos";
 
 export default {
   name: "UploadVideo",
   setup() {
-    const { state, toggleUploadDialog, toggleUpload, addVideo } = useVideos();
-    const file = ref(null);
-    const title = ref("");
+    const { state: videosState, toggleUploadDialog, toggleUpload, addVideo } = useVideos();
+
+    const state = reactive({
+      file: null,
+      title: "",
+      uploadProgress: 0,
+    });
 
     const closeDialog = () => {
-      if (!state.isUploading) toggleUploadDialog(false);
+      if (!videosState.isUploading) toggleUploadDialog(false);
     };
 
     async function upload() {
-      if (!file.value) return;
+      if (!state.file) return;
 
       try {
         toggleUpload(true);
+        state.uploadProgress = 0;
+
         const form = new FormData();
-        form.append("file", file.value);
-        form.append("title", title.value);
-        var response = await axios.post("/media", form);
+        form.append("file", state.file);
+        form.append("title", state.title);
+        var response = await axios.post("/media", form, {
+          onUploadProgress: (event) => {
+            state.uploadProgress = Math.round((event.loaded / event.total) * 100);
+          },
+        });
         addVideo(response.data);
-        file.value = null;
+        state.file = null;
+        state.title = "";
+
         toggleUploadDialog(false);
       } catch (err) {
         console.log(err);
@@ -68,11 +89,11 @@ export default {
 
     return {
       state,
+      videosState,
+
       toggleUploadDialog,
       closeDialog,
       upload,
-      file,
-      title,
     };
   },
 };

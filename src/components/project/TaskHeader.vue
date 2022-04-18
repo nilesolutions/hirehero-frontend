@@ -15,7 +15,6 @@
 
 <script>
 import axios from "@axios";
-import { useUser } from "@/composables/user/user";
 import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
 import { reactive } from "@vue/composition-api";
@@ -34,8 +33,8 @@ export default {
     const taskUrl = `projects/${projectId}/tasks/${taskId}`;
 
     const colorFromPriority = () => {
-      if (activeTask.value.priority == "high") return "#EB5757";
-      if (activeTask.value.priority == "mid") return "#FFC207";
+      if (activeTask.value.priority == "High") return "#EB5757";
+      if (activeTask.value.priority == "Medium") return "#FFC207";
       return "#30D988";
     };
 

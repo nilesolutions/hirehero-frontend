@@ -80,7 +80,6 @@ export default {
   name: "CommentLine",
   props: { comment: Object },
   setup(props, _) {
-    console.log("Comment line created");
     const state = reactive({
       isDeleting: false,
       isEditing: false,

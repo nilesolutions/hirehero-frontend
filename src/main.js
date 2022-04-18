@@ -7,6 +7,11 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
 
+// Import vuetify confirm here instead of plugin file
+// to pass vuetify instance to it
+import VuetifyConfirm from 'vuetify-confirm'
+Vue.use(VuetifyConfirm, {vuetify})
+
 Vue.config.productionTip = false
 
 new Vue({

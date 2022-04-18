@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { relativeDate } from "@/helpers";
 import { useTasks } from "@/composables/tasks/tasks";
 import { ref, computed } from "@vue/composition-api";
 import { mdiChevronUp, mdiChevronDown } from "@mdi/js";
@@ -30,10 +31,22 @@ export default {
     const showDetails = ref(true);
 
     const taskFields = computed(() => {
+      var dueOnDate = null;
+      var creationDate = new Date(task.created_at).toLocaleString();
+
+      const relativeCreationDate = relativeDate(task.created_at);
+
+      if (relativeCreationDate[0] != "0") creationDate += ` , ${relativeCreationDate}`;
+
+      if (task.due_on) {
+        const relativeDueDate = relativeDate(task.due_on);
+        dueOnDate = `${task.due_on} , ${relativeDueDate}`;
+      }
+
       const fields = {
-        "Due on": task.due_on || null,
+        "Due on": dueOnDate,
         Notes: task.notes || null,
-        "Created at": new Date(task.created_at).toLocaleString(),
+        "Created at": creationDate,
       };
 
       const setFields = Object.fromEntries(Object.entries(fields).filter(([_, v]) => v != null));

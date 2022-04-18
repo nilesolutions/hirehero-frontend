@@ -15,4 +15,11 @@ function validateFileSizes(files, size) {
   return true;
 }
 
-export { generateWeekRange, validateFileSizes };
+function relativeDate(value) {
+  const date = new Date(value);
+  const deltaDays = (date.getTime() - Date.now()) / (1000 * 3600 * 24);
+  const formatter = new Intl.RelativeTimeFormat();
+  return formatter.format(Math.round(deltaDays), "days");
+}
+
+export { generateWeekRange, validateFileSizes, relativeDate };

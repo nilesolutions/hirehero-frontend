@@ -41,7 +41,7 @@
                       type="email"
                       outlined
                       label="Email"
-                      placeholder="email"
+                      placeholder="Email"
                       hide-details="auto"
                       class="mb-6"
                     ></v-text-field>

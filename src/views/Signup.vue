@@ -108,9 +108,12 @@
                       {{ state.errorMsg }}
                     </v-card-text>
 
-                    <v-card-text v-show="state.accCreated" class="text-center my-2">
+                    <v-card-text
+                      v-show="state.accCreated"
+                      class="text-center pt-2 pb-2 text-decoration-underline"
+                    >
                       <router-link to="/login" class="border success--text">
-                        Account created successfully, go to login.
+                        Account created successfully. Head to login.
                       </router-link>
                     </v-card-text>
                   </v-form>
@@ -146,6 +149,7 @@ import themeConfig from "@themeConfig";
 import axios from "@axios";
 
 export default {
+  name: "Signup",
   setup() {
     const state = reactive({
       isPasswordVisible: false,
@@ -160,8 +164,8 @@ export default {
     });
 
     const accTypeOpts = [
-      { value: "client", text: "Get Services" },
-      { value: "va", text: "Provide Services" },
+      { value: "client", text: "Hire a virtual assistant" },
+      { value: "va", text: "Work as a virtual assistant" },
     ];
 
     async function signup() {
@@ -179,6 +183,13 @@ export default {
         };
 
         await axios.post("/signup", signupData);
+
+        state.username = "";
+        state.email = "";
+        state.password = "";
+        state.confirmPassword = "";
+        state.accType = {};
+
         state.accCreated = true;
       } catch (err) {
         state.errorMsg = err.response.data.message;

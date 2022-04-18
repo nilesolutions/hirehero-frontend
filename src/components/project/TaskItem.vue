@@ -57,8 +57,8 @@ export default {
     const taskUrl = `projects/${projectId}/tasks/${taskId}`;
 
     const colorFromPriority = () => {
-      if (props.task.priority == "high") return "#EB5757";
-      if (props.task.priority == "mid") return "#FFC207";
+      if (props.task.priority == "High") return "#EB5757";
+      if (props.task.priority == "Medium") return "#FFC207";
       return "#30D988";
     };
 

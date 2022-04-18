@@ -8,6 +8,7 @@ const state = reactive({
   isUploadDialogOpen: false,
   isLoadingVideos: false,
   recordedVidUrl: "",
+  clickedVideoUrl: "",
 });
 
 const setVideos = (entries) => {
@@ -29,6 +30,10 @@ const toggleUploadDialog = (val) => (state.isUploadDialogOpen = val);
 const toggleLoading = (val) => (state.isLoadingVideos = val);
 const isCtrlDisabled = computed(() => state.isRecording || state.isUploading);
 const setVidUrl = (val) => (state.recordedVidUrl = val);
+const setClickedVidUrl = (val) => {
+  console.log("Setting url", val);
+  state.clickedVideoUrl = val;
+};
 
 export function useVideos() {
   return {
@@ -45,5 +50,6 @@ export function useVideos() {
     isCtrlDisabled,
 
     setVidUrl,
+    setClickedVidUrl,
   };
 }
