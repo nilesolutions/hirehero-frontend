@@ -29,10 +29,10 @@
     <record-video v-if="state.isRecordDialogOpen"></record-video>
     <upload-video></upload-video>
 
-    <v-card v-if="!state.videos.length">
+    <!-- <v-card v-if="!state.videos.length">
       <v-card-text> No videos available... <br /> </v-card-text>
-    </v-card>
-    <videos-grid v-else></videos-grid>
+    </v-card> -->
+    <videos-grid></videos-grid>
   </div>
 </template>
 
@@ -68,6 +68,7 @@ export default {
       try {
         toggleLoading(true);
         var response = await axios.get("/media");
+        console.log(response);
         setVideos(response.data);
       } catch (err) {
         console.log(err);

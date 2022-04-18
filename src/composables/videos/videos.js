@@ -16,11 +16,11 @@ const setVideos = (entries) => {
 };
 
 const addVideo = (video) => {
-  state.videos = [video, ...state.videos];
+  state.videos.myVideos = [video, ...state.videos.myVideos];
 };
 
 const deleteVideo = (videoId) => {
-  state.videos = state.videos.filter((t) => t.id != videoId);
+  state.videos.myVideos = state.videos.myVideos.filter((t) => t.id != videoId);
 };
 
 const toggleUpload = (val) => (state.isUploading = val);
@@ -30,10 +30,7 @@ const toggleUploadDialog = (val) => (state.isUploadDialogOpen = val);
 const toggleLoading = (val) => (state.isLoadingVideos = val);
 const isCtrlDisabled = computed(() => state.isRecording || state.isUploading);
 const setVidUrl = (val) => (state.recordedVidUrl = val);
-const setClickedVidUrl = (val) => {
-  console.log("Setting url", val);
-  state.clickedVideoUrl = val;
-};
+const setClickedVidUrl = (val) => (state.clickedVideoUrl = val);
 
 export function useVideos() {
   return {

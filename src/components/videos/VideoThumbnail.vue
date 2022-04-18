@@ -8,7 +8,7 @@
     ></video>
 
     <v-btn
-      v-if="userType == 'client'"
+      v-if="userId == video.user_id"
       @click="del(video.id)"
       absolute
       top
@@ -22,26 +22,51 @@
     </v-btn>
 
     <v-card-text class="mt-2 black--text">{{ video.title || "No Title" }}</v-card-text>
+    <v-card-actions>
+      <v-btn small icon elevation="2" @click="copyUrl">
+        <v-icon small>{{ icons.mdiContentCopy }}</v-icon>
+      </v-btn>
+      <v-btn small icon elevation="2" @click="openInTab">
+        <v-icon small>{{ icons.mdiOpenInNew }}</v-icon>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import axios from "@axios";
+
+import { mdiDelete, mdiContentCopy, mdiOpenInNew } from "@mdi/js";
+
 import { reactive } from "@vue/composition-api";
-import { mdiDelete } from "@mdi/js";
 import { useVideos } from "@/composables/videos/videos";
 import { useUser } from "@/composables/user/user";
 
 export default {
   name: "VideoThumbnail",
   props: { video: Object },
-  setup() {
-    const { userType } = useUser();
+  setup({ video }) {
+    const { userType, userId } = useUser();
     const { deleteVideo, setClickedVidUrl } = useVideos();
 
     const state = reactive({
       isDeleting: false,
     });
+
+    function openInTab() {
+      window.open(video.url, "_blank");
+    }
+
+    function copyUrl() {
+      navigator.clipboard
+        .writeText(video.url)
+        .then(() => {
+          alert("Copied to clipboard");
+        })
+        .catch(() => {
+          alert("Failed to copy");
+        });
+    }
 
     async function del(videoId) {
       const confirm = await this.$confirm("Delete video", { title: "Warning" });
@@ -60,11 +85,17 @@ export default {
     return {
       state,
       userType,
+      userId,
+
       del,
       setClickedVidUrl,
+      openInTab,
+      copyUrl,
 
       icons: {
         mdiDelete,
+        mdiContentCopy,
+        mdiOpenInNew,
       },
     };
   },
