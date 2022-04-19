@@ -74,7 +74,7 @@ const videoCallEvents = [
   },
   {
     name: "client-call-end",
-    handler: () => endCall(),
+    handler: (event) => endCall(event),
   },
   {
     name: "client-candidate",

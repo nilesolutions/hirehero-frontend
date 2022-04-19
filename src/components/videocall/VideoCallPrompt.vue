@@ -11,7 +11,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn @click="answerCall">Accept</v-btn>
-        <v-btn @click="handleCallTermination">Reject</v-btn>
+        <v-btn @click="handleCallTermination('Call Rejected')">Reject</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

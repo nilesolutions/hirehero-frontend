@@ -93,7 +93,7 @@ async function readyMediaStream() {
   } catch (err) {
     console.log(err);
     alert("Please check camera & mic permissions");
-    handleCallTermination();
+    handleCallTermination("Other party failed to connect");
     throw err;
   }
 }
@@ -193,13 +193,14 @@ async function answerCall() {
   }
 }
 
-function handleCallTermination() {
-  debugActiveChannels();
-  triggerEvent(peerChannel.value, "client-call-end", {});
+function handleCallTermination(message) {
+  triggerEvent(peerChannel.value, "client-call-end", {
+    message,
+  });
   endCall();
 }
 
-async function endCall() {
+async function endCall(event) {
   state.isInCall = false;
   state.isBeingCalled = false;
 
@@ -207,8 +208,18 @@ async function endCall() {
   initRTC();
 
   state.incomingCallRequest = {};
-  localVideoPreview.value.srcObject = null;
-  remoteVideoPreview.value.srcObject = null;
+
+  if (localVideoPreview.value) {
+    localVideoPreview.value.srcObject = null;
+  }
+
+  if (remoteVideoPreview.value) {
+    remoteVideoPreview.value.srcObject = null;
+  }
+
+  if (event?.message) {
+    alert(event.message);
+  }
 }
 
 export function useVideoCall() {

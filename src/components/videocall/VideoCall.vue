@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title class="d-flex flex-row align-center">
           <span>Call</span>
-          <v-btn class="ml-auto" icon @click="handleCallTermination">
+          <v-btn class="ml-auto" icon @click="handleCallTermination('Call Closed')">
             <v-icon>{{ icons.mdiClose }}</v-icon>
           </v-btn>
         </v-card-title>
@@ -26,6 +26,16 @@
               {{ vidCallState.isCamEnabled ? icons.mdiCamera : icons.mdiCameraOff }}
             </v-icon>
           </v-btn>
+
+          <v-btn
+            rounded
+            icon
+            outlined
+            color="warning"
+            @click="handleCallTermination('Call Closed')"
+          >
+            <v-icon>{{ icons.mdiPhoneHangup }}</v-icon>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -33,8 +43,18 @@
 </template>
 
 <script>
-import { mdiClose, mdiMicrophone, mdiMicrophoneOff, mdiCamera, mdiCameraOff } from "@mdi/js";
+import { useUser } from "@/composables/user/user";
 import { useVideoCall } from "@/composables/chat/videocall";
+import { useMessages } from "@/composables/chat/messages";
+
+import {
+  mdiClose,
+  mdiMicrophone,
+  mdiMicrophoneOff,
+  mdiCamera,
+  mdiCameraOff,
+  mdiPhoneHangup,
+} from "@mdi/js";
 export default {
   name: "VideoCall",
   setup() {
@@ -47,6 +67,9 @@ export default {
       state: vidCallState,
     } = useVideoCall();
 
+    const { userName } = useUser();
+    const { associatedUser } = useMessages();
+
     return {
       handleCallTermination,
       vidCallState,
@@ -57,12 +80,16 @@ export default {
       localVideoPreview,
       remoteVideoPreview,
 
+      userName,
+      associatedUser,
+
       icons: {
         mdiClose,
         mdiMicrophone,
         mdiMicrophoneOff,
         mdiCamera,
         mdiCameraOff,
+        mdiPhoneHangup,
       },
     };
   },
@@ -80,5 +107,6 @@ export default {
 .video-preview {
   /* height: 200px;
   width: 200px; */
+  border-radius: 6px;
 }
 </style>
