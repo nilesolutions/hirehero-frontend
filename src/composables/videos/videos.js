@@ -23,6 +23,11 @@ const deleteVideo = (videoId) => {
   state.videos.myVideos = state.videos.myVideos.filter((t) => t.id != videoId);
 };
 
+const activeVideo = computed(() => {
+  const allVideos = [...state.videos.myVideos, ...state.videos.associateVideos];
+  return allVideos.find((video) => video.url == state.clickedVideoUrl);
+});
+
 const toggleUpload = (val) => (state.isUploading = val);
 const toggleRecording = (val) => (state.isRecording = val);
 const toggleRecordDialog = (val) => (state.isRecordDialogOpen = val);
@@ -48,5 +53,6 @@ export function useVideos() {
 
     setVidUrl,
     setClickedVidUrl,
+    activeVideo,
   };
 }

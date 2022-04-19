@@ -151,4 +151,10 @@ export default {
   color: white;
   background-color: #4895d8bb;
 }
+
+@media (max-width: 768px) {
+  .dashboard__content {
+    padding: 0.5rem 1rem;
+  }
+}
 </style>

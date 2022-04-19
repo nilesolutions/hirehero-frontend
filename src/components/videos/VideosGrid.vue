@@ -17,7 +17,14 @@
     </div>
 
     <v-dialog v-model="isViewingVideo" @click:outside="setClickedVidUrl('')">
-      <v-card class="video-player-container p-2 d-flex flex-column align-center">
+      <v-card class="video-player-container p-2 d-flex flex-column">
+        <v-card-title class="d-flex flex-row">
+          <span>{{ activeVideoTitle }}</span>
+
+          <v-btn class="ml-auto" icon @click="setClickedVidUrl('')">
+            <v-icon>{{ icons.mdiClose }}</v-icon>
+          </v-btn>
+        </v-card-title>
         <video class="m-2 video-player" :src="state.clickedVideoUrl" controls></video>
       </v-card>
     </v-dialog>
@@ -30,14 +37,14 @@ import VideoThumbnail from "@/components/videos/VideoThumbnail.vue";
 import { computed } from "@vue/composition-api";
 import { useVideos } from "@/composables/videos/videos";
 
-import { mdiDelete } from "@mdi/js";
+import { mdiDelete, mdiClose } from "@mdi/js";
 import { useUser } from "@/composables/user/user";
 
 export default {
   name: "VideosGrid",
   components: { VideoThumbnail },
   setup() {
-    const { state, setClickedVidUrl } = useVideos();
+    const { state, setClickedVidUrl, activeVideo } = useVideos();
     const { userType } = useUser();
 
     const isViewingVideo = computed(() => {
@@ -45,8 +52,17 @@ export default {
       return false;
     });
 
+    const activeVideoTitle = computed(() => {
+      if (!activeVideo.value) return "";
+      if (!activeVideo.value.title) return "No Title";
+
+      return activeVideo.value.title;
+    });
+
     return {
       state,
+
+      activeVideoTitle,
       isViewingVideo,
       setClickedVidUrl,
 
@@ -54,6 +70,7 @@ export default {
 
       icons: {
         mdiDelete,
+        mdiClose,
       },
     };
   },

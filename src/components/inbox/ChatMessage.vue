@@ -15,17 +15,20 @@
         {{ msgData.message }}
       </p>
 
-      <div v-show="msgAttachments.length" class="message-attachments" :class="msgAlignment">
-        <small class="d-block">Attachments</small>
-        <a
-          class="py-2 px-2 d-block"
-          v-for="attachment in msgAttachments"
-          :key="attachment.url"
-          :href="attachment.url"
-          target="blank"
-        >
-          {{ attachment.name }}
-        </a>
+      <div v-show="imageAttachments.length" class="message-attachments" :class="msgAlignment">
+        <div class="image-attachments d-flex flex-row flex-wrap" v-show="imageAttachments.length">
+          <div v-for="img in imageAttachments" :key="img.id" class="image-attachment">
+            <a :href="img.url" target="_blank">
+              <img :src="img.url" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="audio-attachments" v-show="audioAttachments.length">
+        <div class="audio-attachment" v-for="audio in audioAttachments" :key="audio.id">
+          <audio :src="audio.url" controls></audio>
+        </div>
       </div>
 
       <div v-if="showControls" class="message-controls">
@@ -61,7 +64,7 @@ import axios from "@axios";
 import { reactive } from "@vue/composition-api";
 import { useUser } from "@/composables/user/user";
 import { mdiTrashCanOutline } from "@mdi/js";
-import { computed } from "@vue/composition-api";
+import { computed, onMounted, nextTick } from "@vue/composition-api";
 import { useMessages } from "@/composables/chat/messages";
 
 export default {
@@ -94,6 +97,23 @@ export default {
       return new Date(msgData.created_at).toLocaleString();
     };
 
+    const hasAttachments = () => {
+      if (msgData.files) return true;
+      return false;
+    };
+
+    const imageAttachments = () => {
+      if (!msgData.files) return [];
+      const attachments = JSON.parse(msgData.files);
+      return attachments.filter((attachment) => attachment.type == "image");
+    };
+
+    const audioAttachments = () => {
+      if (!msgData.files) return [];
+      const attachments = JSON.parse(msgData.files);
+      return attachments.filter((attachment) => attachment.type == "audio");
+    };
+
     const extractAttachments = () => {
       if (!msgData.files) return [];
       return JSON.parse(msgData.files);
@@ -106,6 +126,14 @@ export default {
       } catch (err) {}
     }
 
+    onMounted(() => {
+      console.log("Mounted");
+
+      nextTick(() => {
+        console.log("All done");
+      });
+    });
+
     return {
       state,
       showControls,
@@ -114,6 +142,10 @@ export default {
       msgAlignment: resolveAlignment(),
       msgArrowDirection: resolveArrow(),
       msgTime: msgTime(),
+
+      hasAttachments: hasAttachments(),
+      imageAttachments: imageAttachments(),
+      audioAttachments: audioAttachments(),
       msgAttachments: extractAttachments(),
 
       icons: {
@@ -196,6 +228,16 @@ export default {
 
 .message-content__date {
   display: inline-block;
+}
+
+.image-attachment img {
+  margin-right: 0.25rem;
+  max-width: 100%;
+  max-height: 75px;
+}
+
+.audio-attachment audio {
+  max-width: 100%;
 }
 
 .message-controls {
