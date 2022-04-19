@@ -4,7 +4,7 @@
       <v-card-title>
         <span>Recent Tasks</span>
         <v-spacer></v-spacer>
-        <router-link to="projects"> See detail </router-link>
+        <router-link to="projects"> See Details </router-link>
       </v-card-title>
 
       <v-card-text>

@@ -14,18 +14,25 @@
       </v-btn>
     </form>
 
-    <div class="d-flex flex-row align-center justify-center mt-3">
-      <div class="d-flex flex-row align-center audio-recorder">
-        <v-btn @click="toggleRecording" icon small class="mr-2">
+    <div class="d-flex flex-column mt-3">
+      <label for="" class="mb-2">Record a voice note</label>
+      <div class="d-flex flex-row flex-wrap align-center audio-recorder">
+        <v-btn @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
             {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
           </v-icon>
+          {{ state.isRecording ? "Stop" : "Start" }} Recording
         </v-btn>
+
         <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
-        <v-btn v-show="state.previewUrl" @click="clearRecording" icon>
+
+        <v-btn v-show="state.previewUrl" small @click="clearRecording">
           <v-icon>{{ icons.mdiDelete }}</v-icon>
+          Clear Note
         </v-btn>
       </div>
+
+      <label for="" class="mb-2 mt-2">Attach files</label>
 
       <v-file-input
         v-model="state.files"

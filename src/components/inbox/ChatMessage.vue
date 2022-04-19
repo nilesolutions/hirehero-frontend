@@ -15,7 +15,11 @@
         {{ msgData.message }}
       </p>
 
-      <div v-show="imageAttachments.length" class="message-attachments" :class="msgAlignment">
+      <div
+        v-show="imageAttachments.length || normalAttachments.length"
+        class="message-attachments"
+        :class="msgAlignment"
+      >
         <div class="image-attachments d-flex flex-row flex-wrap" v-show="imageAttachments.length">
           <div v-for="img in imageAttachments" :key="img.id" class="image-attachment">
             <a :href="img.url" target="_blank">
@@ -23,6 +27,16 @@
             </a>
           </div>
         </div>
+
+        <a
+          class="py-2 px-2 d-block mb-1"
+          v-for="attachment in normalAttachments"
+          :key="attachment.url"
+          :href="attachment.url"
+          target="blank"
+        >
+          {{ attachment.name }}
+        </a>
       </div>
 
       <div class="audio-attachments" v-show="audioAttachments.length">
@@ -114,6 +128,14 @@ export default {
       return attachments.filter((attachment) => attachment.type == "audio");
     };
 
+    const normalAttachments = () => {
+      if (!msgData.files) return [];
+      const attachments = JSON.parse(msgData.files);
+      return attachments.filter(
+        (attachment) => attachment.type != "audio" && attachment.type != "image"
+      );
+    };
+
     const extractAttachments = () => {
       if (!msgData.files) return [];
       return JSON.parse(msgData.files);
@@ -126,14 +148,6 @@ export default {
       } catch (err) {}
     }
 
-    onMounted(() => {
-      console.log("Mounted");
-
-      nextTick(() => {
-        console.log("All done");
-      });
-    });
-
     return {
       state,
       showControls,
@@ -144,6 +158,7 @@ export default {
       msgTime: msgTime(),
 
       hasAttachments: hasAttachments(),
+      normalAttachments: normalAttachments(),
       imageAttachments: imageAttachments(),
       audioAttachments: audioAttachments(),
       msgAttachments: extractAttachments(),
