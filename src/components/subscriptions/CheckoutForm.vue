@@ -108,7 +108,7 @@ export default {
     async function initForm() {
       try {
         const { data: paymentIntent } = await axios.post("/subscriptions", {
-          //priceId: subscriptionState.clickedPrice,
+          priceId: subscriptionState.clickedPrice,
         });
 
         subId = paymentIntent.subscriptionId;
