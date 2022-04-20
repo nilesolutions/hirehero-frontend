@@ -4,7 +4,7 @@
       <div class="black--text">Change password</div>
     </div>
 
-    <v-card>
+    <v-card elevation="0">
       <v-card-text>
         <v-text-field
           v-model="state.oldPassword"
@@ -30,10 +30,16 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn :disabled="!canUpdate" @click="updatePassword" color="primary">Change</v-btn>
+        <v-btn
+          :disabled="!canUpdate"
+          @click="updatePassword"
+          :loading="state.isUpdating"
+          color="primary"
+          >Change</v-btn
+        >
       </v-card-actions>
 
-      <v-card-text>
+      <v-card-text class="py-0">
         <v-btn
           @click="state.updateSuccessful = false"
           v-show="state.updateSuccessful"
@@ -46,7 +52,7 @@
         </v-btn>
       </v-card-text>
 
-      <v-card-text>
+      <v-card-text class="py-0">
         <v-btn
           @click="state.updateFailed = false"
           v-show="state.updateFailed"

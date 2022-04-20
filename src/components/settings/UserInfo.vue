@@ -4,7 +4,7 @@
       <div class="black--text">User Info</div>
     </div>
 
-    <v-card :loading="state.isLoading" :disabled="state.isUpdating">
+    <v-card :loading="state.isLoading" :disabled="state.isUpdating" elevation="0">
       <v-card-text>
         <v-text-field
           hide-details=""
@@ -33,7 +33,7 @@
         <v-btn @click="updateInfo" :loading="state.isUpdating" color="primary">Update Info</v-btn>
       </v-card-actions>
 
-      <v-card-text>
+      <v-card-text class="py-0">
         <v-btn v-show="state.updateSuccessful" color="success" class="cursive-font" small>
           Update Successfull
         </v-btn>

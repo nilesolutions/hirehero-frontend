@@ -18,7 +18,7 @@
         </v-btn>
       </v-card-actions>
 
-      <a ref="checkoutLink" href="" target="_blank" style="display: none"></a>
+      <a ref="checkoutLink" href="" style="display: none"></a>
     </v-card>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
   name: "PlanCard",
   props: { plan: Object },
   setup({ plan }) {
-    const { isSubscribed, state: subscriptionState } = useSubscription();
+    const { isSubscribed, state: subscriptionState, setClickedPrice } = useSubscription();
     const state = reactive({
       isLoading: false,
     });
@@ -59,13 +59,17 @@ export default {
     async function checkout() {
       try {
         if (isSubscribed.value) return;
-        state.isLoading = true;
-        const { data: checkoutSession } = await axios.post("/subscriptions", {
-          priceId: plan.price_id,
-        });
 
-        checkoutLink.value.setAttribute("href", checkoutSession.url);
-        checkoutLink.value.click();
+        setClickedPrice(plan.price_id);
+        // state.isLoading = true;
+        // const { data: checkoutSession } = await axios.post("/subscriptions", {
+        //   priceId: plan.price_id,
+        // });
+
+        // console.log(checkoutSession);
+
+        // checkoutLink.value.setAttribute("href", checkoutSession.url);
+        // checkoutLink.value.click();
       } catch (err) {
         console.log(err);
       } finally {

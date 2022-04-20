@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <v-card>
+    <v-card elevation="0">
       <v-card-text>
         <v-text-field
           hide-details=""

@@ -1,3 +1,4 @@
+import '@stripe/stripe-js'
 import '@/plugins/vue-composition-api'
 import '@/styles/styles.scss'
 import '@axios'
