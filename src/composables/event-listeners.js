@@ -1,9 +1,11 @@
 import { useMessages } from "@/composables/chat/messages";
 import { useVideoCall } from "@/composables/chat/videocall";
 import { useNotifications } from "./chat/notifications";
+import { useSubscription } from "./user/subscription";
 
-const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
+const { handleSubUpdate } = useSubscription();
 const { handleNotification } = useNotifications();
+const { addMessage, deleteMessage, setConversation, updateOnlineUsers } = useMessages();
 const { handleIncomingHandshake, handleIceCandidate, endCall, handleCallAnswer, updatePeerStatus } =
   useVideoCall();
 
@@ -89,10 +91,18 @@ const notificationEvents = [
   },
 ];
 
+const subscriptionEvents = [
+  {
+    name: "sub-updated",
+    handler: () => handleSubUpdate(),
+  },
+];
+
 export {
   msgEvents,
   conversationEvents,
   videoCallPresenceEvents,
   videoCallEvents,
   notificationEvents,
+  subscriptionEvents,
 };

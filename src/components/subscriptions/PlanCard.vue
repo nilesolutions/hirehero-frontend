@@ -1,7 +1,9 @@
 <template>
   <div class="col-md-6 col-12">
     <v-card class="d-flex flex-column align-center">
-      <v-card-title class="cursive-font">{{ plan.name }}</v-card-title>
+      <v-card-title class="cursive-font"
+        >{{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}</v-card-title
+      >
 
       <v-card-text class="text-center">{{ planPrice }}</v-card-text>
 
@@ -14,29 +16,27 @@
           outlined
           block
         >
-          {{ isActivePlan ? "Your plan" : "Get it now" }}
+          Get it now
+          <!-- {{ isActivePlan ? "Your plan" : "Get it now" }} -->
         </v-btn>
       </v-card-actions>
-
-      <a ref="checkoutLink" href="" style="display: none"></a>
     </v-card>
   </div>
 </template>
 
 <script>
-import axios from "@axios";
-import { ref, reactive, computed } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
 
 export default {
   name: "PlanCard",
   props: { plan: Object },
   setup({ plan }) {
-    const { isSubscribed, state: subscriptionState, setClickedPrice } = useSubscription();
+    const { isSubscribed, setClickedPrice, activePlan } = useSubscription();
+
     const state = reactive({
       isLoading: false,
     });
-    const checkoutLink = ref(null);
 
     const planPrice = computed(() => {
       const price = plan.amount / 100;
@@ -46,12 +46,12 @@ export default {
 
     const isActivePlan = computed(() => {
       if (!isSubscribed) return false;
-      if (subscriptionState.activePlan.id == plan.id) return true;
+      if (activePlan.value.id == plan.id) return true;
       return false;
     });
 
     const showCheckoutBtn = computed(() => {
-      if (isSubscribed.value && isActivePlan.value) return true;
+      //if (isSubscribed.value && isActivePlan.value) return true;
       if (isSubscribed.value) return false;
       return true;
     });
@@ -61,15 +61,6 @@ export default {
         if (isSubscribed.value) return;
 
         setClickedPrice(plan.price_id);
-        // state.isLoading = true;
-        // const { data: checkoutSession } = await axios.post("/subscriptions", {
-        //   priceId: plan.price_id,
-        // });
-
-        // console.log(checkoutSession);
-
-        // checkoutLink.value.setAttribute("href", checkoutSession.url);
-        // checkoutLink.value.click();
       } catch (err) {
         console.log(err);
       } finally {
@@ -79,12 +70,9 @@ export default {
 
     return {
       state,
-      checkoutLink,
 
-      isSubscribed,
       isActivePlan,
       showCheckoutBtn,
-
       planPrice,
       checkout,
     };

@@ -1,32 +1,32 @@
 <template>
   <div class="dashboard__content">
-    <h2 class="cursive-font black--text mb-2">Subscription Plans</h2>
-
-    <status-message v-if="isStatusOverlayActive"></status-message>
-
-    <div v-if="!isCheckingOut && !state.isLoading">
-      <available-plans></available-plans>
-      <current-plan></current-plan>
-    </div>
-
-    <checkout-form v-else-if="isCheckingOut && !state.isLoading"></checkout-form>
+    <h2 class="cursive-font black--text mb-2">Subscriptions</h2>
 
     <div class="d-flex flex-row justify-center" v-if="state.isLoading">
       <v-progress-circular color="primary" indeterminate></v-progress-circular>
     </div>
+
+    <div v-if="showPlans">
+      <current-plan v-if="isSubscribed"></current-plan>
+      <available-plans></available-plans>
+    </div>
+
+    <checkout-form v-if="showCheckoutForm"></checkout-form>
+    <update-active-plan v-if="showPlanUpdateForm"></update-active-plan>
+    <update-payment-method v-if="showUpdatePaymentForm"></update-payment-method>
   </div>
 </template>
 
 <script>
 import axios from "@axios";
-import { loadStripe } from "@stripe/stripe-js";
 
 import AvailablePlans from "@/components/subscriptions/AvailablePlans.vue";
 import CurrentPlan from "@/components/subscriptions/CurrentPlan.vue";
 import CheckoutForm from "@/components/subscriptions/CheckoutForm.vue";
-import StatusMessage from "@/components/subscriptions/StatusMessage.vue";
+import UpdateActivePlan from "@/components/subscriptions/UpdateActivePlan.vue";
+import UpdatePaymentMethod from "@/components/subscriptions/UpdatePaymentMethod.vue";
 
-import { onMounted, reactive } from "@vue/composition-api";
+import { onMounted, reactive, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
 
 export default {
@@ -35,22 +35,52 @@ export default {
     AvailablePlans,
     CurrentPlan,
     CheckoutForm,
-    StatusMessage,
+    UpdateActivePlan,
+    UpdatePaymentMethod,
   },
   setup() {
-    const { isCheckingOut, setActivePlan, setPlans, setStatusMsg, isStatusOverlayActive } =
+    const { isCheckingOut, setSubInfo, setPlans, isSubscribed, isUpdatingPayment, isUpdatingPlan } =
       useSubscription();
 
     const state = reactive({
       isLoading: true,
-      statusMsg: "",
+    });
+
+    const showPlans = computed(() => {
+      if (state.isLoading || isCheckingOut.value || isUpdatingPayment.value || isUpdatingPlan.value)
+        return false;
+      return true;
+    });
+
+    const showCheckoutForm = computed(() => {
+      if (isCheckingOut.value && !state.isLoading) {
+        return true;
+      }
+
+      return false;
+    });
+
+    const showUpdatePaymentForm = computed(() => {
+      if (isUpdatingPayment.value && !state.isLoading) {
+        return true;
+      }
+
+      return false;
+    });
+
+    const showPlanUpdateForm = computed(() => {
+      if (isUpdatingPlan.value && !state.isLoading) {
+        return true;
+      }
+
+      return false;
     });
 
     onMounted(() => initPage());
 
     async function initPage() {
       try {
-        await Promise.all([fetchActiveSubscription(), fetchPlans(), checkPaymentStatus()]);
+        await Promise.all([fetchActiveSubscription(), fetchPlans()]);
       } catch (err) {
         console.log(err);
       } finally {
@@ -64,41 +94,19 @@ export default {
     }
 
     async function fetchActiveSubscription() {
-      const { data: activePlan } = await axios.get("/subscriptions/");
-      setActivePlan(activePlan);
-    }
-
-    async function checkPaymentStatus() {
-      const clientSecret = new URLSearchParams(window.location.search).get(
-        "payment_intent_client_secret"
-      );
-
-      if (!clientSecret) return;
-
-      const stripe = await loadStripe(process.env.VUE_APP_STRIPE_PK);
-
-      const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setStatusMsg("Payment succeeded!");
-          break;
-        case "processing":
-          setStatusMsg("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setStatusMsg("Your payment was not successful, please try again.");
-          break;
-        default:
-          setStatusMsg("Something went wrong.");
-          break;
-      }
+      const { data: sub } = await axios.get("/subscriptions/");
+      setSubInfo(sub);
     }
 
     return {
       state,
 
-      isCheckingOut,
-      isStatusOverlayActive,
+      showPlans,
+      showCheckoutForm,
+      showPlanUpdateForm,
+      showUpdatePaymentForm,
+
+      isSubscribed,
     };
   },
 };

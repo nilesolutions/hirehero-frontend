@@ -1,6 +1,9 @@
 <template>
-  <div class="d-flex flex-row flex-wrap">
-    <plan-card v-for="plan in plans" :key="plan.priceId" :plan="plan"></plan-card>
+  <div class="mt-4">
+    <h3 class="cursive-font">Available Plans</h3>
+    <div class="d-flex flex-row flex-wrap">
+      <plan-card v-for="plan in plans" :key="plan.priceId" :plan="plan"></plan-card>
+    </div>
   </div>
 </template>
 

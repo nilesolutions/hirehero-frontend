@@ -37,7 +37,7 @@ export default {
     });
 
     const { userId } = useUser();
-    const { subscribeToChannel, debugActiveChannels } = usePusher();
+    const { subscribeToChannel } = usePusher();
     subscribeToChannel(`private-video-call-${userId.value}`, videoCallEvents);
     onMounted(() => fetchAssociatedUser());
 

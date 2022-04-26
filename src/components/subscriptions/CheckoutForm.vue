@@ -18,7 +18,7 @@
       ></v-progress-circular>
     </div>
 
-    <div>
+    <div v-if="!state.initError">
       <v-card-text class="text-center">
         <b>Subscribing to {{ checkoutPlan.name }} </b> <br />
         <b>{{ planPrice }}</b>
@@ -41,6 +41,9 @@
         </form>
       </v-card-text>
     </div>
+    <div class="text-center" v-else>
+      {{ state.initError }}
+    </div>
   </v-card>
 </template>
 
@@ -49,7 +52,7 @@ import axios from "@axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { mdiClose } from "@mdi/js";
 
-import { reactive, onMounted, onUnmounted, computed } from "@vue/composition-api";
+import { reactive, onMounted, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
 
 export default {
@@ -65,6 +68,7 @@ export default {
     const state = reactive({
       isInitting: true,
       isSubmitting: false,
+      initError: "",
       msg: "",
     });
 
@@ -95,7 +99,7 @@ export default {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: process.env.VUE_APP_STRIPE_REDIRECT_URL,
+          return_url: process.env.VUE_APP_STRIPE_REDIRECT_URL + "?type=subscribed",
         },
       });
 
@@ -118,11 +122,15 @@ export default {
           clientSecret: paymentIntent.clientSecret,
         });
         paymentElement = elements.create("payment");
+        paymentElement.on("ready", () => {
+          state.isInitting = false;
+        });
+
         paymentElement.mount("#payment-element");
       } catch (err) {
-        console.log(err);
-      } finally {
+        state.initError = "Error occured while checking out. Please try again later";
         state.isInitting = false;
+        console.log(err);
       }
     }
 
@@ -131,11 +139,9 @@ export default {
     });
 
     async function cancelCheckout() {
-      try {
-        await axios.post("/subscriptions/cancel-checkout", {
-          subId,
-        });
-      } catch (error) {}
+      await axios.post("/subscriptions/cancel-checkout", {
+        subId,
+      });
     }
 
     return {

@@ -1,32 +1,84 @@
+import axios from "@axios";
 import { computed, reactive, readonly } from "@vue/composition-api";
 
 const state = reactive({
-  activePlan: {},
+  subInfo: {},
+  isUpdatingPayment: false,
+  isUpdatingPlan: false,
   clickedPrice: "",
-  statusMsg: "",
   plans: [],
 });
 
-const setActivePlan = (val) => (state.activePlan = val);
+const setSubInfo = (val) => (state.subInfo = val);
 const setClickedPrice = (val) => (state.clickedPrice = val);
 const setPlans = (val) => (state.plans = val);
-const setStatusMsg = (val) => (state.statusMsg = val);
+const setScheduledUpdate = (val) => (state.subInfo.scheduledUpdate = val);
+const togglePaymentMethodUpdate = (val) => (state.isUpdatingPayment = val);
+const toggleActivePlanUpdate = (val) => (state.isUpdatingPlan = val);
 
 const plans = computed(() => state.plans);
 
+// Subscription Getters
 const isSubscribed = computed(() => {
-  if (!Object.keys(state.activePlan).length) return false;
+  if (!Object.keys(state.subInfo).length) return false;
   return true;
 });
 
-const isStatusOverlayActive = computed(() => {
-  if (state.statusMsg) return true;
-  return false;
+const subDetails = computed(() => {
+  if (isSubscribed.value) return state.subInfo.subDetails;
+  return {};
 });
 
+const subscriptionStart = computed(() => {
+  const periodStart = subDetails.value.current_period_start;
+  if (!periodStart) return "";
+
+  const startDate = new Date(periodStart * 1000);
+  return startDate.toLocaleDateString();
+});
+
+const subscriptionEnd = computed(() => {
+  const periodStart = subDetails.value.current_period_start;
+  if (!periodStart) return "";
+
+  const endDate = new Date(periodStart * 1000);
+  endDate.setMonth(endDate.getMonth() + 1);
+
+  return endDate.toLocaleDateString();
+});
+
+// Payment Method Getters
+const paymentMethod = computed(() => {
+  if (isSubscribed.value) return state.subInfo.paymentMethod;
+  return {};
+});
+
+const defaultCardInfo = computed(() => {
+  const card = paymentMethod.value.card;
+  if (!card) return "";
+
+  return `${card.brand} Ending With ${card.last4}`;
+});
+
+// Active Plan Getters
+const activePlan = computed(() => {
+  if (isSubscribed.value) return state.subInfo.activePlan;
+  return {};
+});
+
+const isUpdatingPlan = computed(() => state.isUpdatingPlan);
+
+// Update Forms & Checkout
 const isCheckingOut = computed(() => {
   if (state.clickedPrice) return true;
   return false;
+});
+
+const isUpdatingPayment = computed(() => state.isUpdatingPayment);
+
+const scheduledUpdate = computed(() => {
+  if (!state.subInfo?.scheduledUpdate) return {};
+  return state.subInfo.scheduledUpdate;
 });
 
 const checkoutPlan = computed(() => {
@@ -34,19 +86,49 @@ const checkoutPlan = computed(() => {
   return state.plans.find((plan) => plan.price_id == state.clickedPrice);
 });
 
+const updatePlanInfo = computed(() => {
+  console.log(scheduledUpdate.value);
+  if (!scheduledUpdate.value.updatePlan) return "";
+
+  const plan = scheduledUpdate.value.updatePlan;
+  const { name, amount, interval, currency } = plan;
+  return `${name} (${amount / 100} ${currency.toUpperCase()} / ${interval})`;
+});
+
+async function handleSubUpdate() {
+  const { data: sub } = await axios.get("/subscriptions");
+  setSubInfo(sub);
+}
+
 export function useSubscription() {
   return {
     state: readonly(state),
-    plans,
 
-    setActivePlan,
+    plans,
+    activePlan,
+
+    paymentMethod,
+    defaultCardInfo,
+
+    subDetails,
+    subscriptionStart,
+    subscriptionEnd,
+
+    handleSubUpdate,
+
+    setSubInfo,
     setClickedPrice,
     setPlans,
-    setStatusMsg,
+    setScheduledUpdate,
+    togglePaymentMethodUpdate,
+    toggleActivePlanUpdate,
 
     isSubscribed,
     isCheckingOut,
-    isStatusOverlayActive,
+    isUpdatingPlan,
+    isUpdatingPayment,
     checkoutPlan,
+    scheduledUpdate,
+    updatePlanInfo,
   };
 }

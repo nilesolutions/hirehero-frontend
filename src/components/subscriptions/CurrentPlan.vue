@@ -1,26 +1,48 @@
 <template>
-  <div class="d-flex flex-row mt-4" v-if="isSubscribed">
-    <v-card class="col-md-4 col-12" :loading="state.isCancelling" :disabled="state.isCancelling">
+  <div class="d-flex flex-row mt-4">
+    <v-card class="col-md-6 col-12" :loading="state.isCancelling" :disabled="state.isCancelling">
       <v-card-title class="cursive-font">Your Subscription</v-card-title>
 
       <v-card-text class="d-flex flex-row">
         Current plan:
-        <span class="ml-auto">{{ subscriptionState.activePlan.name }}</span>
+        <span class="ml-auto">{{ activePlan.name }}</span>
       </v-card-text>
 
       <v-card-text class="d-flex flex-row">
         Started on :
-        <span class="ml-auto">{{ planStart }}</span>
+        <span class="ml-auto">{{ subscriptionStart }}</span>
       </v-card-text>
 
       <v-card-text class="d-flex flex-row">
         Ends on :
-        <span class="ml-auto">{{ planEnd }}</span>
+        <span class="ml-auto">{{ subscriptionEnd }}</span>
       </v-card-text>
 
-      <v-btn class="d-block mb-2" small elevation="0">
+      <v-card-text class="d-flex flex-row">
+        Card :
+        <span class="ml-auto text-capitalize">{{ defaultCardInfo }}</span>
+      </v-card-text>
+
+      <v-card-text v-show="updatePlanInfo">
+        <v-alert border="left" dense type="info">
+          <small>
+            Your plan will change to <span class="text-capitalize">{{ updatePlanInfo }}</span> at
+            the end of your current billing period.
+            <br />
+            Head to manage plan to cancel this update.
+          </small>
+        </v-alert>
+      </v-card-text>
+
+      <v-btn class="d-block mb-2" small elevation="0" @click="toggleActivePlanUpdate(true)">
         <b>
-          Change plan <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+          Manage plan <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+        </b>
+      </v-btn>
+
+      <v-btn class="d-block mb-2" small elevation="0" @click="togglePaymentMethodUpdate(true)">
+        <b>
+          Update payment method <v-icon>{{ icons.mdiChevronRight }}</v-icon>
         </b>
       </v-btn>
 
@@ -29,39 +51,38 @@
           Cancel subscription <v-icon>{{ icons.mdiChevronRight }}</v-icon>
         </b>
       </v-btn>
-
-      <a ref="portalLink" style="display: none" target="_blank"></a>
     </v-card>
   </div>
 </template>
 
 <script>
 import axios from "@axios";
-import { reactive, computed, ref } from "@vue/composition-api";
+import { reactive } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
 
 import { mdiChevronRight } from "@mdi/js";
 export default {
   name: "CurrentPlan",
   setup() {
-    const { state: subscriptionState, isSubscribed, setActivePlan } = useSubscription();
-    const portalLink = ref(null);
+    const {
+      isSubscribed,
+      setSubInfo,
+      activePlan,
+      toggleActivePlanUpdate,
+
+      subDetails,
+      subscriptionStart,
+      subscriptionEnd,
+      updatePlanInfo,
+
+      defaultCardInfo,
+      togglePaymentMethodUpdate,
+    } = useSubscription();
+
     const state = reactive({
       isCancelOpen: false,
       isCancelling: false,
       isLoading: false,
-    });
-
-    const planStart = computed(() => {
-      const startDate = new Date(subscriptionState.activePlan.current_period_start * 1000);
-      return startDate.toLocaleDateString();
-    });
-
-    const planEnd = computed(() => {
-      const endDate = new Date(subscriptionState.activePlan.current_period_start * 1000);
-      endDate.setMonth(endDate.getMonth() + 1);
-
-      return endDate.toLocaleDateString();
     });
 
     async function cancelSubscription() {
@@ -75,7 +96,7 @@ export default {
       try {
         state.isCancelling = true;
         await axios.delete("/subscriptions");
-        setActivePlan({});
+        setSubInfo({});
       } catch (err) {
         console.log(err);
       } finally {
@@ -86,14 +107,19 @@ export default {
 
     return {
       state,
-      portalLink,
-      subscriptionState,
+      activePlan,
+      subDetails,
+      toggleActivePlanUpdate,
 
       isSubscribed,
-      planStart,
-      planEnd,
+      subscriptionStart,
+      subscriptionEnd,
+      updatePlanInfo,
+
+      defaultCardInfo,
 
       cancelSubscription,
+      togglePaymentMethodUpdate,
 
       icons: {
         mdiChevronRight,

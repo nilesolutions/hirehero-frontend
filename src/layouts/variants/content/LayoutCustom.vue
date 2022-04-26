@@ -1,7 +1,16 @@
 <template>
-  <v-app>
+  <!-- If url contains client secret, show the appropriate message before loading app -->
+  <!-- Message will contain status about the most recent payment/card update -->
+  <div v-if="state.hasSubNotification">
+    <v-app>
+      <subscription-notification-message
+        @close="closeSubNotification"
+      ></subscription-notification-message
+    ></v-app>
+  </div>
+  <v-app v-else>
     <navbar></navbar>
-    <div class="info-bar" v-if="state.isInfoVisible && infoMsg">
+    <div class="info-bar" v-if="state.isInfoVisible && infoMsg && !state.isLoading">
       {{ infoMsg }}
       <v-btn class="ml-auto" x-small icon @click="state.isInfoVisible = false">
         <v-icon x-small color="white">
@@ -16,8 +25,8 @@
 
       <navigation></navigation>
       <slot v-if="!state.isLoading"></slot>
-      <div v-else class="p-2">
-        <v-progress-circular indeterminate></v-progress-circular>
+      <div v-else class="ml-auto mr-auto mt-6">
+        <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </div>
     </div>
   </v-app>
@@ -28,6 +37,7 @@ import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
 
 import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user/user";
@@ -38,6 +48,7 @@ import {
   videoCallEvents,
   videoCallPresenceEvents,
   notificationEvents,
+  subscriptionEvents,
 } from "@/composables/event-listeners";
 
 import axios from "@axios";
@@ -51,14 +62,16 @@ export default {
     Navigation,
     VideoCall,
     VideoCallPrompt,
+    SubscriptionNotificationMessage,
   },
   setup() {
     const state = reactive({
       isLoading: true,
       isInfoVisible: true,
+      hasSubNotification: true,
     });
 
-    const { setActivePlan, isSubscribed } = useSubscription();
+    const { setSubInfo, isSubscribed } = useSubscription();
     const { userType, setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
@@ -66,23 +79,29 @@ export default {
 
     var videoCallChannel = `presence-video-call-`;
     var notificationsChannel = `private-notifications-`;
+    var privateUserChannel = `private-user-`;
 
     async function initApp() {
       try {
-        const { data: userData } = await axios.get("/users/me");
-        const { data: fetchedAssocUser } = await axios.get("/users/associate");
-        const { data: notifications } = await axios.get("/conversations/notifications");
-        const { data: activePlan } = await axios.get("/subscriptions/");
+        state.isLoading = true;
+        const [user, associate, notifications, sub] = await Promise.all([
+          axios.get("/users/me"),
+          axios.get("/users/associate"),
+          axios.get("/conversations/notifications"),
+          axios.get("/subscriptions/"),
+        ]);
 
-        setUserData(userData);
-        setAssociatedUser(fetchedAssocUser);
-        setNotification(notifications);
-        setActivePlan(activePlan);
+        setUserData(user.data);
+        setAssociatedUser(associate.data);
+        setNotification(notifications.data);
+        setSubInfo(sub.data);
 
-        videoCallChannel += userData.id;
-        notificationsChannel += userData.id;
+        videoCallChannel += user.data.id;
+        privateUserChannel += user.data.id;
+        notificationsChannel += user.data.id;
 
         subscribeToChannel(videoCallChannel, videoCallEvents);
+        subscribeToChannel(privateUserChannel, subscriptionEvents);
         subscribeToChannel(notificationsChannel, notificationEvents);
 
         if (associatedUser) {
@@ -98,9 +117,24 @@ export default {
       }
     }
 
-    onMounted(() => initApp());
+    onMounted(() => {
+      const searchParams = new URLSearchParams(window.location.search);
+
+      if (
+        !searchParams.get("payment_intent_client_secret") &&
+        !searchParams.get("setup_intent_client_secret")
+      )
+        closeSubNotification();
+    });
+
+    function closeSubNotification() {
+      state.hasSubNotification = false;
+      initApp();
+    }
+
     onUnmounted(() => {
       unsubscribeFromChannel(videoCallChannel);
+      unsubscribeFromChannel(privateUserChannel);
       unsubscribeFromChannel(notificationsChannel);
     });
 
@@ -120,6 +154,7 @@ export default {
     return {
       state,
       infoMsg,
+      closeSubNotification,
 
       icons: {
         mdiClose,
