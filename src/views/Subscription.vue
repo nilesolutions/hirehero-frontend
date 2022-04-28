@@ -95,7 +95,6 @@ export default {
 
     async function fetchActiveSubscription() {
       const { data: sub } = await axios.get("/subscriptions/");
-      console.log(sub);
       setSubInfo(sub);
     }
 

@@ -35,6 +35,17 @@
         </v-card>
       </div>
     </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="section-heading green-heading">Overdue</div>
+
+      <div class="tasks-column">
+        <task-item v-for="task in overDueTasks" :key="task.gid" :task="task"></task-item>
+        <v-card>
+          <v-card-text v-show="!overDueTasks.length">Nothing to show...</v-card-text>
+        </v-card>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,7 +60,8 @@ export default {
   name: "TasksView",
   components: { TaskItem },
   setup() {
-    const { setTasks, setActiveTaskId, doneTasks, unfinishedTasks, dueSoonTasks } = useTasks();
+    const { setTasks, setActiveTaskId, doneTasks, unfinishedTasks, dueSoonTasks, overDueTasks } =
+      useTasks();
     const { routeParams } = useRouter();
     const isLoading = ref(true);
 
@@ -74,6 +86,7 @@ export default {
       doneTasks,
       unfinishedTasks,
       dueSoonTasks,
+      overDueTasks,
 
       isLoading,
     };

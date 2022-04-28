@@ -2,20 +2,22 @@
   <div class="dashboard__content">
     <h2 class="cursive-font black--text mb-2">Settings</h2>
 
-    <v-tabs background-color="transparent" v-model="activeTab">
+    <account-management></account-management>
+
+    <!-- <v-tabs background-color="transparent" v-model="activeTab">
       <v-tab>Account</v-tab>
       <v-tab>Subscription</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="activeTab">
       <v-tab-item class="px-2 py-2">
-        <account-management></account-management>
+        
       </v-tab-item>
 
       <v-tab-item>
         <subscription-management></subscription-management>
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> -->
   </div>
 </template>
 

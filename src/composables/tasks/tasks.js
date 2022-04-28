@@ -42,6 +42,7 @@ const unfinishedTasks = computed(() => {
     if (task.completed) return false;
 
     const dueDate = new Date(task.due_on);
+    if (dueDate < today) return false;
     if (Math.abs(dueDate - today) > dueSoonThreshold) return true;
   });
   return unfinished;
@@ -59,6 +60,20 @@ const dueSoonTasks = computed(() => {
   });
 
   return dueSoon;
+});
+
+const overDueTasks = computed(() => {
+  const today = new Date();
+
+  const overDue = tasks.value.filter((task) => {
+    if (!task.due_on) return false;
+    if (task.completed) return false;
+
+    const dueDate = new Date(task.due_on);
+    if (dueDate < today) return true;
+  });
+
+  return overDue;
 });
 
 const activeTask = computed(() => tasks.value.find((t) => t.id == activeTaskId.value));
@@ -83,5 +98,6 @@ export function useTasks() {
     doneTasks,
     unfinishedTasks,
     dueSoonTasks,
+    overDueTasks,
   };
 }

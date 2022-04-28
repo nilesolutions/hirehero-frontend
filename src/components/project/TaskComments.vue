@@ -24,6 +24,7 @@
       </form>
     </v-card-text>
 
+    <v-card-text v-show="!comments.length">No comments</v-card-text>
     <v-expand-transition>
       <div v-show="state.showComments">
         <comment-line
