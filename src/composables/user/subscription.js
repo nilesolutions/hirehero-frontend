@@ -7,20 +7,32 @@ const state = reactive({
   isUpdatingPlan: false,
   clickedPrice: "",
   plans: [],
+  isRetryingPayment: false,
+  isRemovingCard: false,
 });
 
 const setSubInfo = (val) => (state.subInfo = val);
 const setClickedPrice = (val) => (state.clickedPrice = val);
 const setPlans = (val) => (state.plans = val);
 const setScheduledUpdate = (val) => (state.subInfo.scheduledUpdate = val);
+const setPaymentMethod = (val) => (state.subInfo.paymentMethod = val);
+
 const togglePaymentMethodUpdate = (val) => (state.isUpdatingPayment = val);
 const toggleActivePlanUpdate = (val) => (state.isUpdatingPlan = val);
+const toggleIsRetryingPayment = (val) => (state.isRetryingPayment = val);
+const toggleIsRemovingCard = (val) => (state.isRemovingCard = val);
 
 const plans = computed(() => state.plans);
 
 // Subscription Getters
 const isSubscribed = computed(() => {
   if (!Object.keys(state.subInfo).length) return false;
+  return true;
+});
+
+const isSubscriptionActive = computed(() => {
+  if (!isSubscribed.value) return false;
+  if (state.subInfo.subDetails.status != "active") return false;
   return true;
 });
 
@@ -47,6 +59,16 @@ const subscriptionEnd = computed(() => {
   return endDate.toLocaleDateString();
 });
 
+const renewalError = computed(() => {
+  if (!isSubscribed.value || isSubscriptionActive.value) return {};
+  return state.subInfo.renewalErrorStatus;
+});
+
+const hasRenewalError = computed(() => {
+  if (Object.keys(renewalError.value).length) return true;
+  return false;
+});
+
 // Payment Method Getters
 const paymentMethod = computed(() => {
   if (isSubscribed.value) return state.subInfo.paymentMethod;
@@ -55,9 +77,14 @@ const paymentMethod = computed(() => {
 
 const defaultCardInfo = computed(() => {
   const card = paymentMethod.value.card;
-  if (!card) return "";
+  if (!card) return "No Card Attached";
 
   return `${card.brand} Ending With ${card.last4}`;
+});
+
+const hasPaymentMethodAttached = computed(() => {
+  if (Object.keys(paymentMethod.value).length) return true;
+  return false;
 });
 
 // Active Plan Getters
@@ -109,6 +136,7 @@ export function useSubscription() {
 
     paymentMethod,
     defaultCardInfo,
+    hasPaymentMethodAttached,
 
     subDetails,
     subscriptionStart,
@@ -120,13 +148,23 @@ export function useSubscription() {
     setClickedPrice,
     setPlans,
     setScheduledUpdate,
+    setPaymentMethod,
+
     togglePaymentMethodUpdate,
     toggleActivePlanUpdate,
+    toggleIsRetryingPayment,
+    toggleIsRemovingCard,
 
     isSubscribed,
+    isSubscriptionActive,
+
     isCheckingOut,
     isUpdatingPlan,
     isUpdatingPayment,
+
+    hasRenewalError,
+    renewalError,
+
     checkoutPlan,
     scheduledUpdate,
     updatePlanInfo,
