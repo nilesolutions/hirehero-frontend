@@ -15,36 +15,43 @@
     </form>
 
     <div class="d-flex flex-column mt-3">
-      <label for="" class="mb-2">Record a voice note</label>
       <div class="d-flex flex-row flex-wrap align-center audio-recorder">
-        <v-btn @click="toggleRecording" small class="mr-2">
+        <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
             {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
           </v-icon>
-          {{ state.isRecording ? "Stop" : "Start" }} Recording
+          {{ state.isRecording ? "Stop recording" : "Record a voice note" }}
         </v-btn>
 
         <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
 
-        <v-btn v-show="state.previewUrl" small @click="clearRecording">
+        <v-btn v-show="state.previewUrl" class="ml-2" small @click="clearRecording">
           <v-icon>{{ icons.mdiDelete }}</v-icon>
           Clear Note
         </v-btn>
       </div>
 
-      <label for="" class="mb-2 mt-2">Attach files</label>
+      <div class="mt-4">
+        <v-btn small class="mr-2" v-show="!state.files.length" @click="openFilePicker">
+          <v-icon> {{ icons.mdiFile }} </v-icon>
+          Add attachments
+        </v-btn>
 
-      <v-file-input
-        v-model="state.files"
-        :rules="attachmentsValidation"
-        class="pt-0 mt-0"
-        clearable
-        small-chips
-        show-size=""
-        :hide-input="hideFileDetails"
-        multiple
-      >
-      </v-file-input>
+        <v-file-input
+          v-model="state.files"
+          :rules="attachmentsValidation"
+          ref="filePicker"
+          dense
+          outlined
+          label="Add attachments to message"
+          :class="state.files.length ? 'd-flex' : 'd-none'"
+          clearable
+          small-chips
+          show-size=""
+          multiple
+        >
+        </v-file-input>
+      </div>
     </div>
   </v-card-text>
 </template>
@@ -52,7 +59,7 @@
 <script>
 import axios from "@axios";
 import { validateFileSizes } from "@/helpers";
-import { mdiSend, mdiMicrophone, mdiStop, mdiDelete } from "@mdi/js";
+import { mdiSend, mdiMicrophone, mdiStop, mdiDelete, mdiFile } from "@mdi/js";
 import { computed, ref, reactive, onUnmounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/chat/messages";
 
@@ -71,9 +78,17 @@ export default {
     });
 
     const recordingPreview = ref(null);
+    const filePicker = ref(null);
 
     const uploadSizeLimit = 50;
     const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
+
+    function openFilePicker() {
+      const pickerElem = filePicker.value.$el;
+      const button = pickerElem.querySelector("button");
+
+      button.click();
+    }
 
     const canSend = computed(() => {
       if (state.isRecording) return false;
@@ -182,8 +197,10 @@ export default {
       sendMsg,
       canSend,
 
+      filePicker,
       hideFileDetails,
       attachmentsValidation,
+      openFilePicker,
 
       recordingPreview,
       toggleRecording,
@@ -194,6 +211,7 @@ export default {
         mdiDelete,
         mdiMicrophone,
         mdiStop,
+        mdiFile,
       },
     };
   },

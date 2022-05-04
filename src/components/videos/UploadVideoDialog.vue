@@ -6,24 +6,28 @@
     max-width="500"
   >
     <v-card class="d-flex flex-column align-center">
-      <v-card-title>Upload a video</v-card-title>
+      <v-card-title>Upload A Video</v-card-title>
 
-      <v-text-field v-model="state.title" outlined placeholder="Title"></v-text-field>
+      <v-text-field v-model="state.title" outlined placeholder="Video Title" dense></v-text-field>
 
-      <label for="">Choose video</label>
-      <v-file-input
-        v-model="state.file"
-        accept="video/*"
-        label="Video"
-        show-size=""
-        clearable
-        :hide-input="false"
-      ></v-file-input>
+      <label for="">Click below to choose file</label>
+      <v-card-text>
+        <v-file-input
+          v-model="state.file"
+          accept="video/*"
+          label="Video File"
+          placeholder="Click here to choose video"
+          show-size=""
+          outlined
+          clearable
+          dense
+        ></v-file-input>
+      </v-card-text>
 
       <v-card-actions>
         <v-btn
           @click="upload"
-          :disabled="videosState.isUploading"
+          :disabled="videosState.isUploading || canUpload"
           :loading="videosState.isUploading"
           color="primary"
         >
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { ref, reactive } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 import axios from "@axios";
 import { useVideos } from "@/composables/videos/videos";
 
@@ -59,6 +63,11 @@ export default {
     const closeDialog = () => {
       if (!videosState.isUploading) toggleUploadDialog(false);
     };
+
+    const canUpload = computed(() => {
+      if (state.file) return false;
+      return true;
+    });
 
     async function upload() {
       if (!state.file) return;
@@ -90,6 +99,7 @@ export default {
     return {
       state,
       videosState,
+      canUpload,
 
       toggleUploadDialog,
       closeDialog,

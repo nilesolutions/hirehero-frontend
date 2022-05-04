@@ -34,6 +34,7 @@
 
         <v-text-field v-model="state.notes" outlined label="Notes"></v-text-field>
 
+        <label for="">Priority</label>
         <v-select
           full-width
           label="Priority"

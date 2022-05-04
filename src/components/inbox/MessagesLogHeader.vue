@@ -18,7 +18,11 @@
     </div>
 
     <div class="ml-auto">
-      <v-btn small class="cursive-font" :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'">
+      <v-btn
+        small
+        class="white--text cursive-font"
+        :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'"
+      >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
 

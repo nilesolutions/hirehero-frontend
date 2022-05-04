@@ -22,14 +22,17 @@
     </v-btn>
 
     <v-card-text class="mt-2 black--text">{{ video.title || "No Title" }}</v-card-text>
-    <v-card-actions>
-      <v-btn small icon elevation="2" @click="copyUrl">
-        <v-icon small>{{ icons.mdiContentCopy }}</v-icon>
+    <v-card-text class="d-flex flex-column align-start">
+      <v-btn class="mb-2" x-small elevation="2" @click="copyUrl">
+        Copy URL
+        <v-icon class="ml-2" x-small>{{ icons.mdiContentCopy }}</v-icon>
       </v-btn>
-      <v-btn small icon elevation="2" @click="openInTab">
-        <v-icon small>{{ icons.mdiOpenInNew }}</v-icon>
+
+      <v-btn class="mb-2" x-small elevation="2" @click="openInTab">
+        Open in new tab
+        <v-icon class="ml-2" x-small>{{ icons.mdiOpenInNew }}</v-icon>
       </v-btn>
-    </v-card-actions>
+    </v-card-text>
   </v-card>
 </template>
 

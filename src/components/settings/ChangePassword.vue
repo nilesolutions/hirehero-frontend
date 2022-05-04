@@ -1,7 +1,7 @@
 <template>
   <div class="col-12">
     <div class="d-flex flex-row align-center mb-2">
-      <div class="black--text">Change password</div>
+      <div class="black--text">Change Password</div>
     </div>
 
     <v-card elevation="0">

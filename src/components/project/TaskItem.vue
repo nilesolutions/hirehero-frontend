@@ -5,17 +5,7 @@
     </v-card-text>
     <v-card-text class="d-flex flex-row align-center">
       <div>{{ task.name }}</div>
-
-      <!-- <v-btn class="ml-auto" x-small icon @click="toggleStatus" :loading="state.isLoading">
-        <v-icon :color="task.completed ? 'primary' : 'grey'">
-          {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
-        </v-icon>
-      </v-btn> -->
     </v-card-text>
-
-    <!-- <task-details :task="task"></task-details>
-    <task-attachments v-show="task.attachments.length" :parentTask="task"></task-attachments> -->
-    <!-- <task-actions v-if="userType == 'client'" :task="task"></task-actions> -->
   </v-card>
 </template>
 

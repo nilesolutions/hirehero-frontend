@@ -1,15 +1,20 @@
 <template>
   <div class="d-flex col-12">
-    <v-card-title class="d-flex flex-row align-center">
-      <span>{{ task.name }}</span>
+    <v-card-text class="d-flex flex-row align-center">
+      <h2 class="d-block">{{ task.name }}</h2>
       <v-btn class="ml-4" x-small depressed :color="colorFromPriority()">{{ task.priority }}</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn class="ml-auto" icon @click="toggleStatus" :loading="state.isLoading">
-        <v-icon :color="task.completed ? 'primary' : 'grey'">
+
+      <v-btn class="ml-4" small @click="toggleStatus" :loading="state.isLoading">
+        Mark as {{ task.completed ? "Uncomplete" : "Complete" }}
+        <v-icon class="ml-2" small :color="task.completed ? 'primary' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
       </v-btn>
-    </v-card-title>
+
+      <v-btn class="ml-auto" icon @click="setActiveTaskId('')" :disabled="state.isLoading">
+        <v-icon>{{ icons.mdiClose }}</v-icon>
+      </v-btn>
+    </v-card-text>
   </div>
 </template>
 
@@ -18,12 +23,12 @@ import axios from "@axios";
 import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
 import { reactive } from "@vue/composition-api";
-import { mdiCheckboxMarked, mdiCheckboxBlank } from "@mdi/js";
+import { mdiCheckboxMarked, mdiCheckboxBlank, mdiClose } from "@mdi/js";
 
 export default {
   name: "TaskHeader",
   setup() {
-    const { activeTask, updateTask } = useTasks();
+    const { activeTask, updateTask, setActiveTaskId } = useTasks();
     const state = reactive({
       isLoading: false,
     });
@@ -57,9 +62,12 @@ export default {
       colorFromPriority,
       task: activeTask,
       toggleStatus,
+      setActiveTaskId,
+
       icons: {
         mdiCheckboxMarked,
         mdiCheckboxBlank,
+        mdiClose,
       },
     };
   },
