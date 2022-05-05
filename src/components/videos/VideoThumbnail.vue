@@ -39,11 +39,6 @@
         Copy URL
         <v-icon class="ml-2" x-small>{{ icons.mdiContentCopy }}</v-icon>
       </v-btn>
-
-      <v-btn class="mb-2" x-small elevation="2" @click="openInTab">
-        Open in new tab
-        <v-icon class="ml-2" x-small>{{ icons.mdiOpenInNew }}</v-icon>
-      </v-btn>
     </v-card-text>
 
     <v-dialog v-model="state.isEditingTitle" width="fit-content" persistent>

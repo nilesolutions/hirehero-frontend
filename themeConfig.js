@@ -3,7 +3,8 @@ import { mdiCheckboxBlankCircleOutline } from '@mdi/js'
 const themeConfig = {
   app: {
     name: 'HireHeroes',
-    logo: require('@/assets/images/svg/logo.svg'),
+    //logo: require('@/assets/images/svg/logo.svg'),
+    logo: require('@/assets/logos/logo-sm.png'),
     isDark: false,
     isRtl: false,
     contentLayoutNav: 'vertical', // vertical, horizontal

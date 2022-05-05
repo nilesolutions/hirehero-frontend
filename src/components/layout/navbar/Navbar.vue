@@ -10,7 +10,7 @@
         <v-icon>{{ icons.mdiMenu }}</v-icon>
       </v-btn>
       <router-link to="/dashboard">
-        <img class="navbar__logo-img" :src="require('@/assets/images/logo.svg')" alt="" />
+        <img class="navbar__logo-img" :src="require('@/assets/logos/logo-nav.png')" alt="" />
       </router-link>
     </div>
 
@@ -78,11 +78,12 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 35px;
+  height: 25px;
   padding-right: 2rem;
 
   a {
     height: 100%;
+    margin-bottom: 10px;
   }
 
   a img {

@@ -77,7 +77,8 @@ export default {
             to: state.dateRange[1],
           },
         });
-        state.series = [data.completedTasks, data.uncompletedTasks];
+        if (data.tasksCount == 0) state.series = [];
+        else state.series = [data.completedTasks, data.uncompletedTasks];
       } catch (err) {
       } finally {
         state.isLoading = false;
@@ -89,6 +90,9 @@ export default {
       options: {
         legend: { position: "bottom" },
         labels: ["Complete Tasks", "Uncomplete Tasks"],
+        noData: {
+          text: "No data for selected period",
+        },
       },
       fetchProgress,
       icons: {

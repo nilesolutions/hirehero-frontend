@@ -4,7 +4,7 @@
   </div>
   <div class="my-2 d-flex flex-wrap flex-row" v-else>
     <div class="col-12 col-sm-6 col-md-4">
-      <div class="section-heading red-heading">Not done</div>
+      <div class="section-heading yellow-heading">Not done</div>
 
       <div class="tasks-column">
         <task-item v-for="task in unfinishedTasks" :key="task.gid" :task="task"></task-item>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
-      <div class="section-heading green-heading">Overdue</div>
+      <div class="section-heading red-heading">Overdue</div>
 
       <div class="tasks-column">
         <task-item v-for="task in overDueTasks" :key="task.gid" :task="task"></task-item>
@@ -127,5 +127,9 @@ export default {
 
 .blue-heading {
   background: #017efa;
+}
+
+.yellow-heading {
+  background: #e5ce02;
 }
 </style>

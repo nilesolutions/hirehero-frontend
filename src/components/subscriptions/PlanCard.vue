@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-6 col-12">
-    <v-card class="d-flex flex-column align-center">
+    <v-card class="d-flex flex-column align-center" elevation="4">
       <v-card-title class="cursive-font"
         >{{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}</v-card-title
       >
@@ -17,7 +17,6 @@
           block
         >
           Get it now
-          <!-- {{ isActivePlan ? "Your plan" : "Get it now" }} -->
         </v-btn>
       </v-card-actions>
     </v-card>

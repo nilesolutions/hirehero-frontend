@@ -12,7 +12,7 @@
           class="me-3"
         ></v-img>
 
-        <h2 class="text--primary">
+        <h2 class="text--primary mt-3">
           {{ appName }}
         </h2>
       </router-link>

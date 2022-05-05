@@ -2,7 +2,6 @@ import {
   mdiAvTimer,
   mdiBriefcaseOutline,
   mdiCogOutline,
-  mdiCreditCardOutline,
   mdiMessageOutline,
   mdiVideoOutline,
   mdiViewDashboardOutline,
@@ -40,12 +39,6 @@ export default [
   {
     type: "NavigationSubheader",
     subheader: "Personal",
-  },
-  {
-    type: "NavigationItem",
-    title: "Plans",
-    icon: mdiCreditCardOutline,
-    to: "subscription",
   },
   {
     type: "NavigationItem",

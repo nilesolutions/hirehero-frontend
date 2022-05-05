@@ -56,14 +56,6 @@ const routes = [
     },
   },
   {
-    path: "/subscription",
-    name: "subscription",
-    component: () => import("@/views/Subscription.vue"),
-    meta: {
-      layout: "custom",
-    },
-  },
-  {
     path: "/inbox",
     name: "inbox",
     component: () => import("@/views/Inbox.vue"),
