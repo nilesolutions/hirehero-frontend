@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from "@vue/composition-api";
+import { computed, reactive, readonly, set } from "@vue/composition-api";
 
 const state = reactive({
   videos: [],
@@ -17,6 +17,11 @@ const setVideos = (entries) => {
 
 const addVideo = (video) => {
   state.videos.myVideos = [video, ...state.videos.myVideos];
+};
+
+const updateVideo = (newVideo) => {
+  const idx = state.videos.myVideos.findIndex((vid) => vid.id == newVideo.id);
+  set(state.videos.myVideos, idx, newVideo);
 };
 
 const deleteVideo = (videoId) => {
@@ -42,6 +47,7 @@ export function useVideos() {
     state: readonly(state),
     setVideos,
     addVideo,
+    updateVideo,
     deleteVideo,
 
     toggleUpload,

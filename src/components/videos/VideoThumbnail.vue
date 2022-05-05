@@ -1,5 +1,5 @@
 <template>
-  <v-card class="video-card mb-2 mr-2">
+  <v-card class="video-card mb-4 mr-4">
     <video
       @click="setClickedVidUrl(video.url)"
       class="video-thumbnail"
@@ -21,7 +21,19 @@
       <v-icon>{{ icons.mdiDelete }}</v-icon>
     </v-btn>
 
-    <v-card-text class="mt-2 black--text">{{ video.title || "No Title" }}</v-card-text>
+    <v-card-text class="mt-2 black--text d-flex flex-row align-center">
+      <span class="d-block">{{ video.title || "No Title" }}</span>
+      <v-btn
+        class="ml-auto"
+        icon
+        small
+        @click="state.isEditingTitle = true"
+        v-if="userId == video.user_id"
+      >
+        <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
+      </v-btn>
+    </v-card-text>
+
     <v-card-text class="d-flex flex-column align-start">
       <v-btn class="mb-2" x-small elevation="2" @click="copyUrl">
         Copy URL
@@ -33,15 +45,40 @@
         <v-icon class="ml-2" x-small>{{ icons.mdiOpenInNew }}</v-icon>
       </v-btn>
     </v-card-text>
+
+    <v-dialog v-model="state.isEditingTitle" width="fit-content" persistent>
+      <v-card class="d-flex flex-column align-center">
+        <v-card-text>
+          <v-text-field
+            v-model="state.updatedTitle"
+            dense
+            outlined
+            placeholder="Update video title"
+            hide-details=""
+          ></v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn
+            @click="update"
+            :loading="state.isSubmitting"
+            :disabled="!canUpdate || state.isSubmitting"
+            color="primary"
+            >Update</v-btn
+          >
+          <v-btn @click="closeUpdateDialog">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
 import axios from "@axios";
 
-import { mdiDelete, mdiContentCopy, mdiOpenInNew } from "@mdi/js";
+import { mdiDelete, mdiContentCopy, mdiOpenInNew, mdiPencilOutline } from "@mdi/js";
 
-import { reactive } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 import { useVideos } from "@/composables/videos/videos";
 import { useUser } from "@/composables/user/user";
 
@@ -50,10 +87,13 @@ export default {
   props: { video: Object },
   setup({ video }) {
     const { userType, userId } = useUser();
-    const { deleteVideo, setClickedVidUrl } = useVideos();
+    const { updateVideo, deleteVideo, setClickedVidUrl } = useVideos();
 
     const state = reactive({
       isDeleting: false,
+      isEditingTitle: false,
+      isSubmitting: false,
+      updatedTitle: "",
     });
 
     function openInTab() {
@@ -69,6 +109,35 @@ export default {
         .catch(() => {
           alert("Failed to copy");
         });
+    }
+
+    function closeUpdateDialog() {
+      state.isEditingTitle = false;
+      state.updatedTitle = "";
+    }
+
+    const canUpdate = computed(() => {
+      if (!state.updatedTitle.length) return false;
+      return true;
+    });
+
+    async function update() {
+      const videoId = video.id;
+      try {
+        state.isSubmitting = true;
+        const { data: video } = await axios.patch(`/media/${videoId}`, {
+          title: state.updatedTitle,
+        });
+        updateVideo(video);
+      } catch (err) {
+        await this.$confirm("Error while updating video, Please try again later.", {
+          buttonFalseText: "",
+          buttonTrueText: "Confirm",
+        });
+      } finally {
+        state.isSubmitting = false;
+        state.isEditingTitle = false;
+      }
     }
 
     async function del(videoId) {
@@ -95,10 +164,15 @@ export default {
       openInTab,
       copyUrl,
 
+      closeUpdateDialog,
+      canUpdate,
+      update,
+
       icons: {
         mdiDelete,
         mdiContentCopy,
         mdiOpenInNew,
+        mdiPencilOutline,
       },
     };
   },

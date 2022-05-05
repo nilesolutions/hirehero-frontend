@@ -50,6 +50,12 @@
           multiple
         ></v-file-input>
 
+        <v-text-field
+          v-model="state.initialComment"
+          outlined
+          label="Leave a comment"
+        ></v-text-field>
+
         <v-btn
           :loading="state.isLoading"
           :disabled="state.isLoading"
@@ -79,6 +85,7 @@ export default {
       name: "",
       dueOn: "",
       notes: "",
+      initialComment: "",
       priority: "Low",
       attachments: [],
       isLoading: false,
@@ -90,7 +97,7 @@ export default {
       state.dueOn = "";
       state.notes = "";
       state.priority = "Low";
-      state.attachments = [];
+      (state.initialComment = ""), (state.attachments = []);
     };
 
     const uploadSizeLimit = 100;
@@ -128,6 +135,7 @@ export default {
       form.append("due_on", state.dueOn);
       form.append("notes", state.notes);
       form.append("priority", state.priority);
+      form.append("initialComment", state.initialComment);
       for (var attachment of state.attachments) {
         form.append("attachments", attachment);
       }
