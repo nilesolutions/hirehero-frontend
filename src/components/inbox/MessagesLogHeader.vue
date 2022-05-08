@@ -3,9 +3,7 @@
     <div>
       <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
         <v-avatar rounded color="primary">
-          <span class="white--text">
-            {{ msgsState.associatedUser.username[0].toUpperCase() }}
-          </span>
+          <img :src="peerProfilePic" alt="" />
         </v-avatar>
       </v-badge>
     </div>
@@ -38,6 +36,7 @@ import { useMessages } from "@/composables/chat/messages";
 import { mdiPhoneOutline } from "@mdi/js";
 import { reactive, computed } from "@vue/composition-api";
 import { useVideoCall } from "@/composables/chat/videocall";
+import { resolveProfilePic } from "@/helpers";
 
 export default {
   name: "MessagesLogHeader",
@@ -59,6 +58,8 @@ export default {
       vidCallState,
       canStartCall,
       initCall,
+
+      peerProfilePic: resolveProfilePic(msgsState.associatedUser),
 
       icons: {
         mdiPhoneOutline,

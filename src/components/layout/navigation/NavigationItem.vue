@@ -1,5 +1,8 @@
 <template>
-  <li class="navigation__item" :class="isActive ? 'navigation__item-active' : ''">
+  <li
+    class="navigation__item"
+    :class="isActive ? 'navigation__item-active' : 'navigation__item-inactive'"
+  >
     <router-link :to="`/${item.to}`">
       <v-icon color="black" class="navigation__item__icon">
         {{ item.icon }}
@@ -37,7 +40,12 @@ export default {
   padding-bottom: 0.5rem;
 }
 
+.navigation__item-inactive .navigation__item__text {
+  font-weight: 300;
+}
+
 .navigation__item-active .navigation__item__text {
+  // font-weight: bold;
   color: #fff;
 }
 
@@ -50,7 +58,7 @@ export default {
   content: "";
   width: 100%;
   height: 100%;
-  background: #1f70fd;
+  background: #f34c57;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   margin-left: -10px;

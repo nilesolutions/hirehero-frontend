@@ -4,7 +4,7 @@
       <div class="d-flex flex-row align-center" v-on="on" v-bind="attrs">
         <v-badge bottom color="success" overlap offset-x="12" offset-y="12" dot>
           <v-avatar size="40px" color="primary" class="v-avatar-light-bg primary--text">
-            <v-img :src="require('@/assets/images/avatars/1.png')"></v-img>
+            <v-img :src="profilePicture"></v-img>
           </v-avatar>
         </v-badge>
 
@@ -23,7 +23,7 @@
       <div class="pb-3 pt-2">
         <v-badge bottom color="success" overlap offset-x="12" offset-y="12" class="ms-4" dot>
           <v-avatar size="40px" color="primary" class="v-avatar-light-bg primary--text">
-            <v-img :src="require('@/assets/images/avatars/1.png')"></v-img>
+            <v-img :src="profilePicture"></v-img>
           </v-avatar>
         </v-badge>
         <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
@@ -73,7 +73,7 @@ export default {
   setup() {
     const { breakpoint } = useNavigation();
     const { state: notificationsState } = useNotifications();
-    const { userData } = useUser();
+    const { userData, profilePicture } = useUser();
 
     function logout() {
       localStorage.removeItem("accessToken");
@@ -87,6 +87,7 @@ export default {
     return {
       logout,
       userData,
+      profilePicture,
       breakpoint,
       notificationsState,
       goToInbox,

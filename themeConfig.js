@@ -3,7 +3,6 @@ import { mdiCheckboxBlankCircleOutline } from '@mdi/js'
 const themeConfig = {
   app: {
     name: 'HireHeroes',
-    //logo: require('@/assets/images/svg/logo.svg'),
     logo: require('@/assets/logos/logo-sm.png'),
     isDark: false,
     isRtl: false,
@@ -34,7 +33,8 @@ const themeConfig = {
   themes: {
     light: {
       //primary: '#9155FD',
-      primary: '#1F70FD',
+      //primary: '#1F70FD',
+      primary: '#f34c57',
       accent: '#0d6efd',
       secondary: '#8A8D93',
       //success: '#56CA00',

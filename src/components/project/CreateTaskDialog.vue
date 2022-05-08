@@ -4,7 +4,7 @@
       <v-card-title>Add Task</v-card-title>
 
       <v-form @submit.prevent class="mb-4">
-        <v-text-field v-model="state.name" outlined label="Task name" required></v-text-field>
+        <v-text-field v-model="state.name" dense outlined label="Task name" required></v-text-field>
 
         <v-menu
           ref="menu"
@@ -18,6 +18,7 @@
             <v-text-field
               v-model="state.dueOn"
               label="Due on"
+              dense
               outlined
               readonly
               v-bind="attrs"
@@ -27,13 +28,14 @@
           <v-date-picker v-model="state.dueOn" :min="minDate" @change=""></v-date-picker>
         </v-menu>
 
-        <v-text-field v-model="state.notes" outlined label="Notes"></v-text-field>
+        <v-text-field v-model="state.notes" dense outlined label="Notes"></v-text-field>
 
         <label for="">Task Priority</label>
         <v-select
           full-width
           label="Priority"
           placeholder="Priority"
+          dense
           outlined
           v-model="state.priority"
           :items="priorityOptions"
@@ -45,6 +47,7 @@
           v-model="state.attachments"
           :rules="attachmentsValidation"
           show-size=""
+          dense
           outlined
           label="Attachments"
           multiple
@@ -52,6 +55,7 @@
 
         <v-text-field
           v-model="state.initialComment"
+          dense
           outlined
           label="Leave a comment"
         ></v-text-field>

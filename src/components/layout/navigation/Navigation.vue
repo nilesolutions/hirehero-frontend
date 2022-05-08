@@ -60,7 +60,7 @@ export default {
 .navigation {
   padding-top: 2rem;
   overflow: hidden;
-  background-color: #f2f2f2;
+  background-color: #fff;
   transition: width 0.3s ease-in-out;
 }
 

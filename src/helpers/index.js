@@ -22,4 +22,9 @@ function relativeDate(value) {
   return formatter.format(Math.round(deltaDays), "days");
 }
 
-export { generateWeekRange, validateFileSizes, relativeDate };
+function resolveProfilePic(user) {
+  if (!user.profile_picture_url) return require("@/assets/images/default-profile-pic.jpg");
+  return user.profile_picture_url;
+}
+
+export { generateWeekRange, validateFileSizes, relativeDate, resolveProfilePic };

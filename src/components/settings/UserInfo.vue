@@ -4,6 +4,9 @@
       <div class="black--text">User Info</div>
     </div>
 
+    <profile-picture></profile-picture>
+
+    <label for=""><small>Basic Info</small></label>
     <v-card :loading="state.isLoading" :disabled="state.isUpdating" elevation="0">
       <v-card-text>
         <v-text-field
@@ -44,11 +47,13 @@
 
 <script>
 import axios from "@axios";
-import { onMounted, reactive } from "@vue/composition-api";
+import ProfilePicture from "@/components/settings/ProfilePicture.vue";
+import { onMounted, ref, reactive } from "@vue/composition-api";
 import { useUser } from "@/composables/user/user";
 
 export default {
   name: "UserInfo",
+  components: { ProfilePicture },
   setup() {
     const { setUserData, userData } = useUser();
 
