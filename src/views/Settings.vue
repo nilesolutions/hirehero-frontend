@@ -4,12 +4,17 @@
 
     <v-tabs background-color="transparent" v-model="activeTab">
       <v-tab :disabled="!canSwitchTabs">Account</v-tab>
+      <v-tab :disabled="!canSwitchTabs">Security</v-tab>
       <v-tab :disabled="!canSwitchTabs">Subscription</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="activeTab">
-      <v-tab-item key="accountSettings">
+    <v-tabs-items v-model="activeTab" class="setting-tabs">
+      <v-tab-item key="accountSettings" class="account-tab">
         <account-management></account-management>
+      </v-tab-item>
+
+      <v-tab-item key="securitySettings" class="account-tab">
+        <account-security></account-security>
       </v-tab-item>
 
       <v-tab-item key="subscriptionSettings">
@@ -21,6 +26,7 @@
 
 <script>
 import AccountManagement from "@/components/settings/AccountManagement.vue";
+import AccountSecurity from "@/components/settings/AccountSecurity.vue";
 import SubscriptionManagement from "@/components/settings/SubscriptionManagement.vue";
 import Subscription from "@/views/Subscription.vue";
 
@@ -31,6 +37,7 @@ export default {
   name: "Settings",
   components: {
     AccountManagement,
+    AccountSecurity,
     SubscriptionManagement,
     Subscription,
   },
@@ -50,4 +57,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.setting-tabs {
+  background-color: transparent !important;
+}
+
+.account-tab {
+  background-color: #fff;
+  padding: 2rem;
+}
+</style>

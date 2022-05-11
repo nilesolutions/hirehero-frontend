@@ -103,4 +103,25 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.apexcharts-legend .apexcharts-legend-marker {
+  display: none;
+}
+
+.apexcharts-legend .apexcharts-legend-text::before {
+  content: "";
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.apexcharts-legend > div:first-child .apexcharts-legend-text::before {
+  background: #30d988;
+}
+
+.apexcharts-legend > div:last-child .apexcharts-legend-text::before {
+  background: #e5ce02;
+}
+</style>

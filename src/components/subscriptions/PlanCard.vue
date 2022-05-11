@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 col-12">
+  <div class="col-md-4 col-12">
     <v-card class="d-flex flex-column align-center" elevation="4">
       <v-card-title class="cursive-font"
         >{{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}</v-card-title
@@ -12,7 +12,7 @@
           @click="checkout"
           v-show="showCheckoutBtn"
           :loading="state.isLoading"
-          color="success"
+          color="primary"
           outlined
           block
         >

@@ -3,7 +3,7 @@
     <v-progress-circular color="primary" indeterminate></v-progress-circular>
   </div>
   <div class="my-2 d-flex flex-wrap flex-row" v-else>
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <div class="section-heading yellow-heading">Not done</div>
 
       <div class="tasks-column">
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <div class="section-heading blue-heading">Due Soon</div>
 
       <div class="tasks-column">
@@ -25,18 +25,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-4">
-      <div class="section-heading green-heading">Completed</div>
-
-      <div class="tasks-column">
-        <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
-        <v-card>
-          <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
-        </v-card>
-      </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <div class="section-heading red-heading">Overdue</div>
 
       <div class="tasks-column">
@@ -46,15 +35,27 @@
         </v-card>
       </div>
     </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="section-heading green-heading">Completed</div>
+
+      <div class="tasks-column">
+        <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
+        <v-card>
+          <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
+        </v-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted, onBeforeMount, ref } from "@vue/composition-api";
+import axios from "@axios";
+import TaskItem from "@/components/project/TaskItem.vue";
+
 import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
-import TaskItem from "@/components/project/TaskItem.vue";
-import axios from "@axios";
+import { onMounted, onBeforeMount, ref } from "@vue/composition-api";
 
 export default {
   name: "TasksView",
@@ -108,6 +109,8 @@ export default {
   margin-bottom: 1rem;
   align-items: center;
   text-align: center;
+  display: flex;
+  justify-content: center;
   padding: 0.5rem 2rem;
   font-weight: 400;
   font-size: 12px;

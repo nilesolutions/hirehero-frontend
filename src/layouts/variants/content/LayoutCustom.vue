@@ -184,7 +184,7 @@ export default {
   padding: 0.5rem 2rem;
   border-bottom: 1px solid;
   color: white;
-  background-color: #4895d8bb;
+  background-color: #f34c57;
 }
 
 @media (max-width: 768px) {

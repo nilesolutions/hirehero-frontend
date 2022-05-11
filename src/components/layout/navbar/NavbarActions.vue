@@ -2,20 +2,23 @@
   <div class="navbar__actions" v-show="breakpoint != 'sm'">
     <router-link to="/inbox">
       <v-badge overlap :content="notificationsCount" :value="notificationsCount">
-        <v-btn icon outlined elevation="2">
-          <v-icon color="primray">{{ icons.mdiBellOutline }}</v-icon>
-        </v-btn>
+        <div class="tooltip">
+          <span class="tooltiptext">Inbox</span>
+          <v-btn icon outlined elevation="2">
+            <v-icon color="primray">{{ icons.mdiMessageOutline }}</v-icon>
+          </v-btn>
+        </div>
       </v-badge>
     </router-link>
   </div>
 </template>
 
 <script>
-import { mdiBellOutline } from "@mdi/js";
-import { computed } from "@vue/composition-api";
 import { useNotifications } from "@/composables/chat/notifications";
-import { useRouter } from "@/composables/router";
 import { useNavigation } from "@/composables/navigation";
+import { useRouter } from "@/composables/router";
+import { mdiMessageOutline } from "@mdi/js";
+import { computed } from "@vue/composition-api";
 
 export default {
   name: "NavbarActions",
@@ -33,7 +36,7 @@ export default {
     return {
       notificationsCount,
       breakpoint,
-      icons: { mdiBellOutline },
+      icons: { mdiMessageOutline },
     };
   },
 };
@@ -42,5 +45,43 @@ export default {
 <style>
 .navbar__actions {
   margin-left: auto;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  opacity: 0;
+  transition: all 0.3s linear;
+  width: auto;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 15px;
+  border-radius: 6px;
+  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: -30px;
+}
+
+.tooltip .tooltiptext::before {
+  content: "";
+  border: 6px solid transparent;
+  border-bottom: 6px solid #000;
+  display: block;
+  position: absolute;
+  top: -12px;
+}
+
+.tooltip .tooltiptext::before,
+.tooltip .tooltiptext {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip:hover .tooltiptext {
+  opacity: 1;
 }
 </style>
