@@ -8,7 +8,9 @@
       <p v-show="!state.videos.myVideos.length">No videos</p>
     </div>
 
-    <h5 class="mb-3">Your {{ userType == "client" ? "Virtual Assitant's" : "Client's" }} Videos</h5>
+    <h5 class="mb-3">
+      Your {{ userType == "client" ? "Virtual Assistant's" : "Client's" }} Videos
+    </h5>
     <div class="videos-container d-flex flex-row flex-wrap">
       <video-thumbnail v-for="video in state.videos.associateVideos" :key="video.id" :video="video">
       </video-thumbnail>

@@ -2,7 +2,7 @@
   <div class="col-12" v-if="hasAssociateUser">
     <div class="d-flex flex-row align-center mb-2">
       <div class="black--text">
-        Your Assigned {{ userType == "client" ? "Virtual Assissant(s)" : "Client" }}
+        Your Assigned {{ userType == "client" ? "Virtual Assistant(s)" : "Client" }}
       </div>
     </div>
 
