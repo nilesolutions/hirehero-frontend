@@ -5,7 +5,7 @@
     <v-tabs background-color="transparent" v-model="activeTab">
       <v-tab :disabled="!canSwitchTabs">Account</v-tab>
       <v-tab :disabled="!canSwitchTabs">Security</v-tab>
-      <v-tab :disabled="!canSwitchTabs">Subscription</v-tab>
+      <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection">Subscription</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="activeTab" class="setting-tabs">
@@ -17,7 +17,7 @@
         <account-security></account-security>
       </v-tab-item>
 
-      <v-tab-item key="subscriptionSettings">
+      <v-tab-item key="subscriptionSettings" v-if="showSubscriptionSection">
         <subscription></subscription>
       </v-tab-item>
     </v-tabs-items>
@@ -32,6 +32,7 @@ import Subscription from "@/views/Subscription.vue";
 
 import { useSubscription } from "@/composables/user/subscription";
 import { computed } from "@vue/composition-api";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "Settings",
@@ -43,15 +44,22 @@ export default {
   },
   setup() {
     const { isCheckingOut, isUpdatingPlan, isUpdatingPayment } = useSubscription();
+    const { userType } = useUser();
 
     const canSwitchTabs = computed(() => {
       if (isCheckingOut.value || isUpdatingPlan.value || isUpdatingPayment.value) return false;
       return true;
     });
 
+    const showSubscriptionSection = computed(() => {
+      if (userType.value == "client") return true;
+      return false;
+    });
+
     return {
       activeTab: null,
       canSwitchTabs,
+      showSubscriptionSection,
     };
   },
 };

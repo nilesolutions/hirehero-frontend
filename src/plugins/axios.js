@@ -1,6 +1,7 @@
 // axios
 import axios from "axios";
 import Vue from "vue";
+import router from "../router";
 
 const baseURL = process.env.VUE_APP_API_URL;
 
@@ -33,15 +34,9 @@ axiosIns.interceptors.response.use(
     const originalReq = error.config;
 
     if (status == 401) {
-      const refreshUrl = baseURL + "/refresh";
-
-      try {
-        var refreshToken = await axios.post(refreshUrl);
-        console.log(refreshToken);
-      } catch (err) {
-        return Promise.reject("Failed from axios import");
-      }
-      console.log("--------");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userData");
+      router.push({ name: "auth-login" });
     }
 
     return Promise.reject(error);

@@ -10,9 +10,9 @@
         <small class="d-block mt-2">Avatar max size is 5MB</small>
       </div>
 
-      <div class="ml-md-auto">
-        <v-btn small @click="openImgPicker">Update Avatar</v-btn>
-        <v-btn small @click="deleteProfilePic" class="ml-2">Remove Avatar</v-btn>
+      <div class="ml-md-auto d-flex flex-row flex-wrap">
+        <v-btn small @click="openImgPicker" class="mb-2 mb-md-0 mr-2">Update Avatar</v-btn>
+        <v-btn small @click="deleteProfilePic">Remove Avatar</v-btn>
       </div>
 
       <input

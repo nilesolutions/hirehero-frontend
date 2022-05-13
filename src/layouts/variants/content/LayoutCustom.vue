@@ -24,10 +24,12 @@
       <video-call></video-call>
 
       <navigation></navigation>
-      <slot v-if="!state.isLoading"></slot>
-      <div v-else class="ml-auto mr-auto mt-6">
+
+      <div v-if="state.isLoading" class="ml-auto mr-auto mt-6">
         <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </div>
+      <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
+      <slot v-else></slot>
     </div>
   </v-app>
 </template>
@@ -38,6 +40,7 @@ import Navigation from "@/components/layout/navigation/Navigation.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
 import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
+import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
 
 import { usePusher } from "@/composables/pusher";
 import { useUser } from "@/composables/user/user";
@@ -54,6 +57,7 @@ import {
 import axios from "@axios";
 import { mdiClose } from "@mdi/js";
 import { reactive, onMounted, onUnmounted, computed } from "@vue/composition-api";
+import { useRouter } from "@/@core/utils";
 
 export default {
   name: "LayoutCustom",
@@ -63,6 +67,7 @@ export default {
     VideoCall,
     VideoCallPrompt,
     SubscriptionNotificationMessage,
+    SubscriptionPaywall,
   },
   setup() {
     const state = reactive({
@@ -76,6 +81,7 @@ export default {
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
     const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
+    const { route } = useRouter();
 
     var videoCallChannel = `presence-video-call-`;
     var notificationsChannel = `private-notifications-`;
@@ -138,6 +144,13 @@ export default {
       unsubscribeFromChannel(notificationsChannel);
     });
 
+    const showSubPaywall = computed(() => {
+      if (userType.value == "va") return false;
+
+      if (!isSubscribed.value && route.value.name != "settings") return true;
+      return false;
+    });
+
     const infoMsg = computed(() => {
       var msg = [];
 
@@ -145,7 +158,8 @@ export default {
         if (userType.value == "client") msg.push("No VA Assigned");
         else msg.push("No Client Assigned");
       }
-      if (!isSubscribed.value) msg.push("You are not subscribed to a plan");
+      if (!isSubscribed.value && userType.value == "client")
+        msg.push("You are not subscribed to a plan");
 
       if (msg.length) return msg.join(" | ");
       return "";
@@ -154,6 +168,7 @@ export default {
     return {
       state,
       infoMsg,
+      showSubPaywall,
       closeSubNotification,
 
       icons: {

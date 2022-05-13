@@ -1,15 +1,15 @@
 <template>
-  <li
-    class="navigation__item"
-    :class="isActive ? 'navigation__item-active' : 'navigation__item-inactive'"
-  >
-    <router-link :to="`/${item.to}`">
+  <router-link class="navigation__item__wrapper" :to="`/${item.to}`">
+    <li
+      class="navigation__item"
+      :class="isActive ? 'navigation__item-active' : 'navigation__item-inactive'"
+    >
       <v-icon color="black" class="navigation__item__icon">
         {{ item.icon }}
       </v-icon>
       <div class="navigation__item__text">{{ item.title }}</div>
-    </router-link>
-  </li>
+    </li>
+  </router-link>
 </template>
 
 <script>
@@ -38,6 +38,7 @@ export default {
   padding-left: 22px;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  width: 100%;
 }
 
 .navigation__item-inactive .navigation__item__text {
@@ -79,12 +80,11 @@ export default {
   display: none;
 }
 
-.navigation__item a {
+.navigation__item__wrapper {
   display: flex;
   flex-direction: row;
   color: #000 !important;
   text-decoration: none;
-  width: 100%;
 }
 
 .navigation__item__icon {

@@ -1,5 +1,5 @@
 <template>
-  <v-card-actions class="d-flex col-12">
+  <v-card-actions class="d-flex col-12 flex-wrap">
     <v-file-input
       ref="filePicker"
       @change="uploadAttachments"
@@ -10,17 +10,17 @@
       hide-input
     ></v-file-input>
 
-    <v-btn :loading="state.isUploading" @click="openFilePicker">
+    <v-btn class="mb-2" :loading="state.isUploading" @click="openFilePicker">
       <v-icon>{{ icons.mdiAttachment }}</v-icon>
       <span class="ml-2">Attach</span>
     </v-btn>
 
-    <v-btn @click="toggleEdit(true)">
+    <v-btn class="mb-2" @click="toggleEdit(true)">
       <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
       <span class="ml-2">Edit</span>
     </v-btn>
 
-    <v-btn @click="del" :loading="state.isDeleting">
+    <v-btn class="mb-2" @click="del" :loading="state.isDeleting">
       <v-icon>{{ icons.mdiDelete }} </v-icon>
       <span class="ml-2">Delete</span>
     </v-btn>
