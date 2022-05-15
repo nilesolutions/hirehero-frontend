@@ -3,7 +3,7 @@
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Add Task</v-card-title>
 
-      <v-form @submit.prevent class="mb-4">
+      <v-form @submit.prevent class="mb-4 task-form">
         <v-text-field v-model="state.name" dense outlined label="Task name" required></v-text-field>
 
         <v-menu
@@ -76,10 +76,10 @@
 </template>
 
 <script>
-import { validateFileSizes } from "@/helpers";
 import { useTasks } from "@/composables/tasks/tasks";
-import { reactive, computed } from "@vue/composition-api";
+import { validateFileSizes } from "@/helpers";
 import axios from "@axios";
+import { computed, reactive } from "@vue/composition-api";
 
 export default {
   name: "CreateTaskDialog",
@@ -180,4 +180,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.task-form {
+  width: 100%;
+  padding: 0 50px;
+}
+</style>

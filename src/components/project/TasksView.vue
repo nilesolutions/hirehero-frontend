@@ -4,10 +4,15 @@
   </div>
   <div class="my-2 d-flex flex-wrap flex-row" v-else>
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading yellow-heading">Not done</div>
+      <div class="section-heading gray-heading">Not done</div>
 
       <div class="tasks-column">
-        <task-item v-for="task in unfinishedTasks" :key="task.gid" :task="task"></task-item>
+        <task-item
+          v-for="(task, index) in unfinishedTasks"
+          :class="{ 'item-margin': index == unfinishedTasks.length - 1 }"
+          :key="task.gid"
+          :task="task"
+        ></task-item>
         <v-card>
           <v-card-text v-show="!unfinishedTasks.length">Nothing to show...</v-card-text>
         </v-card>
@@ -18,7 +23,12 @@
       <div class="section-heading blue-heading">Due Soon</div>
 
       <div class="tasks-column">
-        <task-item v-for="task in dueSoonTasks" :key="task.gid" :task="task"></task-item>
+        <task-item
+          v-for="(task, index) in dueSoonTasks"
+          :class="{ 'item-margin': index == dueSoonTasks.length - 1 }"
+          :key="task.gid"
+          :task="task"
+        ></task-item>
         <v-card>
           <v-card-text v-show="!dueSoonTasks.length">Nothing to show...</v-card-text>
         </v-card>
@@ -29,7 +39,12 @@
       <div class="section-heading red-heading">Overdue</div>
 
       <div class="tasks-column">
-        <task-item v-for="task in overDueTasks" :key="task.gid" :task="task"></task-item>
+        <task-item
+          v-for="(task, index) in overDueTasks"
+          :class="{ 'item-margin': index == overDueTasks.length - 1 }"
+          :key="task.gid"
+          :task="task"
+        ></task-item>
         <v-card>
           <v-card-text v-show="!overDueTasks.length">Nothing to show...</v-card-text>
         </v-card>
@@ -40,7 +55,12 @@
       <div class="section-heading green-heading">Completed</div>
 
       <div class="tasks-column">
-        <task-item v-for="task in doneTasks" :key="task.gid" :task="task"></task-item>
+        <task-item
+          v-for="(task, index) in doneTasks"
+          :class="{ 'item-margin': index == doneTasks.length - 1 }"
+          :key="task.gid"
+          :task="task"
+        ></task-item>
         <v-card>
           <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
         </v-card>
@@ -50,12 +70,11 @@
 </template>
 
 <script>
-import axios from "@axios";
 import TaskItem from "@/components/project/TaskItem.vue";
-
-import { useTasks } from "@/composables/tasks/tasks";
 import { useRouter } from "@/composables/router";
-import { onMounted, onBeforeMount, ref } from "@vue/composition-api";
+import { useTasks } from "@/composables/tasks/tasks";
+import axios from "@axios";
+import { onBeforeMount, onMounted, ref } from "@vue/composition-api";
 
 export default {
   name: "TasksView",
@@ -134,5 +153,13 @@ export default {
 
 .yellow-heading {
   background: #e5ce02;
+}
+
+.gray-heading {
+  background: #dedede;
+}
+
+.tasks-column .item-margin {
+  margin-bottom: 0 !important;
 }
 </style>

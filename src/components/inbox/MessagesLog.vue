@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import axios from "@axios";
 import ChatMessage from "@/components/inbox/ChatMessage.vue";
 import MessagesLogHeader from "@/components/inbox/MessagesLogHeader.vue";
-import { usePusher } from "@/composables/pusher";
-import { msgEvents } from "@/composables/event-listeners";
 import { useMessages } from "@/composables/chat/messages";
-import { mdiPhoneOutline } from "@mdi/js";
-import { onMounted, reactive, ref, nextTick, onUnmounted } from "@vue/composition-api";
 import { useVideoCall } from "@/composables/chat/videocall";
+import { msgEvents } from "@/composables/event-listeners";
+import { usePusher } from "@/composables/pusher";
+import axios from "@axios";
+import { mdiPhoneOutline } from "@mdi/js";
+import { nextTick, onMounted, onUnmounted, reactive, ref } from "@vue/composition-api";
 
 export default {
   name: "MessagesLog",

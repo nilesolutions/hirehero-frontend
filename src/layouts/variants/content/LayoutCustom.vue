@@ -35,29 +35,27 @@
 </template>
 
 <script>
+import { useRouter } from "@/@core/utils";
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
-import VideoCall from "@/components/videocall/VideoCall.vue";
-import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
 import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
 import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
-
-import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user/user";
-import { useNotifications } from "@/composables/chat/notifications";
+import VideoCall from "@/components/videocall/VideoCall.vue";
+import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
 import { useMessages } from "@/composables/chat/messages";
-import { useSubscription } from "@/composables/user/subscription";
+import { useNotifications } from "@/composables/chat/notifications";
 import {
-  videoCallEvents,
-  videoCallPresenceEvents,
   notificationEvents,
   subscriptionEvents,
+  videoCallEvents,
+  videoCallPresenceEvents,
 } from "@/composables/event-listeners";
-
+import { usePusher } from "@/composables/pusher";
+import { useSubscription } from "@/composables/user/subscription";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiClose } from "@mdi/js";
-import { reactive, onMounted, onUnmounted, computed } from "@vue/composition-api";
-import { useRouter } from "@/@core/utils";
+import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
 
 export default {
   name: "LayoutCustom",

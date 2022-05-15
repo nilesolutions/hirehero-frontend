@@ -45,12 +45,12 @@
 </template>
 
 <script>
+import ScreenshotsPopup from "@/components/activity/ScreenshotsPopup.vue";
+import { useActivity } from "@/composables/activity/activity";
+import { generateWeekRange } from "@/helpers";
 import axios from "@axios";
 import { mdiEye } from "@mdi/js";
-import { generateWeekRange } from "@/helpers";
-import { useActivity } from "@/composables/activity/activity";
-import { reactive, ref, onMounted } from "@vue/composition-api";
-import ScreenshotsPopup from "@/components/activity/ScreenshotsPopup.vue";
+import { onMounted, reactive, ref } from "@vue/composition-api";
 
 export default {
   name: "TimeTracking",

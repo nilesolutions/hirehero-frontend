@@ -74,12 +74,11 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
-import { mdiTrashCanOutline } from "@mdi/js";
-import { computed, onMounted, nextTick } from "@vue/composition-api";
 import { useMessages } from "@/composables/chat/messages";
+import { useUser } from "@/composables/user/user";
+import axios from "@axios";
+import { mdiTrashCanOutline } from "@mdi/js";
+import { computed, reactive } from "@vue/composition-api";
 
 export default {
   name: "ChatMessage",
@@ -187,6 +186,11 @@ export default {
   width: fit-content;
 }
 
+.message-content__text.right-arrow {
+  background-color: #f4f5fa;
+  color: #000;
+}
+
 .message-wrapper {
   position: relative;
   padding: 0.25rem 1rem;
@@ -203,7 +207,7 @@ export default {
   height: 0;
   bottom: 0px;
   right: -5px;
-  border-bottom: 10px solid #1f70fd;
+  border-bottom: 10px solid #f4f5fa;
   border-right: 10px solid transparent;
 }
 

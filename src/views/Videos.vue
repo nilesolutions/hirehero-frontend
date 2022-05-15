@@ -15,8 +15,8 @@
         </v-btn>
 
         <v-btn
-          class="ml-2"
-          color="primary"
+          class="ml-2 video-upload"
+          color="info"
           tile
           @click="toggleUploadDialog(true)"
           :disabled="isCtrlDisabled"
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { onMounted } from "@vue/composition-api";
-import { mdiDelete } from "@mdi/js";
-import VideosGrid from "@/components/videos/VideosGrid.vue";
 import RecordVideo from "@/components/videos/RecordVideo.vue";
 import UploadVideo from "@/components/videos/UploadVideoDialog.vue";
-import { useVideos } from "@/composables/videos/videos";
+import VideosGrid from "@/components/videos/VideosGrid.vue";
 import { useUser } from "@/composables/user/user";
+import { useVideos } from "@/composables/videos/videos";
+import axios from "@axios";
+import { mdiDelete } from "@mdi/js";
+import { onMounted } from "@vue/composition-api";
 
 export default {
   name: "Videos",
@@ -97,4 +97,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.video-upload {
+  background: #017efa;
+}
+</style>

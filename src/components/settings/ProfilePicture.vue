@@ -1,18 +1,18 @@
 <template>
   <div>
-    <label for=""><small>Avatar</small></label>
+    <label for=""><small>Profile Picture</small></label>
 
     <v-card-text class="d-flex flex-row flex-wrap align-center">
       <div class="col-md-6">
         <v-avatar>
           <img :src="profilePicture" alt="" />
         </v-avatar>
-        <small class="d-block mt-2">Avatar max size is 5MB</small>
+        <small class="d-block mt-2">Profile Picture max size is 5MB</small>
       </div>
 
       <div class="ml-md-auto d-flex flex-row flex-wrap">
-        <v-btn small @click="openImgPicker" class="mb-2 mb-md-0 mr-2">Update Avatar</v-btn>
-        <v-btn small @click="deleteProfilePic">Remove Avatar</v-btn>
+        <v-btn small @click="openImgPicker" class="mb-2 mb-md-0 mr-2">Update Profile Picture</v-btn>
+        <v-btn small @click="deleteProfilePic">Remove Profile Picture</v-btn>
       </div>
 
       <input
@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import axios from "@axios";
 import { useUser } from "@/composables/user/user";
-import { computed, ref, reactive } from "@vue/composition-api";
+import axios from "@axios";
+import { computed, reactive, ref } from "@vue/composition-api";
 
 export default {
   name: "ProfilePicture",

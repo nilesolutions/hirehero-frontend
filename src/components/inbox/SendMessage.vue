@@ -7,14 +7,14 @@
         hide-details=""
         outlined
         dense
-        placeholder="Type"
+        placeholder="Type Here"
       ></v-text-field>
       <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" :loading="state.isSending" icon>
         <v-icon>{{ icons.mdiSend }}</v-icon>
       </v-btn>
     </form>
 
-    <div class="d-flex flex-column mt-3">
+    <div class="d-flex mt-3">
       <div class="d-flex flex-row flex-wrap align-center audio-recorder">
         <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
@@ -31,7 +31,7 @@
         </v-btn>
       </div>
 
-      <div class="mt-4">
+      <div class="mt-0">
         <v-btn small class="mr-2" v-show="!state.files.length" @click="openFilePicker">
           <v-icon> {{ icons.mdiFile }} </v-icon>
           Add attachments
@@ -57,11 +57,11 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { validateFileSizes } from "@/helpers";
-import { mdiSend, mdiMicrophone, mdiStop, mdiDelete, mdiFile } from "@mdi/js";
-import { computed, ref, reactive, onUnmounted } from "@vue/composition-api";
 import { useMessages } from "@/composables/chat/messages";
+import { validateFileSizes } from "@/helpers";
+import axios from "@axios";
+import { mdiDelete, mdiFile, mdiMicrophone, mdiSend, mdiStop } from "@mdi/js";
+import { computed, onUnmounted, reactive, ref } from "@vue/composition-api";
 
 export default {
   name: "SendMessage",

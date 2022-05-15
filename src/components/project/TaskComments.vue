@@ -38,16 +38,13 @@
 </template>
 
 <script>
-import axios from "@axios";
-
 import CommentLine from "@/components/project/CommentLine.vue";
-
-import { reactive, onMounted, computed } from "@vue/composition-api";
-import { mdiChevronUp, mdiChevronDown, mdiSend } from "@mdi/js";
-
 import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
 import { useComments } from "@/composables/tasks/commnets";
+import { useTasks } from "@/composables/tasks/tasks";
+import axios from "@axios";
+import { mdiChevronDown, mdiChevronUp, mdiSend } from "@mdi/js";
+import { computed, onMounted, reactive } from "@vue/composition-api";
 
 export default {
   components: { CommentLine },

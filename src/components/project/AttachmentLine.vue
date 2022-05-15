@@ -3,6 +3,9 @@
     <v-list-item-content>
       <small class="black--text">{{ attachment.name }}</small>
     </v-list-item-content>
+    <!-- <div class="preview-attachment">
+      <img v-bind:src="attachment" />
+    </div> -->
     <v-list-item-action>
       <v-btn
         x-small
@@ -23,17 +26,15 @@
 </template>
 
 <script>
+import { useRouter } from "@/composables/router";
+import { useAttachments } from "@/composables/tasks/attachments";
+import { useTasks } from "@/composables/tasks/tasks";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
+import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
+import { reactive } from "@vue/composition-api";
 import axiosDefault from "axios";
 import { saveAs } from "file-saver";
-
-import { useUser } from "@/composables/user/user";
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
-import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
-
-import { reactive } from "@vue/composition-api";
-import { useAttachments } from "@/composables/tasks/attachments";
 
 export default {
   name: "AttachmentLine",

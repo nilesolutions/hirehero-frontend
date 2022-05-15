@@ -1,7 +1,15 @@
 <template>
   <v-card class="mb-4" @click="setActiveTaskId(task.id)">
     <v-card-text>
-      <v-btn small depressed :color="colorFromPriority()"> {{ task.priority }}</v-btn>
+      <v-btn
+        small
+        depressed
+        :color="colorFromPriority()"
+        class="task-priority"
+        :class="task.priority"
+      >
+        {{ task.priority }}</v-btn
+      >
     </v-card-text>
     <v-card-text class="d-flex flex-row align-center">
       <div>{{ task.name }}</div>
@@ -10,22 +18,22 @@
 </template>
 
 <script>
-import axios from "@axios";
 import TaskActions from "@/components/project/TaskActions.vue";
 import TaskAttachments from "@/components/project/TaskAttachments.vue";
 import TaskDetails from "@/components/project/TaskDetails.vue";
-import { reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
 import { useRouter } from "@/composables/router";
 import { useTasks } from "@/composables/tasks/tasks";
+import { useUser } from "@/composables/user/user";
+import axios from "@axios";
 import {
-  mdiDeleteOutline,
-  mdiCheckboxMarked,
   mdiCheckboxBlank,
-  mdiDownload,
+  mdiCheckboxMarked,
   mdiDelete,
+  mdiDeleteOutline,
+  mdiDownload,
   mdiTooltipEdit,
 } from "@mdi/js";
+import { reactive } from "@vue/composition-api";
 
 export default {
   name: "TaskItem",
@@ -87,4 +95,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.task-priority.High {
+  color: #fff;
+}
+</style>
