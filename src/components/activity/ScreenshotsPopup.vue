@@ -3,6 +3,9 @@
     <v-card :loading="isLoading">
       <v-card-title class="cursive-font text-center">
         <span class="d-block text-center"> Details </span>
+        <v-btn @click="setClickedActivityId('')" class="ml-auto" icon>
+          <v-icon>{{ icons.mdiClose }}</v-icon>
+        </v-btn>
       </v-card-title>
       <div v-for="detail in activityDetails" :key="detail.id">
         <v-card-title>Activity Level: {{ detail.activityLevel }} </v-card-title>
@@ -31,6 +34,7 @@
 import axios from "@axios";
 import { useActivity } from "@/composables/activity/activity";
 import { ref, onMounted } from "@vue/composition-api";
+import { mdiClose } from "@mdi/js";
 
 export default {
   name: "ScreenshotsPopup",
@@ -61,6 +65,8 @@ export default {
       isDetailsOpen,
       activityDetails,
       setClickedActivityId,
+
+      icons: { mdiClose },
     };
   },
 };

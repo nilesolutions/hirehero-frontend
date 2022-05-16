@@ -2,10 +2,10 @@
   <v-card-text class="task__comment pt-2 pb-1">
     <div class="d-flex flex-row align-center">
       <v-avatar color="primary" size="40">
-        {{ comment.userName[0] }}
+        <img :src="resolveProfilePic(comment.commenter)" alt="" />
       </v-avatar>
       <div class="ml-2">
-        <span class="d-block">{{ comment.userName }}</span>
+        <span class="d-block">{{ comment.commenter.username }}</span>
         <small class="d-block">{{ commentDate }}</small>
       </div>
 
@@ -75,6 +75,7 @@ import { mdiDeleteOutline, mdiDownload, mdiDotsVertical } from "@mdi/js";
 
 import { reactive, computed } from "@vue/composition-api";
 import { useComments } from "@/composables/tasks/commnets";
+import { resolveProfilePic } from "@/helpers";
 
 export default {
   name: "CommentLine",
@@ -102,7 +103,7 @@ export default {
     });
 
     const showControls = computed(() => {
-      if (userId.value == props.comment.userId) return true;
+      if (userId.value == props.comment.commenter.id) return true;
       return false;
     });
 
@@ -149,6 +150,8 @@ export default {
 
       del,
       saveEdits,
+
+      resolveProfilePic,
 
       icons: {
         mdiDotsVertical,
