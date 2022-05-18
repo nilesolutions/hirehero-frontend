@@ -28,6 +28,7 @@ const updateOnlineUsers = () => {
       id: member.info.id,
       name: member.info.name,
       type: member.info.type,
+      profile_picture_url: member.info.profile_picture_url,
     });
   });
 

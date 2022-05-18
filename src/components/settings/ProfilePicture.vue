@@ -119,16 +119,8 @@ export default {
         state.isUploading = false;
         setProfilePic(data.profile_picture_url);
         state.pickedImg = {};
-        await this.$confirm("Profile picture updated", {
-          buttonTrueText: "Confirm",
-          buttonFalseText: "",
-        });
       } catch (err) {
         state.isUploading = false;
-        await this.$confirm("Profile picture update failed", {
-          buttonTrueText: "Confirm",
-          buttonFalseText: "",
-        });
       }
     }
 

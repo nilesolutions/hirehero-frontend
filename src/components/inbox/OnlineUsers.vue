@@ -11,9 +11,9 @@
         :key="user.id"
       >
         <v-avatar size="30" color="primary">
-          <span class="white--text">{{ user.name[0].toUpperCase() }}</span>
+          <img :src="resolveProfilePic(user)" alt="" />
         </v-avatar>
-        <span class="black--text ml-1">{{ user.name }} {{ user.id == userId ? "(You)" : "" }}</span>
+        <span class="black--text ml-1">{{ user.name }} {{ userIdentityText(user) }}</span>
 
         <v-badge class="ml-auto" color="#30d988" inline dot left>
           <span style="color: #30d988"> Online </span>
@@ -27,15 +27,26 @@
 import { useMessages } from "@/composables/chat/messages";
 import { useUser } from "@/composables/user/user";
 
+import { resolveProfilePic } from "@/helpers";
+
 export default {
   name: "OnlineUsers",
   setup() {
     const { state: msgsState } = useMessages();
     const { userId } = useUser();
 
+    function userIdentityText(user) {
+      if (user.id == userId.value) return "(You)";
+      if (user.type == "admin") return "(Admin)";
+      if (user.type == "va") return "(Virtual Assistant)";
+      if (user.type == "client") return "(Client)";
+    }
+
     return {
       msgsState,
       userId,
+      resolveProfilePic,
+      userIdentityText,
     };
   },
 };
