@@ -186,9 +186,9 @@ export default {
   width: fit-content;
 }
 
-.message-content__text.right-arrow {
+.their-message.message-content__text {
+  color: black;
   background-color: #f4f5fa;
-  color: #000;
 }
 
 .message-wrapper {
@@ -207,7 +207,7 @@ export default {
   height: 0;
   bottom: 0px;
   right: -5px;
-  border-bottom: 10px solid #f4f5fa;
+  border-bottom: 10px solid #1f70fd;
   border-right: 10px solid transparent;
 }
 
@@ -218,7 +218,7 @@ export default {
   height: 0;
   bottom: 0px;
   left: -5px;
-  border-bottom: 10px solid #1f70fd;
+  border-bottom: 10px solid #f4f5fa;
   border-left: 10px solid transparent;
 }
 
