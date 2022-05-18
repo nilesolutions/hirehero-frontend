@@ -186,7 +186,7 @@ export default {
   width: fit-content;
 }
 
-.message-content__text.right-arrow {
+.message-content__text.left-arrow {
   background-color: #f4f5fa;
   color: #000;
 }
@@ -200,7 +200,7 @@ export default {
   background-color: #cccccca2;
 }
 
-.right-arrow::after {
+.left-arrow::after {
   content: " ";
   position: absolute;
   width: 0;
@@ -211,7 +211,7 @@ export default {
   border-right: 10px solid transparent;
 }
 
-.left-arrow::after {
+.right-arrow::after {
   content: " ";
   position: absolute;
   width: 0;

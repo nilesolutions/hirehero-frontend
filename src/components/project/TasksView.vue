@@ -117,8 +117,9 @@ export default {
 <style lang="scss">
 .tasks-column {
   border-radius: 6px;
-  background-color: #dedede;
-  padding: 0.5rem;
+  // background-color: #dedede;
+  background-color: transparent;
+  padding: 0.5rem 0;
 }
 
 .section-heading {
@@ -156,7 +157,7 @@ export default {
 }
 
 .gray-heading {
-  background: #dedede;
+  background: #adabab;
 }
 
 .tasks-column .item-margin {

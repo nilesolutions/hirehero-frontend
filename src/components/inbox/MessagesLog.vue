@@ -7,6 +7,22 @@
       <ul class="messages-list" ref="msgsList">
         <p class="py-4 px-4" v-show="!msgsState.messages.length">No messages yet</p>
         <chat-message v-for="msg in msgsState.messages" :key="msg.id" :msgData="msg"></chat-message>
+        <!-- <chat-message
+          v-for="msg in [
+            {
+              message: 'message',
+              id: '1',
+              user_id: 1,
+            },
+            {
+              message: 'test',
+              id: '2',
+              user_id: 5,
+            },
+          ]"
+          :key="msg.id"
+          :msgData="msg"
+        ></chat-message> -->
       </ul>
     </div>
   </div>
