@@ -71,7 +71,7 @@ export default {
       togglePreviewMode(true);
 
       window.addEventListener("message", (event) => {
-        if (event.origin == "http://localhost:8081") {
+        if (event.origin == process.env.VUE_APP_ADMIN_DASHBOARD_URL) {
           const previewCreds = event.data;
           sessionStorage.setItem("accessToken", previewCreds.accessToken);
           sessionStorage.setItem("userData", JSON.stringify(previewCreds.userData));
