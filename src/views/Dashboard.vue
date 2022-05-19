@@ -4,7 +4,7 @@
     <h3>Welcome back {{ userName }}</h3>
 
     <div class="d-flex flex-row my-2 flex-wrap">
-      <!-- <hourly-reports></hourly-reports> -->
+      <hourly-reports></hourly-reports>
       <tasks-progress></tasks-progress>
       <recent-tasks></recent-tasks>
     </div>

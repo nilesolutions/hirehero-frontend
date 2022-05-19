@@ -11,7 +11,7 @@
     </v-btn>
 
     <ul class="navigation__menu">
-      <component v-for="(item, idx) in navigationMenuItems" :key="idx" :is="item.type" :item="item">
+      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item">
       </component>
     </ul>
   </div>
@@ -37,12 +37,12 @@ export default {
     const { state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive } =
       useNavigation();
 
-    const { state: userState } = useUser();
+    // const { state: userState } = useUser();
 
-    const navigationMenuItems = computed(() => {
-      if (!userState.isPreviewMode) return navItems;
-      return navItems.filter((item) => item.to != "settings");
-    });
+    // const navigationMenuItems = computed(() => {
+    //   if (!userState.isPreviewMode) return navItems;
+    //   return navItems.filter((item) => item.to != "settings");
+    // });
 
     onMounted(() => window.addEventListener("resize", setWidth));
     onUnmounted(() => window.removeEventListener("resize", setWidth));
@@ -54,7 +54,7 @@ export default {
       menuClass,
       setHovering,
       closeMenu,
-      navigationMenuItems,
+      navItems,
       icons: {
         mdiChevronRight,
         mdiChevronLeft,

@@ -11,7 +11,7 @@
       </div>
 
       <current-plan-details></current-plan-details>
-      <current-plan-controls></current-plan-controls>
+      <current-plan-controls v-if="!userState.isPreviewMode"></current-plan-controls>
     </v-card>
   </div>
 </template>
@@ -20,15 +20,18 @@
 import CurrentPlanControls from "@/components/subscriptions/CurrentPlanControls.vue";
 import CurrentPlanDetails from "@/components/subscriptions/CurrentPlanDetails.vue";
 import { useSubscription } from "@/composables/user/subscription";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "CurrentPlan",
   components: { CurrentPlanControls, CurrentPlanDetails },
   setup() {
     const { state: subscriptionState } = useSubscription();
+    const { state: userState } = useUser();
 
     return {
       subscriptionState,
+      userState,
     };
   },
 };
