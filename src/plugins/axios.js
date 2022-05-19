@@ -17,7 +17,8 @@ axiosIns.interceptors.request.use(
   (config) => {
     // Do something before request is sent
 
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken =
+      sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken");
 
     // eslint-disable-next-line no-param-reassign
     if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
@@ -36,6 +37,8 @@ axiosIns.interceptors.response.use(
     if (status == 401) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userData");
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("userData");
       router.push({ name: "auth-login" });
     }
 

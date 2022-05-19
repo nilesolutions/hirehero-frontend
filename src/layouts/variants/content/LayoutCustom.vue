@@ -10,14 +10,20 @@
   </div>
   <v-app v-else>
     <navbar></navbar>
-    <div class="info-bar" v-if="state.isInfoVisible && infoMsg && !state.isLoading">
+    <v-alert
+      v-if="state.isInfoVisible && infoMsg && !state.isLoading"
+      color="primary"
+      class="mb-0"
+      rounded="0"
+      type="info"
+      dismissible
+    >
       {{ infoMsg }}
-      <v-btn class="ml-auto" x-small icon @click="state.isInfoVisible = false">
-        <v-icon x-small color="white">
-          {{ icons.mdiClose }}
-        </v-icon>
-      </v-btn>
-    </div>
+    </v-alert>
+    <v-alert v-if="userState.isPreviewMode" color="primary" class="mb-0" rounded="0" type="info">
+      You are currently previewing the website as {{ userName }}. <br />
+      Any changes done will be saved.
+    </v-alert>
 
     <div class="dashboard--layout">
       <video-call-prompt></video-call-prompt>
@@ -29,30 +35,32 @@
         <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </div>
       <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
-      <slot v-else></slot>
+      <slot v-else> </slot>
     </div>
   </v-app>
 </template>
 
 <script>
-import { useRouter } from "@/@core/utils";
 import Navbar from "@/components/layout/navbar/Navbar.vue";
-import Navigation from "@/components/layout/navigation/Navigation.vue";
-import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
-import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
+import Navigation from "@/components/layout/navigation/Navigation.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
+import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
+
+import { useRouter } from "@/@core/utils";
+import { usePusher } from "@/composables/pusher";
 import { useMessages } from "@/composables/chat/messages";
+import { useSubscription } from "@/composables/user/subscription";
 import { useNotifications } from "@/composables/chat/notifications";
+import { useUser } from "@/composables/user/user";
 import {
   notificationEvents,
   subscriptionEvents,
   videoCallEvents,
   videoCallPresenceEvents,
 } from "@/composables/event-listeners";
-import { usePusher } from "@/composables/pusher";
-import { useSubscription } from "@/composables/user/subscription";
-import { useUser } from "@/composables/user/user";
+
 import axios from "@axios";
 import { mdiClose } from "@mdi/js";
 import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
@@ -75,7 +83,7 @@ export default {
     });
 
     const { setSubInfo, isSubscribed } = useSubscription();
-    const { userType, setUserData } = useUser();
+    const { state: userState, userName, userType, setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
     const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
@@ -168,6 +176,8 @@ export default {
       infoMsg,
       showSubPaywall,
       closeSubNotification,
+      userName,
+      userState,
 
       icons: {
         mdiClose,

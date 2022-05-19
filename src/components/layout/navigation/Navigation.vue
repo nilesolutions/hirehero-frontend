@@ -11,7 +11,7 @@
     </v-btn>
 
     <ul class="navigation__menu">
-      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item">
+      <component v-for="(item, idx) in navigationMenuItems" :key="idx" :is="item.type" :item="item">
       </component>
     </ul>
   </div>
@@ -20,10 +20,11 @@
 <script>
 import { useNavigation } from "@/composables/navigation";
 import { mdiChevronRight, mdiChevronLeft } from "@mdi/js";
-import { onMounted, onUnmounted } from "@vue/composition-api";
+import { onMounted, onUnmounted, computed } from "@vue/composition-api";
 import navItems from "@/components/layout/navigation/navigation-items";
 import NavigationItem from "@/components/layout/navigation/NavigationItem.vue";
 import NavigationSubheader from "@/components/layout/navigation/NavigationSubheader.vue";
+import { useUser } from "@/composables/user/user";
 
 export default {
   name: "Navigation",
@@ -36,6 +37,13 @@ export default {
     const { state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive } =
       useNavigation();
 
+    const { state: userState } = useUser();
+
+    const navigationMenuItems = computed(() => {
+      if (!userState.isPreviewMode) return navItems;
+      return navItems.filter((item) => item.to != "settings");
+    });
+
     onMounted(() => window.addEventListener("resize", setWidth));
     onUnmounted(() => window.removeEventListener("resize", setWidth));
 
@@ -46,7 +54,7 @@ export default {
       menuClass,
       setHovering,
       closeMenu,
-      navItems,
+      navigationMenuItems,
       icons: {
         mdiChevronRight,
         mdiChevronLeft,

@@ -106,13 +106,13 @@ const router = new VueRouter({
 
 router.beforeEach((to, _, next) => {
   setRoute(to);
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken");
 
   // Redirect to login if not logged in
   if (!accessToken && to.meta.requiresAuth) return next({ name: "auth-login" });
 
   // Redirect if logged in
-  //if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: 'home' })
+  //if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: "home" });
 
   return next();
 });
