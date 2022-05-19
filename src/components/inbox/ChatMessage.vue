@@ -186,8 +186,7 @@ export default {
   width: fit-content;
 }
 
-.their-message.message-content__text {
-  color: black;
+.message-content__text.left-arrow {
   background-color: #f4f5fa;
 }
 
@@ -200,7 +199,7 @@ export default {
   background-color: #cccccca2;
 }
 
-.right-arrow::after {
+.left-arrow::after {
   content: " ";
   position: absolute;
   width: 0;
@@ -211,7 +210,7 @@ export default {
   border-right: 10px solid transparent;
 }
 
-.left-arrow::after {
+.right-arrow::after {
   content: " ";
   position: absolute;
   width: 0;

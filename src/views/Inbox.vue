@@ -15,19 +15,16 @@
 </template>
 
 <script>
+import InboxMessages from "@/components/inbox/InboxMessages.vue";
+import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
+import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
+import { useMessages } from "@/composables/chat/messages";
+import { useNotifications } from "@/composables/chat/notifications";
+import { usePusher } from "@/composables/pusher";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiCamera } from "@mdi/js";
 import { onMounted, onUnmounted, reactive } from "@vue/composition-api";
-
-import OnlineUsers from "@/components/inbox/OnlineUsers.vue";
-import InboxMessages from "@/components/inbox/InboxMessages.vue";
-import StartVideoCall from "@/components/inbox/StartVideoCall.vue";
-
-import { useMessages } from "@/composables/chat/messages";
-import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user/user";
-import { useNotifications } from "@/composables/chat/notifications";
-import { conversationEvents } from "@/composables/event-listeners";
 
 export default {
   name: "Inbox",
