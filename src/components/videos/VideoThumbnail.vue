@@ -18,7 +18,10 @@
       color="warning"
       :loading="state.isDeleting"
     >
-      <v-icon>{{ icons.mdiDelete }}</v-icon>
+      <div class="tooltip">
+        <div class="tooltiptext">Delete Video</div>
+        <v-icon style="color:white;">{{ icons.mdiDelete }}</v-icon>
+      </div>
     </v-btn>
 
     <v-card-text class="mt-2 black--text d-flex flex-row align-center">
@@ -59,7 +62,8 @@
             :loading="state.isSubmitting"
             :disabled="!canUpdate || state.isSubmitting"
             color="primary"
-            >Update</v-btn
+          >Update
+          </v-btn
           >
           <v-btn @click="closeUpdateDialog">Cancel</v-btn>
         </v-card-actions>
@@ -71,18 +75,18 @@
 <script>
 import axios from "@axios";
 
-import { mdiDelete, mdiContentCopy, mdiOpenInNew, mdiPencilOutline } from "@mdi/js";
+import {mdiDelete, mdiContentCopy, mdiOpenInNew, mdiPencilOutline} from "@mdi/js";
 
-import { reactive, computed } from "@vue/composition-api";
-import { useVideos } from "@/composables/videos/videos";
-import { useUser } from "@/composables/user/user";
+import {reactive, computed} from "@vue/composition-api";
+import {useVideos} from "@/composables/videos/videos";
+import {useUser} from "@/composables/user/user";
 
 export default {
   name: "VideoThumbnail",
-  props: { video: Object },
-  setup({ video }) {
-    const { userType, userId } = useUser();
-    const { updateVideo, deleteVideo, setClickedVidUrl } = useVideos();
+  props: {video: Object},
+  setup({video}) {
+    const {userType, userId} = useUser();
+    const {updateVideo, deleteVideo, setClickedVidUrl} = useVideos();
 
     const state = reactive({
       isDeleting: false,
@@ -120,7 +124,7 @@ export default {
       const videoId = video.id;
       try {
         state.isSubmitting = true;
-        const { data: video } = await axios.patch(`/media/${videoId}`, {
+        const {data: video} = await axios.patch(`/media/${videoId}`, {
           title: state.updatedTitle,
         });
         updateVideo(video);
@@ -136,7 +140,7 @@ export default {
     }
 
     async function del(videoId) {
-      const confirm = await this.$confirm("Delete video", { title: "Warning" });
+      const confirm = await this.$confirm("Delete video", {title: "Warning"});
       if (!confirm) return;
       try {
         state.isDeleting = true;

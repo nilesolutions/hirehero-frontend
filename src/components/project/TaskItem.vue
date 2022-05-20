@@ -14,7 +14,7 @@
     <v-card-text class="d-flex flex-row align-center">
       <div style="text-transform: capitalize;">{{ task.name }}</div>
 
-      <div v-if="task.due_on">Due on: {{task.due_on}}</div>
+      <div v-if="task.due_on" style="margin-top: 10px;">Due on: {{task.due_on}}</div>
     </v-card-text>
   </v-card>
 </template>
