@@ -2,7 +2,9 @@
   <div class="d-flex col-12">
     <v-card-text class="d-flex flex-row flex-wrap align-center">
       <h2 class="d-block" style="text-transform: capitalize;">{{ task.name }}</h2>
-      <v-btn class="ml-4" x-small depressed :color="colorFromPriority()">{{ task.priority }}</v-btn>
+      <v-btn class="ml-4" :class="{'btn-high': task.priority === 'high'}" x-small depressed
+             :color="colorFromPriority()">{{ task.priority }}
+      </v-btn>
 
       <v-btn class="ml-4" small @click="toggleStatus" :loading="state.isLoading">
         Mark as {{ task.completed ? "Uncomplete" : "Complete" }}
@@ -20,15 +22,15 @@
 
 <script>
 import axios from "@axios";
-import { useTasks } from "@/composables/tasks/tasks";
-import { useRouter } from "@/composables/router";
-import { reactive } from "@vue/composition-api";
-import { mdiCheckboxMarked, mdiCheckboxBlank, mdiClose } from "@mdi/js";
+import {useTasks} from "@/composables/tasks/tasks";
+import {useRouter} from "@/composables/router";
+import {reactive} from "@vue/composition-api";
+import {mdiCheckboxMarked, mdiCheckboxBlank, mdiClose} from "@mdi/js";
 
 export default {
   name: "TaskHeader",
   setup() {
-    const { activeTask, updateTask, setActiveTaskId } = useTasks();
+    const {activeTask, updateTask, setActiveTaskId} = useTasks();
     const state = reactive({
       isLoading: false,
     });
@@ -74,4 +76,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.btn-high {
+  color: white;
+}
+</style>

@@ -5,7 +5,7 @@
         small
         depressed
         :color="colorFromPriority()"
-        class="task-priority"
+        class="task-priority font-weight-bold"
         :class="task.priority"
       >
         {{ task.priority }}</v-btn
