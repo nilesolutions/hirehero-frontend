@@ -22,6 +22,9 @@
 .v-btn--tile {
   border-radius: 5px !important;
 }
+.theme--light.v-btn.v-btn--has-bg:hover{
+  background: rgba(48, 217, 136, 0.18) !important;
+}
 </style>
 <script>
 // eslint-disable-next-line object-curly-newline
