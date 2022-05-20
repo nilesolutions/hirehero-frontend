@@ -188,6 +188,7 @@ export default {
 
 .message-content__text.left-arrow {
   background-color: #f4f5fa;
+  color:black;
 }
 
 .message-wrapper {

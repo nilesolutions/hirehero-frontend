@@ -80,15 +80,16 @@
 </template>
 
 <script>
-import { useTasks } from "@/composables/tasks/tasks";
-import { validateFileSizes } from "@/helpers";
+import {useTasks} from "@/composables/tasks/tasks";
+import {validateFileSizes} from "@/helpers";
 import axios from "@axios";
-import { computed, reactive } from "@vue/composition-api";
+import {computed, reactive} from "@vue/composition-api";
+import {mdiClose} from "@mdi/js";
 
 export default {
   name: "CreateTaskDialog",
   props: ["isOpen"],
-  setup(_, { emit }) {
+  setup(_, {emit}) {
     const state = reactive({
       name: "",
       dueOn: "",
@@ -110,7 +111,7 @@ export default {
 
     const uploadSizeLimit = 100;
 
-    const { addTask } = useTasks();
+    const {addTask} = useTasks();
 
     const minDate = new Date().toISOString();
     const priorityOptions = ["Low", "Medium", "High"];
@@ -179,6 +180,9 @@ export default {
 
       setPriority,
       priorityOptions,
+      icons: {
+        mdiClose
+      }
     };
   },
 };
