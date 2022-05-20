@@ -38,7 +38,7 @@ import { reactive } from "@vue/composition-api";
 export default {
   name: "TaskItem",
   props: { task: Object },
-  components: { TaskAttachments, TaskActions, TaskDetails, TaskActions },
+  components: { TaskAttachments, TaskActions, TaskDetails },
   setup(props) {
     const state = reactive({
       isLoading: false,
