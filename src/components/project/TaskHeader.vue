@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex col-12">
-    <v-card-text class="d-flex flex-row flex-wrap align-center">
+    <v-card-text class="d-flex flex-row flex-wrap align-center" style="padding-top:20px;">
       <h2 class="d-block" style="text-transform: capitalize;">{{ task.name }}</h2>
       <v-btn class="ml-4" :class="{'btn-high': task.priority == 'High'}" x-small depressed
              :color="colorFromPriority()">{{ task.priority }}
