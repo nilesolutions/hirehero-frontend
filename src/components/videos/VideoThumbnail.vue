@@ -36,7 +36,7 @@
 
     <v-card-text class="d-flex flex-column align-start">
       <v-btn class="mb-2" x-small elevation="2" @click="copyUrl">
-        Copy URL
+        Copy Link
         <v-icon class="ml-2" x-small>{{ icons.mdiContentCopy }}</v-icon>
       </v-btn>
     </v-card-text>
