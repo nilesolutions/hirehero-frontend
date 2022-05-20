@@ -3,6 +3,10 @@
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Add Task</v-card-title>
 
+      <v-btn class="ml-auto close-icon-absolute" icon @click="closeDialog">
+        <v-icon>{{ icons.mdiClose }}</v-icon>
+      </v-btn>
+
       <v-form @submit.prevent class="mb-4 task-form">
         <v-text-field v-model="state.name" dense outlined label="Task name" required></v-text-field>
 

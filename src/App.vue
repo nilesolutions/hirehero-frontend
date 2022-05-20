@@ -13,28 +13,36 @@
   </div>
 </template>
 <style>
-.v-btn--tile{
+.close-icon-absolute {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.v-btn--tile {
   border-radius: 5px !important;
 }
 </style>
 <script>
 // eslint-disable-next-line object-curly-newline
-import { computed, onMounted, onUnmounted } from "@vue/composition-api";
+import {computed, onMounted, onUnmounted} from "@vue/composition-api";
 // eslint-disable-next-line import/no-unresolved
 import useAppConfig from "@core/@app-config/useAppConfig";
-import { useRouter } from "@core/utils";
-import { useLayout } from "@core/layouts/composable/useLayout";
-import { useUser } from "./composables/user/user";
+import {useRouter} from "@core/utils";
+import {useLayout} from "@core/layouts/composable/useLayout";
+import {useUser} from "./composables/user/user";
 
 // Layouts
-import LayoutContentVerticalNav from "@/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue";
-import LayoutContentHorizontalNav from "@/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue";
+import LayoutContentVerticalNav
+  from "@/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue";
+import LayoutContentHorizontalNav
+  from "@/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue";
 import LayoutBlank from "@/layouts/variants/blank/LayoutBlank.vue";
 import LayoutCustom from "@/layouts/variants/content/LayoutCustom.vue";
 
 // Dynamic vh
 import useDynamicVh from "@core/utils/useDynamicVh";
-import { usePusher } from "./composables/pusher";
+import {usePusher} from "./composables/pusher";
 
 import router from "@/router";
 
@@ -46,12 +54,12 @@ export default {
     LayoutCustom,
   },
   setup() {
-    const { route } = useRouter();
-    const { updateAuthCreds } = usePusher();
-    const { state: userState, togglePreviewMode, toggleIsSettingUpPreview } = useUser();
-    const { appContentLayoutNav, appSkinVariant, appRouteTransition } = useAppConfig();
+    const {route} = useRouter();
+    const {updateAuthCreds} = usePusher();
+    const {state: userState, togglePreviewMode, toggleIsSettingUpPreview} = useUser();
+    const {appContentLayoutNav, appSkinVariant, appRouteTransition} = useAppConfig();
 
-    const { handleBreakpointLayoutSwitch } = useLayout();
+    const {handleBreakpointLayoutSwitch} = useLayout();
     handleBreakpointLayoutSwitch();
 
     const resolveLayoutVariant = computed(() => {
@@ -80,7 +88,7 @@ export default {
           sessionStorage.setItem("accessToken", previewCreds.accessToken);
           sessionStorage.setItem("userData", JSON.stringify(previewCreds.userData));
           updateAuthCreds();
-          router.push({ name: "dashboard" });
+          router.push({name: "dashboard"});
           toggleIsSettingUpPreview(false);
         }
       });
