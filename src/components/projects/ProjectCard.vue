@@ -18,20 +18,23 @@
       <v-dialog v-model="isDeleteOpen" max-width="500">
         <v-card class="text-center">
           <v-card-text
-            >Are your sure you want to delete this project?
-            <br />
+          >Are your sure you want to delete this project?
+            <br/>
             This action can not be undone. All tasks within this project will be deleted too.
           </v-card-text>
 
           <v-card-actions class="text-center justify-center">
-            <v-btn
-              @click="deleteProject"
-              :loading="isLoading"
-              :disabled="isLoading"
-              color="warning"
-              outlined
-              >Delete</v-btn
-            >
+            <div class="tooltip"><span class="tooltiptext">Delete Project</span>
+              <v-btn
+                @click="deleteProject"
+                :loading="isLoading"
+                :disabled="isLoading"
+                color="warning"
+                outlined
+              >Delete
+              </v-btn
+              >
+            </div>
             <v-btn :disabled="isLoading" @click="isDeleteOpen = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>
@@ -41,20 +44,20 @@
 </template>
 
 <script>
-import { computed, ref } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
+import {computed, ref} from "@vue/composition-api";
+import {useUser} from "@/composables/user/user";
 import axios from "@axios";
-import { mdiDelete } from "@mdi/js";
+import {mdiDelete} from "@mdi/js";
 
 export default {
   name: "ProjectCard",
   props: {
     project: Object,
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const isDeleteOpen = ref(false);
     const isLoading = ref(false);
-    const { userType } = useUser();
+    const {userType} = useUser();
 
     const creationDate = computed(() => {
       return new Date(props.project.created_at).toLocaleString();
@@ -63,7 +66,7 @@ export default {
     function goToProject() {
       this.$router.push({
         name: "project",
-        params: { id: props.project.id, projectName: props.project.name },
+        params: {id: props.project.id, projectName: props.project.name},
       });
     }
 
