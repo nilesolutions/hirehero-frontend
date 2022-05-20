@@ -18,14 +18,17 @@
     <div class="ml-auto">
       <v-btn
         small
-        class="white--text cursive-font"
+        class="white--text cursive-font no-hover"
         :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'"
       >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
 
       <v-btn :disabled="!canStartCall" @click="initCall" small class="ml-2" elevation="2" icon>
+        <div class="tooltip">
+          <div class="tooltiptext">Call</div>
         <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
+        </div>
       </v-btn>
     </div>
   </v-card-text>

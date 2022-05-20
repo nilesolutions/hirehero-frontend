@@ -22,7 +22,7 @@
 .v-btn--tile {
   border-radius: 5px !important;
 }
-.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):hover{
+.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):hover{
   background: rgba(235, 87, 87, 0.20) !important;
 }
 </style>
