@@ -9,7 +9,7 @@ const comments = computed(() => state.comments.reverse());
 const setComments = (val) => (state.comments = val);
 
 const addComment = (newComment) => {
-  state.comments = [newComment, ...state.comments];
+  state.comments = [...state.comments, newComment];
 };
 
 const updateComment = (comment) => {
