@@ -33,7 +33,10 @@
         @click="state.isEditingTitle = true"
         v-if="userId == video.user_id"
       >
-        <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
+        <div class="tooltip">
+          <div class="tooltiptext">Edit Title</div>
+          <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
+        </div>
       </v-btn>
     </v-card-text>
 
