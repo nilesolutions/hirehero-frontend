@@ -4,7 +4,7 @@ const state = reactive({
   comments: [],
 });
 
-const comments = computed(() => state.comments);
+const comments = computed(() => state.comments.reverse());
 
 const setComments = (val) => (state.comments = val);
 
