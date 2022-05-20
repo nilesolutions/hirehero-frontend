@@ -19,7 +19,7 @@
       :loading="state.isDeleting"
     >
       <div class="tooltip">
-        <div class="tooltiptext">Delete Video</div>
+
         <v-icon style="color:white;">{{ icons.mdiDelete }}</v-icon>
       </div>
     </v-btn>

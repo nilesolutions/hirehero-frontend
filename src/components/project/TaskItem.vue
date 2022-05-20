@@ -11,10 +11,10 @@
         {{ task.priority }}</v-btn
       >
     </v-card-text>
-    <v-card-text class="d-flex flex-row align-center">
+    <v-card-text class="flex-row align-center">
       <div style="text-transform: capitalize;">{{ task.name }}</div>
 
-      <div v-if="task.due_on" style="margin-top: 10px;">Due on: {{task.due_on}}</div>
+      <div v-if="task.due_on" style="margin-top: 10px;"><strong>Due on:</strong> {{task.due_on}}</div>
     </v-card-text>
   </v-card>
 </template>
