@@ -9,9 +9,12 @@
         <small class="black--text font-weight-medium">{{ creationDate }}</small>
 
         <div v-if="userType == 'client'" class="actions ml-auto">
-          <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
-            <v-icon>{{ icons.mdiDelete }}</v-icon>
-          </v-btn>
+          <div class="tooltip">
+            <span class="tooltiptext">Delete Project</span>
+            <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
+              <v-icon>{{ icons.mdiDelete }}</v-icon>
+            </v-btn>
+          </div>
         </div>
       </v-card-actions>
 
@@ -24,17 +27,16 @@
           </v-card-text>
 
           <v-card-actions class="text-center justify-center">
-            <div class="tooltip"><span class="tooltiptext">Delete Project</span>
-              <v-btn
-                @click="deleteProject"
-                :loading="isLoading"
-                :disabled="isLoading"
-                color="warning"
-                outlined
-              >Delete
-              </v-btn
-              >
-            </div>
+
+            <v-btn
+              @click="deleteProject"
+              :loading="isLoading"
+              :disabled="isLoading"
+              color="warning"
+              outlined
+            >Delete
+            </v-btn
+            >
             <v-btn :disabled="isLoading" @click="isDeleteOpen = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>
