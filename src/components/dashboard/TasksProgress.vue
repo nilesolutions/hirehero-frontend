@@ -89,7 +89,7 @@ export default {
       state,
       options: {
         legend: { position: "bottom" },
-        labels: ["Complete Tasks", "Uncomplete Tasks"],
+        labels: ["Complete Tasks", "Incomplete Tasks"],
         noData: {
           text: "No data for selected period",
         },

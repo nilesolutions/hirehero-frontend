@@ -22,8 +22,8 @@
 .v-btn--tile {
   border-radius: 5px !important;
 }
-.theme--light.v-btn.v-btn--has-bg:hover{
-  background: rgba(48, 217, 136, 0.18) !important;
+.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:hover{
+  background: rgba(235, 87, 87, 0.20) !important;
 }
 </style>
 <script>
