@@ -12,7 +12,11 @@
     <v-progress-circular class="my-4 mx-auto" color="primary" indeterminate></v-progress-circular>
   </div>
 </template>
-
+<style>
+.v-btn--tile{
+  border-radius: 5px !important;
+}
+</style>
 <script>
 // eslint-disable-next-line object-curly-newline
 import { computed, onMounted, onUnmounted } from "@vue/composition-api";
