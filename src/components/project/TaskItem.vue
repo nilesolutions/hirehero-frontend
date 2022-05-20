@@ -12,7 +12,7 @@
       >
     </v-card-text>
     <v-card-text class="d-flex flex-row align-center">
-      <div>{{ task.name }}</div>
+      <div style="text-transform: capitalize;">{{ task.name }}</div>
     </v-card-text>
   </v-card>
 </template>

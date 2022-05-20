@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex col-12">
     <v-card-text class="d-flex flex-row flex-wrap align-center">
-      <h2 class="d-block">{{ task.name }}</h2>
+      <h2 class="d-block" style="text-transform: capitalize;">{{ task.name }}</h2>
       <v-btn class="ml-4" x-small depressed :color="colorFromPriority()">{{ task.priority }}</v-btn>
 
       <v-btn class="ml-4" small @click="toggleStatus" :loading="state.isLoading">
