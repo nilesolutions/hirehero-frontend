@@ -1,13 +1,5 @@
 <template>
   <div>
-    <h5 class="mb-3">Your Videos</h5>
-    <div class="videos-container d-flex flex-row flex-wrap">
-      <video-thumbnail v-for="video in state.videos.myVideos" :key="video.id" :video="video">
-      </video-thumbnail>
-
-      <p v-show="!state.videos.myVideos.length">No videos</p>
-    </div>
-
     <h5 class="mb-3">
       Your {{ userType == "client" ? "Virtual Assistant's" : "Client's" }} Videos
     </h5>
@@ -16,6 +8,14 @@
       </video-thumbnail>
 
       <p v-show="!state.videos.associateVideos.length">No videos</p>
+
+      <h5 class="mb-3">Your Videos</h5>
+      <div class="videos-container d-flex flex-row flex-wrap">
+        <video-thumbnail v-for="video in state.videos.myVideos" :key="video.id" :video="video">
+        </video-thumbnail>
+
+        <p v-show="!state.videos.myVideos.length">No videos</p>
+      </div>
     </div>
 
     <v-dialog v-model="isViewingVideo" @click:outside="setClickedVidUrl('')">
@@ -35,12 +35,10 @@
 
 <script>
 import VideoThumbnail from "@/components/videos/VideoThumbnail.vue";
-
-import { computed } from "@vue/composition-api";
-import { useVideos } from "@/composables/videos/videos";
-
-import { mdiDelete, mdiClose } from "@mdi/js";
 import { useUser } from "@/composables/user/user";
+import { useVideos } from "@/composables/videos/videos";
+import { mdiClose, mdiDelete } from "@mdi/js";
+import { computed } from "@vue/composition-api";
 
 export default {
   name: "VideosGrid",

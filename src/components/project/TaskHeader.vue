@@ -1,9 +1,14 @@
 <template>
   <div class="d-flex col-12">
-    <v-card-text class="d-flex flex-row flex-wrap align-center" style="padding-top:20px;">
-      <h2 class="d-block" style="text-transform: capitalize;">{{ task.name }}</h2>
-      <v-btn class="ml-4" :class="{'btn-high': task.priority == 'High'}" x-small depressed
-             :color="colorFromPriority()">{{ task.priority }}
+    <v-card-text class="d-flex flex-row flex-wrap align-center" style="padding-top: 20px">
+      <h2 class="d-block" style="text-transform: capitalize">{{ task.name }}</h2>
+      <v-btn
+        class="ml-4"
+        :class="{ 'btn-high': task.priority == 'High' }"
+        x-small
+        depressed
+        :color="colorFromPriority()"
+        >{{ task.priority }}
       </v-btn>
 
       <v-btn class="ml-4" small @click="toggleStatus" :loading="state.isLoading">
@@ -21,16 +26,16 @@
 </template>
 
 <script>
+import { useRouter } from "@/composables/router";
+import { useTasks } from "@/composables/tasks/tasks";
 import axios from "@axios";
-import {useTasks} from "@/composables/tasks/tasks";
-import {useRouter} from "@/composables/router";
-import {reactive} from "@vue/composition-api";
-import {mdiCheckboxMarked, mdiCheckboxBlank, mdiClose} from "@mdi/js";
+import { mdiCheckboxBlank, mdiCheckboxMarked, mdiClose } from "@mdi/js";
+import { reactive } from "@vue/composition-api";
 
 export default {
   name: "TaskHeader",
   setup() {
-    const {activeTask, updateTask, setActiveTaskId} = useTasks();
+    const { activeTask, updateTask, setActiveTaskId } = useTasks();
     const state = reactive({
       isLoading: false,
     });

@@ -28,7 +28,9 @@
         </v-badge>
         <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
           <span class="text--primary font-weight-semibold mb-n1"> {{ userData.username }} </span>
-          <small class="text--disabled text-capitalize">{{ userData.type }}</small>
+          <small class="text--disabled text-capitalize">{{
+            userData.type == "Va" ? "VA" : userData.type
+          }}</small>
         </div>
       </div>
 
@@ -49,7 +51,7 @@
       </v-list-item>
 
       <!-- Logout -->
-      <v-list-item @click="logout">
+      <v-list-item @click="logout" class="logout-btn">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiLogoutVariant }}
@@ -64,10 +66,10 @@
 </template>
 
 <script>
-import { useUser } from "@/composables/user/user";
-import { useNavigation } from "@/composables/navigation";
 import { useNotifications } from "@/composables/chat/notifications";
-import { mdiBell, mdiLogoutVariant, mdiChevronDown } from "@mdi/js";
+import { useNavigation } from "@/composables/navigation";
+import { useUser } from "@/composables/user/user";
+import { mdiBell, mdiChevronDown, mdiLogoutVariant } from "@mdi/js";
 
 export default {
   setup() {
@@ -108,5 +110,22 @@ export default {
   .v-list-item {
     min-height: 2.5rem !important;
   }
+}
+
+.v-menu__content {
+  overflow: hidden !important;
+}
+
+.logout-btn {
+  margin: -8px 0;
+}
+
+.logout-btn:hover {
+  background: #ff4c51 !important;
+}
+
+.logout-btn:hover .v-list-item__title,
+.logout-btn:hover svg {
+  color: #fff;
 }
 </style>

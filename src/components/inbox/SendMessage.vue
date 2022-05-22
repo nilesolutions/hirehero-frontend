@@ -9,13 +9,26 @@
         dense
         placeholder="Type Here"
       ></v-text-field>
-      <v-btn :color="canSend ? 'primary' : ''" @click="sendMsg" :loading="state.isSending" icon>
-        <v-icon>{{ icons.mdiSend }}</v-icon>
-      </v-btn>
+      <v-tooltip bottom color="error">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            :color="canSend ? 'primary' : ''"
+            @click="sendMsg"
+            :loading="state.isSending"
+            icon
+            v-bind="attrs"
+            v-on="on"
+            class="send-msg-btn"
+          >
+            <v-icon>{{ icons.mdiSend }}</v-icon>
+          </v-btn>
+        </template>
+        <span class="tooltip-font">Send Message</span>
+      </v-tooltip>
     </form>
 
     <div class="d-flex mt-3">
-      <div class="d-flex flex-row flex-wrap align-center audio-recorder">
+      <div class="d-flex flex-row align-center audio-recorder">
         <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
             {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
@@ -25,13 +38,13 @@
 
         <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
 
-        <v-btn v-show="state.previewUrl" class="ml-2" small @click="clearRecording">
+        <v-btn v-show="state.previewUrl" class="ml-2 me-2" small @click="clearRecording">
           <v-icon>{{ icons.mdiDelete }}</v-icon>
-          Clear Note
+          Delete Voice Note
         </v-btn>
       </div>
 
-      <div class="mt-0">
+      <div class="mt-0 d-flex align-center">
         <v-btn small class="mr-2" v-show="!state.files.length" @click="openFilePicker">
           <v-icon> {{ icons.mdiFile }} </v-icon>
           Add attachments
@@ -218,4 +231,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.send-msg-btn:hover {
+  color: #ff4c51 !important;
+}
+</style>

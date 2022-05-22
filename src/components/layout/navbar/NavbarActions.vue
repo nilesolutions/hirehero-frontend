@@ -2,12 +2,14 @@
   <div class="navbar__actions" v-show="breakpoint != 'sm'">
     <router-link to="/inbox">
       <v-badge overlap :content="notificationsCount" :value="notificationsCount">
-        <div class="tooltip">
-          <span class="tooltiptext">Inbox</span>
-          <v-btn icon outlined elevation="2">
-            <v-icon color="primray">{{ icons.mdiMessageOutline }}</v-icon>
-          </v-btn>
-        </div>
+        <v-tooltip bottom color="error">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn class="inbox-btn" icon outlined elevation="2" v-bind="attrs" v-on="on">
+              <v-icon color="primray">{{ icons.mdiMessageOutline }}</v-icon>
+            </v-btn>
+          </template>
+          <span class="tooltip-font">Inbox</span>
+        </v-tooltip>
       </v-badge>
     </router-link>
   </div>
@@ -43,6 +45,15 @@ export default {
 </script>
 
 <style>
+.inbox-btn {
+  border-color: #293962;
+}
+
+.inbox-btn svg,
+.inbox-btn {
+  color: #293962;
+}
+
 .navbar__actions {
   margin-left: auto;
 }

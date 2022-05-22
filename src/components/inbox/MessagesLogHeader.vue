@@ -15,31 +15,41 @@
       <span class="d-block">{{ msgsState.associatedUser.email }}</span>
     </div>
 
-    <div class="ml-auto">
+    <div class="ml-auto chat-header-container">
       <v-btn
         small
-        class="white--text cursive-font no-hover"
+        class="white--text cursive-font no-hover offline-btn"
         :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'"
       >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
-
-      <v-btn :disabled="!canStartCall" @click="initCall" small class="ml-2" elevation="2" icon>
-        <div class="tooltip">
-          <div class="tooltiptext">Call</div>
-        <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
-        </div>
-      </v-btn>
+      <v-tooltip bottom color="error">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            :disabled="!canStartCall"
+            @click="initCall"
+            small
+            class="ml-2"
+            elevation="2"
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
+          </v-btn>
+        </template>
+        <span class="tooltip-font">Call</span>
+      </v-tooltip>
     </div>
   </v-card-text>
 </template>
 
 <script>
 import { useMessages } from "@/composables/chat/messages";
-import { mdiPhoneOutline } from "@mdi/js";
-import { reactive, computed } from "@vue/composition-api";
 import { useVideoCall } from "@/composables/chat/videocall";
 import { resolveProfilePic } from "@/helpers";
+import { mdiPhoneOutline } from "@mdi/js";
+import { computed, reactive } from "@vue/composition-api";
 
 export default {
   name: "MessagesLogHeader",
@@ -72,4 +82,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+div.chat-header-container .v-btn.offline-btn {
+  box-shadow: none !important;
+}
+</style>

@@ -7,37 +7,46 @@
       preload="meta"
     ></video>
 
-    <v-btn
-      v-if="userId == video.user_id"
-      @click="del(video.id)"
-      absolute
-      top
-      right
-      x-small
-      fab
-      color="warning"
-      :loading="state.isDeleting"
-    >
-      <div class="tooltip">
+    <v-tooltip bottom color="error">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-if="userId == video.user_id"
+          @click="del(video.id)"
+          absolute
+          top
+          right
+          x-small
+          fab
+          color="warning"
+          :loading="state.isDeleting"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon style="color: white">{{ icons.mdiDelete }}</v-icon>
+        </v-btn>
+      </template>
 
-        <v-icon style="color:white;">{{ icons.mdiDelete }}</v-icon>
-      </div>
-    </v-btn>
+      <span class="tooltip-font">Delete Video</span>
+    </v-tooltip>
 
-    <v-card-text class="mt-2 black--text d-flex flex-row align-center">
-      <span class="d-block">{{ video.title || "No Title" }}</span>
-      <v-btn
-        class="ml-auto"
-        icon
-        small
-        @click="state.isEditingTitle = true"
-        v-if="userId == video.user_id"
-      >
-        <div class="tooltip">
-          <div class="tooltiptext">Edit Title</div>
-          <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
-        </div>
-      </v-btn>
+    <v-card-text class="mt-2 black--text d-flex flex-row align-center text-capitalize">
+      <span class="d-block text-capitalize">{{ video.title || "No Title" }}</span>
+      <v-tooltip bottom color="error">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class="ml-auto"
+            icon
+            small
+            @click="state.isEditingTitle = true"
+            v-if="userId == video.user_id"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
+          </v-btn>
+        </template>
+        <span class="tooltip-font">Edit Video Title</span>
+      </v-tooltip>
     </v-card-text>
 
     <v-card-text class="d-flex flex-column align-start">
@@ -65,9 +74,8 @@
             :loading="state.isSubmitting"
             :disabled="!canUpdate || state.isSubmitting"
             color="primary"
-          >Update
-          </v-btn
-          >
+            >Update
+          </v-btn>
           <v-btn @click="closeUpdateDialog">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -76,20 +84,18 @@
 </template>
 
 <script>
+import { useUser } from "@/composables/user/user";
+import { useVideos } from "@/composables/videos/videos";
 import axios from "@axios";
-
-import {mdiDelete, mdiContentCopy, mdiOpenInNew, mdiPencilOutline} from "@mdi/js";
-
-import {reactive, computed} from "@vue/composition-api";
-import {useVideos} from "@/composables/videos/videos";
-import {useUser} from "@/composables/user/user";
+import { mdiContentCopy, mdiDelete, mdiOpenInNew, mdiPencilOutline } from "@mdi/js";
+import { computed, reactive } from "@vue/composition-api";
 
 export default {
   name: "VideoThumbnail",
-  props: {video: Object},
-  setup({video}) {
-    const {userType, userId} = useUser();
-    const {updateVideo, deleteVideo, setClickedVidUrl} = useVideos();
+  props: { video: Object },
+  setup({ video }) {
+    const { userType, userId } = useUser();
+    const { updateVideo, deleteVideo, setClickedVidUrl } = useVideos();
 
     const state = reactive({
       isDeleting: false,
@@ -127,7 +133,7 @@ export default {
       const videoId = video.id;
       try {
         state.isSubmitting = true;
-        const {data: video} = await axios.patch(`/media/${videoId}`, {
+        const { data: video } = await axios.patch(`/media/${videoId}`, {
           title: state.updatedTitle,
         });
         updateVideo(video);
@@ -143,7 +149,7 @@ export default {
     }
 
     async function del(videoId) {
-      const confirm = await this.$confirm("Delete video", {title: "Warning"});
+      const confirm = await this.$confirm("Delete video", { title: "Warning" });
       if (!confirm) return;
       try {
         state.isDeleting = true;

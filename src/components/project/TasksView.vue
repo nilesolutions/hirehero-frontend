@@ -105,7 +105,7 @@ export default {
 
       doneTasks,
       unfinishedTasks,
-      dueSoonTasks,
+      dueSoonTasks: [{ name: "test", id: 1, priority: "High" }],
       overDueTasks,
 
       isLoading,

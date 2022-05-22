@@ -38,11 +38,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog.vue";
 import ProjectCard from "@/components/projects/ProjectCard.vue";
+import { useUser } from "@/composables/user/user";
+import axios from "@axios";
+import { onMounted, ref } from "@vue/composition-api";
 
 export default {
   name: "Projects",

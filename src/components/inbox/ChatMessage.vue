@@ -188,7 +188,7 @@ export default {
 
 .message-content__text.left-arrow {
   background-color: #f4f5fa;
-  color:black;
+  color: black;
 }
 
 .message-wrapper {
@@ -197,30 +197,31 @@ export default {
 }
 
 .message-hover {
-  background-color: #cccccca2;
+  background-color: #fafafa;
+  // background-color: #cccccca2;
 }
 
-.left-arrow::after {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  bottom: 0px;
-  right: -5px;
-  border-bottom: 10px solid #1f70fd;
-  border-right: 10px solid transparent;
-}
+// .left-arrow::after {
+//   content: " ";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   bottom: 0px;
+//   right: -5px;
+//   border-bottom: 10px solid #1f70fd;
+//   border-right: 10px solid transparent;
+// }
 
-.right-arrow::after {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  bottom: 0px;
-  left: -5px;
-  border-bottom: 10px solid #f4f5fa;
-  border-left: 10px solid transparent;
-}
+// .right-arrow::after {
+//   content: " ";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   bottom: 0px;
+//   left: -5px;
+//   border-bottom: 10px solid #f4f5fa;
+//   border-left: 10px solid transparent;
+// }
 
 .message-content__sender {
   margin-bottom: 0.15rem;

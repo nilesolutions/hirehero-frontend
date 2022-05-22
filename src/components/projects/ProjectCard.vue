@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 col-sm-6 col-lg-4">
     <v-card class="mb-2" @click="goToProject">
-      <v-card-title class="font-weight-black black--text">
+      <v-card-title class="font-weight-black black--text text-capitalize">
         {{ project.name }}
       </v-card-title>
 
@@ -9,34 +9,43 @@
         <small class="black--text font-weight-medium">{{ creationDate }}</small>
 
         <div v-if="userType == 'client'" class="actions ml-auto">
-          <div class="tooltip">
-            <span class="tooltiptext">Delete Project</span>
-            <v-btn @click.stop="isDeleteOpen = true" class="ml-auto" icon color="warning" outlined>
-              <v-icon>{{ icons.mdiDelete }}</v-icon>
-            </v-btn>
-          </div>
+          <v-tooltip bottom color="error">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                @click.stop="isDeleteOpen = true"
+                class="ml-auto"
+                icon
+                color="warning"
+                outlined
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>{{ icons.mdiDelete }}</v-icon>
+              </v-btn>
+            </template>
+
+            <span class="tooltip-font">Delete Project</span>
+          </v-tooltip>
         </div>
       </v-card-actions>
 
       <v-dialog v-model="isDeleteOpen" max-width="500">
         <v-card class="text-center">
           <v-card-text
-          >Are your sure you want to delete this project?
-            <br/>
+            >Are your sure you want to delete this project?
+            <br />
             This action can not be undone. All tasks within this project will be deleted too.
           </v-card-text>
 
           <v-card-actions class="text-center justify-center">
-
             <v-btn
               @click="deleteProject"
               :loading="isLoading"
               :disabled="isLoading"
               color="warning"
               outlined
-            >Delete
-            </v-btn
-            >
+              >Delete
+            </v-btn>
             <v-btn :disabled="isLoading" @click="isDeleteOpen = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>
@@ -46,20 +55,20 @@
 </template>
 
 <script>
-import {computed, ref} from "@vue/composition-api";
-import {useUser} from "@/composables/user/user";
+import { useUser } from "@/composables/user/user";
 import axios from "@axios";
-import {mdiDelete} from "@mdi/js";
+import { mdiDelete } from "@mdi/js";
+import { computed, ref } from "@vue/composition-api";
 
 export default {
   name: "ProjectCard",
   props: {
     project: Object,
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const isDeleteOpen = ref(false);
     const isLoading = ref(false);
-    const {userType} = useUser();
+    const { userType } = useUser();
 
     const creationDate = computed(() => {
       return new Date(props.project.created_at).toLocaleString();
@@ -68,7 +77,7 @@ export default {
     function goToProject() {
       this.$router.push({
         name: "project",
-        params: {id: props.project.id, projectName: props.project.name},
+        params: { id: props.project.id, projectName: props.project.name },
       });
     }
 

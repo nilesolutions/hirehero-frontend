@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import { relativeDate } from "@/helpers";
 import { useTasks } from "@/composables/tasks/tasks";
-import { ref, computed } from "@vue/composition-api";
-import { mdiChevronUp, mdiChevronDown } from "@mdi/js";
+import { relativeDate } from "@/helpers";
+import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
+import { computed, ref } from "@vue/composition-api";
 
 export default {
   name: "TaskDetails",
