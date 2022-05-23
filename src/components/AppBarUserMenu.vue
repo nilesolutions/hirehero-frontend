@@ -27,10 +27,14 @@
           </v-avatar>
         </v-badge>
         <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
-          <span class="text--primary font-weight-semibold mb-n1"> {{ userData.username }} </span>
-          <small class="text--disabled text-capitalize">{{
-            userData.type == "Va" ? "VA" : userData.type
-          }}</small>
+          <span class="text--primary font-weight-semibold mb-n1">
+            {{ userData.username }}
+          </span>
+          <small
+            class="text--disabled"
+            v-bind:class="userData.type === 'va' ? 'text-uppercase' : 'text-capitalize'"
+            >{{ userData.type }}</small
+          >
         </div>
       </div>
 

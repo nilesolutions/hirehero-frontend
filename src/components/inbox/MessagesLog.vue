@@ -4,7 +4,7 @@
     <v-divider></v-divider>
 
     <div class="messages-wrapper">
-      <ul class="messages-list" ref="msgsList">
+      <ul class="messages-list" ref="msgsList" id="messages">
         <p class="py-4 px-4" v-show="!msgsState.messages.length">No messages yet</p>
         <chat-message v-for="msg in msgsState.messages" :key="msg.id" :msgData="msg"></chat-message>
       </ul>
@@ -25,6 +25,20 @@ import { nextTick, onMounted, onUnmounted, reactive, ref } from "@vue/compositio
 
 export default {
   name: "MessagesLog",
+  updated() {
+    // whenever data changes and the component re-renders, this is called.
+    this.$nextTick(() => this.scrollToEnd());
+  },
+
+  methods: {
+    scrollToEnd: function () {
+      const ele = this.$el.querySelector("#messages");
+
+      // scroll to the start of the last message
+      ele.scrollTop = ele.lastElementChild.offsetTop;
+    },
+  },
+
   components: {
     ChatMessage,
     MessagesLogHeader,

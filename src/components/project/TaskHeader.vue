@@ -11,9 +11,16 @@
         >{{ task.priority }}
       </v-btn>
 
-      <v-btn class="ml-4" small @click="toggleStatus" :loading="state.isLoading">
+      <v-btn
+        id="task-btn"
+        class="ml-4"
+        small
+        @click="toggleStatus"
+        :loading="state.isLoading"
+        v-bind:class="task.completed ? '' : 'complete-hover'"
+      >
         Mark as {{ task.completed ? "Uncomplete" : "Complete" }}
-        <v-icon class="ml-2" small :color="task.completed ? 'primary' : 'grey'">
+        <v-icon class="ml-2" small :color="task.completed ? 'success' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
       </v-btn>
@@ -84,5 +91,9 @@ export default {
 <style scoped>
 .btn-high {
   color: white;
+}
+
+#task-btn.complete-hover:hover {
+  background: rgba(48, 217, 136, 0.2) !important;
 }
 </style>

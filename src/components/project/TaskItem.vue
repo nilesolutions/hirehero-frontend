@@ -12,9 +12,11 @@
       >
     </v-card-text>
     <v-card-text class="flex-row align-center">
-      <div style="text-transform: capitalize;">{{ task.name }}</div>
+      <div style="text-transform: capitalize">{{ task.name }}</div>
 
-      <div v-if="task.due_on" style="margin-top: 10px;"><strong>Due on:</strong> {{task.due_on}}</div>
+      <div v-if="task.due_on" style="margin-top: 10px">
+        <strong>Due on:</strong> {{ task.due_on }}
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -100,5 +102,9 @@ export default {
 <style lang="scss">
 .task-priority.High {
   color: #fff;
+}
+
+.theme--light.v-btn:hover::before {
+  opacity: 0 !important;
 }
 </style>

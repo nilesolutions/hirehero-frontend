@@ -10,7 +10,7 @@
         v-for="user in msgsState.onlineUsers"
         :key="user.id"
       >
-        <v-avatar size="30" color="primary">
+        <v-avatar size="30">
           <img :src="resolveProfilePic(user)" alt="" />
         </v-avatar>
         <span class="black--text ml-1">{{ user.name }} {{ userIdentityText(user) }}</span>
@@ -26,7 +26,6 @@
 <script>
 import { useMessages } from "@/composables/chat/messages";
 import { useUser } from "@/composables/user/user";
-
 import { resolveProfilePic } from "@/helpers";
 
 export default {

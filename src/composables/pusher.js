@@ -6,7 +6,9 @@ const accessToken = useUser().accessToken();
 
 const state = reactive({
   pusher: new Pusher("1d281727be4979719061", {
-    authEndpoint: process.env.VUE_APP_API_URL + "/conversations/auth",
+    // authEndpoint: process.env.VUE_APP_API_URL + "/conversations/auth",
+    authEndpoint: "http://localhost:3000/api/conversations/auth",
+
     auth: {
       headers: {
         Authorization: `Bearer ${accessToken}`,

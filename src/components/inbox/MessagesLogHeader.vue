@@ -2,7 +2,7 @@
   <v-card-text class="d-flex flex-row align-center pt-3">
     <div>
       <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
-        <v-avatar rounded color="primary">
+        <v-avatar rounded>
           <img :src="peerProfilePic" alt="" />
         </v-avatar>
       </v-badge>
@@ -83,7 +83,8 @@ export default {
 </script>
 
 <style lang="scss">
-div.chat-header-container .v-btn.offline-btn {
+div.chat-header-container .v-btn.offline-btn,
+div.chat-header-container .v-btn.offline-btn:hover {
   box-shadow: none !important;
 }
 </style>
