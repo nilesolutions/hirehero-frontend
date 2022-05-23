@@ -18,7 +18,7 @@
           v-model="state.text"
         >
         </v-text-field>
-        <v-btn icon @click="postComment" :loading="state.isPostingComment">
+        <v-btn icon @click="postComment" :loading="state.isPostingComment" class="send-msg-btn">
           <v-icon>{{ icons.mdiSend }} </v-icon>
         </v-btn>
       </form>
@@ -112,4 +112,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.send-msg-btn:hover {
+  color: #ff4c51 !important;
+}
+</style>

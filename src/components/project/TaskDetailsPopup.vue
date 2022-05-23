@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <v-dialog max-width="750" v-model="isTaskDetailsOpen" @click:outside="setActiveTaskId('')">
     <v-card>
       <v-fade-transition v-if="!isEditingTask" hide-on-leave>
@@ -6,29 +6,8 @@
           <task-header></task-header>
           <task-details></task-details>
           <task-attachments></task-attachments>
-          <task-comments></task-comments>
           <task-actions v-if="userType == 'client'" :task="task"></task-actions>
-        </div>
-      </v-fade-transition>
-      <v-fade-transition v-else hide-on-leave>
-        <div>
-          <edit-task></edit-task>
-        </div>
-      </v-fade-transition>
-    </v-card>
-  </v-dialog>
-</template> -->
-
-<template>
-  <v-dialog max-width="750" v-model="isTaskDetailsOpen" @click:outside="setActiveTaskId('')">
-    <v-card>
-      <v-fade-transition v-if="!isEditingTask" hide-on-leave>
-        <div class="d-flex flex-row flex-wrap">
-          <task-header></task-header>
-          <task-details></task-details>
-          <task-attachments></task-attachments>
           <task-comments></task-comments>
-          <task-actions v-if="userType == 'client'" :task="task"></task-actions>
         </div>
       </v-fade-transition>
       <v-fade-transition v-else hide-on-leave>
@@ -39,7 +18,6 @@
     </v-card>
   </v-dialog>
 </template>
-
 <script>
 import EditTask from "@/components/project/EditTask.vue";
 import TaskActions from "@/components/project/TaskActions.vue";

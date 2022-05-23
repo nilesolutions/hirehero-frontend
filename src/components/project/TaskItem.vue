@@ -107,4 +107,7 @@ export default {
 .task-priority::before {
   display: none;
 }
+.theme--light.v-btn:hover::before {
+  opacity: 0 !important;
+}
 </style>

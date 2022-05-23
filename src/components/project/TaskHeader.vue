@@ -86,7 +86,7 @@ export default {
   color: white;
 }
 
-.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):hover {
-  background: #30d98771 !important;
+#task-btn.complete-hover:hover {
+  background: rgba(48, 217, 136, 0.2) !important;
 }
 </style>
