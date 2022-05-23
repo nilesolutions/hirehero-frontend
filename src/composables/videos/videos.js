@@ -42,6 +42,16 @@ const isCtrlDisabled = computed(() => state.isRecording || state.isUploading);
 const setVidUrl = (val) => (state.recordedVidUrl = val);
 const setClickedVidUrl = (val) => (state.clickedVideoUrl = val);
 
+const myVideos = computed(() => {
+  if (state.videos.myVideos) return state.videos.myVideos;
+  return [];
+});
+
+const associateVideos = computed(() => {
+  if (state.videos.myVideos) return state.videos.associateVideos;
+  return [];
+});
+
 export function useVideos() {
   return {
     state: readonly(state),
@@ -60,5 +70,8 @@ export function useVideos() {
     setVidUrl,
     setClickedVidUrl,
     activeVideo,
+
+    myVideos,
+    associateVideos,
   };
 }

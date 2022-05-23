@@ -1,21 +1,35 @@
 <template>
   <div>
-    <h5 class="mb-3">
-      Your {{ userType == "client" ? "Virtual Assistant's" : "Client's" }} Videos
-    </h5>
-    <div class="videos-container d-flex flex-row flex-wrap">
-      <video-thumbnail v-for="video in state.videos.associateVideos" :key="video.id" :video="video">
-      </video-thumbnail>
-
-      <p v-show="!state.videos.associateVideos.length">No videos</p>
-
-      <h5 class="mb-3">Your Videos</h5>
-      <div class="videos-container d-flex flex-row flex-wrap">
-        <video-thumbnail v-for="video in state.videos.myVideos" :key="video.id" :video="video">
+    <!-- Different layout depending on user type -->
+    <div v-if="userType == 'client'">
+      <h5>Your videos</h5>
+      <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
+        <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
-
-        <p v-show="!state.videos.myVideos.length">No videos</p>
       </div>
+      <p v-else="!myVideos.length">No videos</p>
+
+      <h5>Your Virtual Assistant(s) videos</h5>
+      <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
+        <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
+        </video-thumbnail>
+      </div>
+      <p v-else="!associateVideos.length">No videos</p>
+    </div>
+    <div v-else>
+      <h5>Your client's videos</h5>
+      <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
+        <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
+        </video-thumbnail>
+      </div>
+      <p v-else="!associateVideos.length">No videos</p>
+
+      <h5>Your videos</h5>
+      <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
+        <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
+        </video-thumbnail>
+      </div>
+      <p v-else="!myVideos.length">No videos</p>
     </div>
 
     <v-dialog v-model="isViewingVideo" @click:outside="setClickedVidUrl('')">
@@ -44,7 +58,7 @@ export default {
   name: "VideosGrid",
   components: { VideoThumbnail },
   setup() {
-    const { state, setClickedVidUrl, activeVideo } = useVideos();
+    const { state, setClickedVidUrl, activeVideo, myVideos, associateVideos } = useVideos();
     const { userType } = useUser();
 
     const isViewingVideo = computed(() => {
@@ -61,6 +75,9 @@ export default {
 
     return {
       state,
+
+      myVideos,
+      associateVideos,
 
       activeVideoTitle,
       isViewingVideo,

@@ -30,8 +30,8 @@
             @click="initCall"
             small
             class="ml-2"
-            elevation="2"
             icon
+            depressed
             v-bind="attrs"
             v-on="on"
           >

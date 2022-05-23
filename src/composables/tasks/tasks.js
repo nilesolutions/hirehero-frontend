@@ -38,8 +38,8 @@ const unfinishedTasks = computed(() => {
   const today = new Date();
 
   const unfinished = tasks.value.filter((task) => {
-    if (!task.due_on) return true;
     if (task.completed) return false;
+    if (!task.due_on) return true;
 
     const dueDate = new Date(task.due_on);
     if (dueDate < today) return false;

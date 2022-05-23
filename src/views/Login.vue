@@ -19,7 +19,14 @@
       <v-row class="auth-row ma-0">
         <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
           <div class="auth-bg-wrapper">
-            <v-img :src="loginBg" alt="" />
+            <!-- <v-img :src="loginBg" alt="" /> -->
+            <v-img
+              class="mx-auto"
+              contain
+              max-width="350px"
+              max-height="350px"
+              :src="require('@/assets/logos/logo-lg.png')"
+            ></v-img>
           </div>
         </v-col>
 

@@ -28,9 +28,7 @@
         </v-badge>
         <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
           <span class="text--primary font-weight-semibold mb-n1"> {{ userData.username }} </span>
-          <small class="text--disabled text-capitalize">{{
-            userData.type == "Va" ? "VA" : userData.type
-          }}</small>
+          <small class="text--disabled">{{ userData.type == "va" ? "VA" : "Client" }}</small>
         </div>
       </div>
 
