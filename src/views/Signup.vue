@@ -21,7 +21,14 @@
       <v-row class="auth-row ma-0">
         <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
           <div class="auth-bg-wrapper">
-            <v-img :src="signupBg" alt="" />
+            <!-- <v-img :src="signupBg" alt="" /> -->
+            <v-img
+              class="mx-auto"
+              contain
+              max-width="350px"
+              max-height="350px"
+              :src="require('@/assets/logos/logo-lg.png')"
+            ></v-img>
           </div>
         </v-col>
 
@@ -143,10 +150,10 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import { mdiEyeOutline, mdiEyeOffOutline } from "@mdi/js";
-import { reactive } from "@vue/composition-api";
-import themeConfig from "@themeConfig";
 import axios from "@axios";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
+import themeConfig from "@themeConfig";
+import { reactive } from "@vue/composition-api";
 
 export default {
   name: "Signup",

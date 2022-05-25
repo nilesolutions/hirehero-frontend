@@ -41,7 +41,7 @@
         <v-card-title class="d-flex flex-row">
           <span class="text-capitalize">{{ activeVideoTitle }}</span>
 
-          <v-btn class="ml-auto" icon @click="setClickedVidUrl('')">
+          <v-btn class="ml-auto my-hover-btn" icon @click="setClickedVidUrl('')">
             <v-icon>{{ icons.mdiClose }}</v-icon>
           </v-btn>
         </v-card-title>
@@ -100,10 +100,11 @@ export default {
 
 <style>
 .v-dialog {
-  overflow: hidden;
+  /* overflow: hidden; */
   max-height: 100vh;
   padding: 20px 0;
   height: 100%;
+  box-shadow: none !important;
 }
 
 .video-player-container {

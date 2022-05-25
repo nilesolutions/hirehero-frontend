@@ -202,4 +202,15 @@ export default {
   max-width: 90%;
   margin: auto;
 }
+
+.v-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.theme--light.v-btn::before,
+button.theme--light.v-btn:hover::before {
+  opacity: 0.08 !important;
+}
 </style>

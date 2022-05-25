@@ -1,7 +1,17 @@
 <template>
   <v-list-item>
     <v-list-item-content>
-      <small class="black--text">{{ attachment.name }}</small>
+      <a
+        v-if="attachment.name.includes('png') || attachment.name.includes('jpg')"
+        :href="state.imgUrl"
+        target="_blank"
+      >
+        <img class="att-img" :src="state.imgUrl" alt="" />
+      </a>
+
+      <small v-else class="black--text">{{ attachment.name }}</small>
+
+      <!--<small class="black--text">{{ attachment.name }}</small>-->
     </v-list-item-content>
     <!-- <div class="preview-attachment">
       <img v-bind:src="attachment" />
@@ -38,11 +48,23 @@ import { saveAs } from "file-saver";
 
 export default {
   name: "AttachmentLine",
+  async created() {
+    const { activeTask } = useTasks();
+    const attachmentId = this.attachment.id;
+    const projectId = useRouter().routeParams().id;
+    const parentTaskId = activeTask.value.id;
+
+    const attachmentUrl = `/projects/${projectId}/tasks/${parentTaskId}/attachments/${attachmentId}`;
+
+    var { data } = await axios.get(attachmentUrl);
+    this.state.imgUrl = data?.download_url;
+  },
   props: { attachment: Object, parentTask: Object },
   setup(props, _) {
     const state = reactive({
       isDownloading: false,
       isDeleting: false,
+      imgUrl: "",
     });
     const { userType } = useUser();
     const { activeTask } = useTasks();
@@ -96,4 +118,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.att-img {
+  max-width: 120px;
+}
+</style>

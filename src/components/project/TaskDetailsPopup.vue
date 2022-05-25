@@ -74,4 +74,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.v-dialog::-webkit-scrollbar {
+  display: none;
+}
+
+.v-dialog {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
