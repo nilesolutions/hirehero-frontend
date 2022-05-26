@@ -21,7 +21,7 @@
       {{ infoMsg }}
     </v-alert>
     <v-alert v-if="userState.isPreviewMode" color="primary" class="mb-0" rounded="0" type="info">
-      You are currently previewing the website as {{ userName }}.<span class="ml-1">Any changes you make will be saved</span>
+      You are currently previewing the website as {{ userName }}.<span class="ml-1">Any changes you make will be saved.</span>
     </v-alert>
 
     <div class="dashboard--layout">
