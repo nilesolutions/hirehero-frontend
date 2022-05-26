@@ -61,7 +61,7 @@
               <v-icon small>{{ icons.mdiTrashCanOutline }}</v-icon>
             </v-btn>
           </template>
-          <span class="tooltip-font">Delete</span>
+          <span class="tooltip-font">Delete Message</span>
         </v-tooltip>
       </div>
 
@@ -148,8 +148,10 @@ export default {
     };
 
     async function deleteMsg() {
-      const confirm = await this.$confirm("Delete message ?", {
+      const confirm = await this.$confirm("Are you sure you want to delete this message?<br>This can't be undone!", {
         title: "Warning",
+        buttonFalseText: 'Cancel',
+        buttonTrueText: 'Delete Message'
       });
       if (!confirm) return;
 

@@ -8,10 +8,12 @@
         x-small
         depressed
         :color="colorFromPriority()"
-        >{{ task.priority }}
+      >{{ task.priority }}
       </v-btn>
 
-      <v-btn class="toggle-task-btn ml-4" small @click="toggleStatus" :loading="state.isLoading">
+      <v-btn class="toggle-task-btn ml-4" :class="{
+        'incomplete' : !task.completed
+      }" small @click="toggleStatus" :loading="state.isLoading">
         Mark as {{ task.completed ? "Uncomplete" : "Complete" }}
         <v-icon class="ml-2" small :color="task.completed ? '#4CAF' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
@@ -26,16 +28,16 @@
 </template>
 
 <script>
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
+import {useRouter} from "@/composables/router";
+import {useTasks} from "@/composables/tasks/tasks";
 import axios from "@axios";
-import { mdiCheckboxBlank, mdiCheckboxMarked, mdiClose } from "@mdi/js";
-import { reactive } from "@vue/composition-api";
+import {mdiCheckboxBlank, mdiCheckboxMarked, mdiClose} from "@mdi/js";
+import {reactive} from "@vue/composition-api";
 
 export default {
   name: "TaskHeader",
   setup() {
-    const { activeTask, updateTask, setActiveTaskId } = useTasks();
+    const {activeTask, updateTask, setActiveTaskId} = useTasks();
     const state = reactive({
       isLoading: false,
     });
@@ -87,6 +89,10 @@ export default {
 }
 
 #task-btn.complete-hover:hover {
+  background: rgba(48, 217, 136, 0.2) !important;
+}
+
+.toggle-task-btn:hover {
   background: rgba(48, 217, 136, 0.2) !important;
 }
 </style>

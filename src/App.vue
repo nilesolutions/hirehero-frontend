@@ -22,7 +22,13 @@
 .v-btn--tile {
   border-radius: 5px !important;
 }
-.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):hover{
+
+.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):not(.toggle-task-btn.incomplete) {
+  background: #f5f5f5;
+}
+
+.theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):not(.toggle-task-btn.incomplete):hover,
+.v-btn--icon:hover {
   background: rgba(235, 87, 87, 0.20) !important;
 }
 </style>

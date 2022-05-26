@@ -2,7 +2,8 @@
   <div>
     <v-btn class="d-block mb-2" small elevation="0" @click="toggleActivePlanUpdate(true)">
       <b>
-        Manage plan <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+        Manage plan
+        <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
@@ -14,19 +15,22 @@
       @click="removeCard"
     >
       <b>
-        Remove card <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+        Remove card
+        <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
     <v-btn class="d-block mb-2" small elevation="0" @click="togglePaymentMethodUpdate(true)">
       <b>
-        Update payment method <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+        Update payment method
+        <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
     <v-btn @click="cancelSubscription" small elevation="0">
       <b>
-        Cancel subscription <v-icon>{{ icons.mdiChevronRight }}</v-icon>
+        Cancel subscription
+        <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
   </div>
@@ -35,10 +39,10 @@
 <script>
 import axios from "@axios";
 
-import { reactive } from "@vue/composition-api";
-import { useSubscription } from "@/composables/user/subscription";
+import {reactive} from "@vue/composition-api";
+import {useSubscription} from "@/composables/user/subscription";
 
-import { mdiChevronRight } from "@mdi/js";
+import {mdiChevronRight} from "@mdi/js";
 
 export default {
   name: "CurrentPlanControls",
@@ -71,8 +75,8 @@ export default {
 
     async function cancelSubscription() {
       const confirm = await this.$confirm(
-        "Are you sure you want to cancel your plan ? This action can not be undone",
-        { title: "Warning" }
+        "Are you sure you want to cancel your plan?<br> This action can not be undone!",
+        {title: "Warning"}
       );
 
       if (!confirm) return;
@@ -92,7 +96,11 @@ export default {
     async function removeCard() {
       try {
         const confirm = await this.$confirm(
-          "Are you sure you want to remove your card ? This will cause future payments to fail."
+          "Are you sure you want to remove your card?<br> This will cause future payments to fail.",
+          {
+            buttonFalseText: "Cancel",
+            buttonTrueText: "Remove Card"
+          }
         );
         if (!confirm) return;
 

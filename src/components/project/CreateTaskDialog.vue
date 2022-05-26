@@ -34,7 +34,7 @@
 
         <v-text-field v-model="state.notes" dense outlined label="Notes"></v-text-field>
 
-        <label for="">Task Priority</label>
+        <label>Task Priority</label>
         <v-select
           full-width
           label="Priority"
@@ -161,6 +161,10 @@ export default {
         var response = await axios.post(`projects/${projectId}/tasks`, form);
         console.log(response);
         addTask(response.data);
+<<<<<<< Updated upstream
+=======
+        clearFields();
+>>>>>>> Stashed changes
         closeDialog();
       } catch (err) {
         console.log(err.response);
