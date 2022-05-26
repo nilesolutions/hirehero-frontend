@@ -161,10 +161,7 @@ export default {
         var response = await axios.post(`projects/${projectId}/tasks`, form);
         console.log(response);
         addTask(response.data);
-<<<<<<< Updated upstream
-=======
         clearFields();
->>>>>>> Stashed changes
         closeDialog();
       } catch (err) {
         console.log(err.response);
