@@ -29,7 +29,7 @@
 
 .v-dialog {
 
-  .grey--text {
+  .v-btn.grey--text {
     align-items: center;
     border-radius: 5px;
     display: inline-flex;
@@ -59,7 +59,7 @@
     }
   }
 
-  .primary--text {
+  .v-btn.primary--text {
     background-color: rgb(243, 76, 87) !important;
     border-bottom-color: rgb(243, 76, 87) !important;
     box-shadow: 0 4px 8px -4px rgba(94, 86, 105, 0.42) !important;
