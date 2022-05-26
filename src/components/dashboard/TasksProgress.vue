@@ -48,14 +48,14 @@
 
 <script>
 import axios from "@axios";
-import {generateWeekRange} from "@/helpers";
-import {onMounted, reactive} from "@vue/composition-api";
+import { generateWeekRange } from "@/helpers";
+import { onMounted, reactive } from "@vue/composition-api";
 import VueApexCharts from "vue-apexcharts";
-import {mdiChartDonut} from "@mdi/js";
+import { mdiChartDonut } from "@mdi/js";
 
 export default {
   name: "TasksProgress",
-  components: {VueApexCharts},
+  components: { VueApexCharts },
   setup() {
     const state = reactive({
       isLoading: false,
@@ -72,7 +72,7 @@ export default {
       try {
         if (state.dateRange.length < 2) return;
         state.isLoading = true;
-        const {data} = await axios.get("stats/tasks", {
+        const { data } = await axios.get("stats/tasks", {
           params: {
             from: state.dateRange[0],
             to: state.dateRange[1],
@@ -89,7 +89,7 @@ export default {
     return {
       state,
       options: {
-        legend: {position: "bottom"},
+        legend: { position: "bottom" },
         labels: ["Complete Tasks", "Incomplete Tasks"],
         colors: ["#30d988", "#e5ce02"],
         noData: {

@@ -23,7 +23,7 @@
       >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
-      <v-tooltip bottom color="error">
+      <v-tooltip bottom color="error" :disabled="canStartCall">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             :disabled="!canStartCall"

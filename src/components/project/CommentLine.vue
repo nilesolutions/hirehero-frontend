@@ -35,10 +35,10 @@
     </div>
 
     <div class="my-4">
-      <span v-if="!state.isEditing">{{ comment.text }}</span>
+      <span v-if="!state.isEditing">{{ state.commentText }}</span>
       <v-text-field
         v-else
-        v-model="state.text"
+        v-model="state.editText"
         :disabled="state.isUploadingEdits"
         hide-details=""
         dense
@@ -57,7 +57,7 @@
       <v-btn
         small
         class="ml-2"
-        @click="state.isEditing = false"
+        @click="clearEdits"
         :disabled="state.isDeleting || state.isUploadingEdits"
         >Cancel</v-btn
       >
@@ -85,12 +85,13 @@ export default {
       isDeleting: false,
       isEditing: false,
       isUploadingEdits: false,
-      text: props.comment.text,
+      editText: props.comment.text,
+      commentText: props.comment.text,
     });
 
     const { userType, userId } = useUser();
     const { activeTask } = useTasks();
-    const { deleteComment, updateComment } = useComments();
+    const { deleteComment } = useComments();
 
     const commentId = props.comment.id;
     const projectId = useRouter().routeParams().id;
@@ -107,21 +108,30 @@ export default {
       return false;
     });
 
-    async function saveEdits() {
-      if (!state.text) return;
+    function clearEdits() {
+      state.editText = state.commentText;
+      state.isEditing = false;
+    }
 
-      if (state.text == props.comment.text) {
+    async function saveEdits() {
+      if (!state.editText) {
+        clearEdits();
+        return;
+      }
+
+      if (state.editText == props.comment.text) {
         state.isEditing = false;
+        clearEdits();
         return;
       }
 
       try {
         state.isUploadingEdits = true;
-        const { data: updatedComment } = await axios.patch(commentUrl, {
-          text: state.text,
+        await axios.patch(commentUrl, {
+          text: state.editText,
         });
         state.isEditing = false;
-        updateComment(updatedComment);
+        state.commentText = state.editText;
       } catch (err) {
         console.log(err);
       } finally {
@@ -150,6 +160,7 @@ export default {
 
       del,
       saveEdits,
+      clearEdits,
 
       resolveProfilePic,
 

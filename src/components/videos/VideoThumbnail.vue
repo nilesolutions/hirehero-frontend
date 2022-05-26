@@ -149,7 +149,7 @@ export default {
     }
 
     async function del(videoId) {
-      const confirm = await this.$confirm("Delete video", { title: "Warning" });
+      const confirm = await this.$confirm("Delete video ?", { title: "Warning" });
       if (!confirm) return;
       try {
         state.isDeleting = true;

@@ -43,7 +43,6 @@ import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiDeleteOutline, mdiDownload } from "@mdi/js";
 import { reactive } from "@vue/composition-api";
-import axiosDefault from "axios";
 import { saveAs } from "file-saver";
 
 export default {
@@ -79,7 +78,7 @@ export default {
       try {
         state.isDownloading = true;
         var { data } = await axios.get(attachmentUrl);
-        var { data: fileBlob } = await axiosDefault.get(data.download_url, {
+        var { data: fileBlob } = await axios.get(data.download_url, {
           responseType: "blob",
         });
         saveAs(fileBlob, attachment.name);

@@ -110,8 +110,8 @@ export default {
     }
 
     async function del() {
-      const confirm = await this.$confirm("Are you sure you want to delete Task?", {
-        title: "warning",
+      const confirm = await this.$confirm("Delete task?", {
+        title: "Warning",
       });
       if (!confirm) return;
       state.isDeleting = true;

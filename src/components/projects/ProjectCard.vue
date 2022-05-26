@@ -12,7 +12,7 @@
           <v-tooltip bottom color="error">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                @click.stop="isDeleteOpen = true"
+                @click.stop="deleteProject"
                 class="ml-auto"
                 icon
                 color="warning"
@@ -28,28 +28,6 @@
           </v-tooltip>
         </div>
       </v-card-actions>
-
-      <v-dialog v-model="isDeleteOpen" max-width="500">
-        <v-card class="text-center">
-          <v-card-text
-            >Are your sure you want to delete this project?
-            <br />
-            This action can not be undone. All tasks within this project will be deleted too.
-          </v-card-text>
-
-          <v-card-actions class="text-center justify-center">
-            <v-btn
-              @click="deleteProject"
-              :loading="isLoading"
-              :disabled="isLoading"
-              color="warning"
-              outlined
-              >Delete
-            </v-btn>
-            <v-btn :disabled="isLoading" @click="isDeleteOpen = false">Cancel</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
   </div>
 </template>
@@ -82,6 +60,12 @@ export default {
     }
 
     async function deleteProject() {
+      const confirm = await this.$confirm("Delete project ? All tasks inside will be deleted.", {
+        title: "Warning",
+      });
+
+      if (!confirm) return;
+
       try {
         isLoading.value = true;
         await axios.delete(`/projects/${props.project.id}`);

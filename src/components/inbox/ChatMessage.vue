@@ -46,16 +46,23 @@
       </div>
 
       <div v-if="showControls" class="message-controls">
-        <v-btn
-          small
-          icon
-          tile
-          elevation="2"
-          color="warning"
-          @click="state.isConfirmDeleteOpen = true"
-        >
-          <v-icon small>{{ icons.mdiTrashCanOutline }}</v-icon>
-        </v-btn>
+        <v-tooltip bottom color="error">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              small
+              icon
+              tile
+              elevation="2"
+              color="warning"
+              @click="deleteMsg"
+            >
+              <v-icon small>{{ icons.mdiTrashCanOutline }}</v-icon>
+            </v-btn>
+          </template>
+          <span class="tooltip-font">Delete</span>
+        </v-tooltip>
       </div>
 
       <v-dialog width="fit-content" v-model="state.isConfirmDeleteOpen">
@@ -82,11 +89,6 @@ import { computed, reactive } from "@vue/composition-api";
 
 export default {
   name: "ChatMessage",
-  async created() {
-    this.state.imgUrl = await axiosDefault.get(data.download_url, {
-      responseType: "blob",
-    });
-  },
   props: { msgData: Object },
   setup({ msgData }) {
     const { userId } = useUser();
@@ -146,6 +148,11 @@ export default {
     };
 
     async function deleteMsg() {
+      const confirm = await this.$confirm("Delete message ?", {
+        title: "Warning",
+      });
+      if (!confirm) return;
+
       try {
         await axios.delete(`/conversations/${msgsState.conversation.id}/messages/${msgData.id}`);
         state.isConfirmDeleteOpen = false;

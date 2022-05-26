@@ -1,4 +1,4 @@
-import { computed, reactive, readonly, set } from "@vue/composition-api";
+import { computed, reactive, readonly } from "@vue/composition-api";
 
 const state = reactive({
   comments: [],
@@ -13,12 +13,16 @@ const addComment = (newComment) => {
 };
 
 const updateComment = (comment) => {
-  for (var i = 0; i < state.comments.length; i++) {
-    if (state.comments[i].id == comment.id) {
-      set(state.comments, i, comment);
+  var comments = state.comments;
+
+  for (var i = 0; i < comments.length; i++) {
+    if (comments[i].id == comment.id) {
+      console.log("Updating index", i);
+      comments[i] = comment;
       break;
     }
   }
+  state.comments = comments;
 };
 
 const deleteComment = (commentId) => {

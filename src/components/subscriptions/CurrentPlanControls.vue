@@ -72,7 +72,7 @@ export default {
     async function cancelSubscription() {
       const confirm = await this.$confirm(
         "Are you sure you want to cancel your plan ? This action can not be undone",
-        { title: "warning" }
+        { title: "Warning" }
       );
 
       if (!confirm) return;
