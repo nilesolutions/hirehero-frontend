@@ -34,35 +34,37 @@
       <div v-if="state.isLoading" class="ml-auto mr-auto mt-6">
         <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </div>
+      <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
       <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
       <slot v-else> </slot>
-      <!-- <slot> </slot> -->
     </div>
   </v-app>
 </template>
 
 <script>
-import { useRouter } from "@/@core/utils";
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
 import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
 import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
+
+import axios from "@axios";
+import { mdiClose } from "@mdi/js";
+import { useRouter } from "@/@core/utils";
+import { usePusher } from "@/composables/pusher";
+import { useUser } from "@/composables/user/user";
 import { useMessages } from "@/composables/chat/messages";
+import { useSubscription } from "@/composables/user/subscription";
 import { useNotifications } from "@/composables/chat/notifications";
+import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
 import {
   notificationEvents,
   subscriptionEvents,
   videoCallEvents,
   videoCallPresenceEvents,
 } from "@/composables/event-listeners";
-import { usePusher } from "@/composables/pusher";
-import { useSubscription } from "@/composables/user/subscription";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
-import { mdiClose } from "@mdi/js";
-import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
 
 export default {
   name: "LayoutCustom",
@@ -73,6 +75,7 @@ export default {
     VideoCallPrompt,
     SubscriptionNotificationMessage,
     SubscriptionPaywall,
+    AccountDisabledWall,
   },
   setup() {
     const state = reactive({
@@ -82,7 +85,7 @@ export default {
     });
 
     const { setSubInfo, isSubscribed } = useSubscription();
-    const { state: userState, userName, userType, setUserData } = useUser();
+    const { state: userState, userData, userName, userType, setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
     const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
@@ -156,6 +159,11 @@ export default {
       return false;
     });
 
+    const showAccountDisabled = computed(() => {
+      if (userData.value.is_disabled) return true;
+      return false;
+    });
+
     const infoMsg = computed(() => {
       var msg = [];
 
@@ -174,6 +182,7 @@ export default {
       state,
       infoMsg,
       showSubPaywall,
+      showAccountDisabled,
       closeSubNotification,
       userName,
       userState,
