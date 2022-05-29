@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import { useNavigation } from "@/composables/navigation";
-import { mdiChevronRight, mdiChevronLeft } from "@mdi/js";
-import { onMounted, onUnmounted, computed } from "@vue/composition-api";
+import {useNavigation} from "@/composables/navigation";
+import {mdiChevronRight, mdiChevronLeft} from "@mdi/js";
+import {onMounted, onUnmounted, computed} from "@vue/composition-api";
 import navItems from "@/components/layout/navigation/navigation-items";
 import NavigationItem from "@/components/layout/navigation/NavigationItem.vue";
 import NavigationSubheader from "@/components/layout/navigation/NavigationSubheader.vue";
-import { useUser } from "@/composables/user/user";
+import {useUser} from "@/composables/user/user";
 
 export default {
   name: "Navigation",
@@ -34,7 +34,7 @@ export default {
   },
 
   setup() {
-    const { state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive } =
+    const {state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive} =
       useNavigation();
 
     // const { state: userState } = useUser();
@@ -105,5 +105,14 @@ export default {
 
 .navigation__toggle {
   padding-left: 22px;
+}
+
+.navigation {
+  .router-link-active, .navigation__item:hover {
+    .navigation__item__text,.v-icon__svg {
+        color: white !important;
+
+    }
+  }
 }
 </style>

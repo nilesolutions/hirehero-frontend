@@ -60,8 +60,10 @@ export default {
     }
 
     async function deleteProject() {
-      const confirm = await this.$confirm("Delete project ? All tasks inside will be deleted.", {
+      const confirm = await this.$confirm("Are you sure you want to delete this project?<br>All tasks inside it will be deleted.", {
         title: "Warning",
+        buttonFalseText: "Cancel",
+        buttonConfirmText: "Delete Project"
       });
 
       if (!confirm) return;

@@ -2,29 +2,29 @@
   <div>
     <!-- Different layout depending on user type -->
     <div v-if="userType == 'client'">
-      <h5>Your videos</h5>
+      <h5>Your Videos</h5>
       <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
       <p v-else="!myVideos.length">No videos</p>
 
-      <h5>Your Virtual Assistant(s) videos</h5>
+      <h5>Your Virtual Assistant(s) Videos</h5>
       <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
         <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
-      <p v-else="!associateVideos.length">No videos</p>
+      <p v-else="!associateVideos.length">No Videos</p>
     </div>
     <div v-else>
-      <h5>Your client's videos</h5>
+      <h5>Your Client's Videos</h5>
       <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
         <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
-      <p v-else="!associateVideos.length">No videos</p>
+      <p v-else="!associateVideos.length">No Videos</p>
 
-      <h5>Your videos</h5>
+      <h5>Your Videos</h5>
       <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>

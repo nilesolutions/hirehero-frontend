@@ -3,7 +3,7 @@
     <div>
       <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
         <v-avatar rounded>
-          <img :src="peerProfilePic" alt="" />
+          <img :src="peerProfilePic" alt=""/>
         </v-avatar>
       </v-badge>
     </div>
@@ -23,14 +23,14 @@
       >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
-      <v-tooltip bottom color="error" :disabled="canStartCall">
+      <v-tooltip bottom color="error">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            :disabled="!canStartCall"
-            @click="initCall"
+            @click="canStartCall ? initCall() : null"
             small
             class="ml-2"
             icon
+            :class="{'disabled': !canStartCall}"
             depressed
             v-bind="attrs"
             v-on="on"
@@ -38,24 +38,24 @@
             <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
           </v-btn>
         </template>
-        <span class="tooltip-font">Call</span>
+        <span class="tooltip-font">{{ canStartCall ? 'Call Now' : 'Call Unavailable' }}</span>
       </v-tooltip>
     </div>
   </v-card-text>
 </template>
 
 <script>
-import { useMessages } from "@/composables/chat/messages";
-import { useVideoCall } from "@/composables/chat/videocall";
-import { resolveProfilePic } from "@/helpers";
-import { mdiPhoneOutline } from "@mdi/js";
-import { computed, reactive } from "@vue/composition-api";
+import {useMessages} from "@/composables/chat/messages";
+import {useVideoCall} from "@/composables/chat/videocall";
+import {resolveProfilePic} from "@/helpers";
+import {mdiPhoneOutline} from "@mdi/js";
+import {computed, reactive} from "@vue/composition-api";
 
 export default {
   name: "MessagesLogHeader",
   setup() {
-    const { state: vidCallState, initCall } = useVideoCall();
-    const { state: msgsState } = useMessages();
+    const {state: vidCallState, initCall} = useVideoCall();
+    const {state: msgsState} = useMessages();
 
     const canStartCall = computed(() => {
       if (vidCallState.isInCall || !vidCallState.isPeerOnline || vidCallState.isBeingCalled)
@@ -82,9 +82,21 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div.chat-header-container .v-btn.offline-btn,
 div.chat-header-container .v-btn.offline-btn:hover {
   box-shadow: none !important;
+}
+
+.disabled {
+  cursor: default;
+  background: none !important;
+
+  &:before{
+    background-color: transparent !important;
+  }
+  &:hover {
+    background: none !important;
+  }
 }
 </style>

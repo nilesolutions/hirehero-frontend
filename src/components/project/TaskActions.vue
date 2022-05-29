@@ -17,12 +17,12 @@
 
     <v-btn class="mb-2" @click="toggleEdit(true)">
       <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
-      <span class="ml-2">Edit</span>
+      <span class="ml-2">Edit Task</span>
     </v-btn>
 
     <v-btn class="mb-2" @click="del" :loading="state.isDeleting">
       <v-icon>{{ icons.mdiDelete }} </v-icon>
-      <span class="ml-2">Delete</span>
+      <span class="ml-2">Delete Task</span>
     </v-btn>
 
     <br />
@@ -110,8 +110,10 @@ export default {
     }
 
     async function del() {
-      const confirm = await this.$confirm("Delete task?", {
+      const confirm = await this.$confirm("Are you sure you want to delete this task?<br> All the data inside will be deleted.", {
         title: "Warning",
+        buttonFalseText: "Cancel",
+        buttonTrueText: "Delete Task"
       });
       if (!confirm) return;
       state.isDeleting = true;

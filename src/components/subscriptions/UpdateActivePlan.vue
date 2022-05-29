@@ -113,7 +113,10 @@ export default {
     }
 
     async function cancelScheduledUpdate() {
-      var confirm = await this.$confirm("Are you sure you want to cancel scheduled update");
+      var confirm = await this.$confirm("Are you sure you want to cancel scheduled update?", {
+        buttonFalseText: "Go back",
+        buttonTrueText: "Cancel scheduled update"
+      });
       if (!confirm) return;
 
       state.isLoading = true;

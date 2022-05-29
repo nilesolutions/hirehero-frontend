@@ -125,7 +125,7 @@ export default {
     }
 
     async function deleteProfilePic() {
-      const confirm = await this.$confirm("Delete profile picture ?", {
+      const confirm = await this.$confirm("Are you sure you want to delete your profile picture?", {
         buttonTrueText: "Confirm",
         buttonFalseText: "Cancel",
       });
@@ -135,7 +135,7 @@ export default {
       try {
         await axios.delete("/users/me/profile-picture");
         setProfilePic(null);
-        await this.$confirm("Deleted profile picture", {
+        await this.$confirm("Profile picture deleted!", {
           buttonTrueText: "Confirm",
           buttonFalseText: "",
         });
