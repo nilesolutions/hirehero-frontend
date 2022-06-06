@@ -36,6 +36,18 @@
       </v-alert>
     </v-card-text>
 
+    <v-card-text v-show="isTrialing">
+      <v-alert border="left" dense type="info">
+        <small>
+          You are on free trial from
+          <span>{{ new Date(trialStatus.trialStart * 1000).toLocaleDateString() }}</span> to
+          <span>{{ new Date(trialStatus.trialEnd * 1000).toLocaleDateString() }}</span>
+          <br />
+          You will be billed after the free trial ends for the amount of your current plan<br />
+        </small>
+      </v-alert>
+    </v-card-text>
+
     <v-card-text v-show="hasRenewalError">
       <v-alert border="left" dense type="warning">
         <small class="d-block mb-1"> Your subscription failed to renew. </small>
@@ -90,6 +102,9 @@ export default {
       renewalError,
       hasRenewalError,
 
+      isTrialing,
+      trialStatus,
+
       defaultCardInfo,
 
       toggleIsRetryingPayment,
@@ -129,6 +144,9 @@ export default {
       renewalError,
       hasRenewalError,
       retryPayment,
+
+      isTrialing,
+      trialStatus,
 
       defaultCardInfo,
 
