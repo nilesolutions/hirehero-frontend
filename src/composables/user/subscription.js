@@ -69,6 +69,13 @@ const hasRenewalError = computed(() => {
   return false;
 });
 
+const isTrialing = computed(() => {
+  if (state.subInfo.subDetails?.status == "trialing") return true;
+  return false;
+});
+
+const trialStatus = computed(() => state.subInfo.trialStatus);
+
 // Payment Method Getters
 const paymentMethod = computed(() => {
   if (isSubscribed.value) return state.subInfo.paymentMethod;
@@ -161,6 +168,9 @@ export function useSubscription() {
     isCheckingOut,
     isUpdatingPlan,
     isUpdatingPayment,
+
+    isTrialing,
+    trialStatus,
 
     hasRenewalError,
     renewalError,
