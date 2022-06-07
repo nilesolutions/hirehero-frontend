@@ -50,12 +50,10 @@ const subscriptionStart = computed(() => {
 });
 
 const subscriptionEnd = computed(() => {
-  const periodStart = subDetails.value.current_period_start;
-  if (!periodStart) return "";
+  const periodEnd = subDetails.value.current_period_end;
+  if (!periodEnd) return "";
 
-  const endDate = new Date(periodStart * 1000);
-  endDate.setMonth(endDate.getMonth() + 1);
-
+  const endDate = new Date(periodEnd * 1000);
   return endDate.toLocaleDateString();
 });
 

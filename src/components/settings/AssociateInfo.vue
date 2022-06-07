@@ -18,17 +18,6 @@
         >
         </v-text-field>
       </v-card-text>
-      <v-card-text>
-        <v-text-field
-          hide-details=""
-          dense
-          disabled
-          v-model="state.associateInfo.email"
-          outlined
-          label="Email"
-        >
-        </v-text-field>
-      </v-card-text>
     </v-card>
   </div>
   <div v-else>No Assigned {{ associatedUserType }}</div>

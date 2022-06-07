@@ -5,12 +5,12 @@
       <span class="ml-auto">{{ activePlan.name }}</span>
     </v-card-text>
 
-    <v-card-text class="d-flex flex-row">
+    <v-card-text v-show="!isTrialing" class="d-flex flex-row">
       Started On :
       <span class="ml-auto">{{ subscriptionStart }}</span>
     </v-card-text>
 
-    <v-card-text class="d-flex flex-row">
+    <v-card-text v-show="!isTrialing" class="d-flex flex-row">
       Ends On :
       <span class="ml-auto">{{ subscriptionEnd }}</span>
     </v-card-text>
