@@ -3,14 +3,17 @@
     <!-- Different layout depending on user type -->
     <div v-if="userType == 'client'">
       <h5>Your Videos</h5>
-      <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
+      <div v-if="myVideos.length" class="videos-container d-flex video-mobile flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
       <p v-else="!myVideos.length">No videos</p>
 
       <h5>Your Virtual Assistant(s) Videos</h5>
-      <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
+      <div
+        v-if="associateVideos.length"
+        class="videos-container d-flex flex-row video-mobile flex-wrap"
+      >
         <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
@@ -18,14 +21,17 @@
     </div>
     <div v-else>
       <h5>Your Client's Videos</h5>
-      <div v-if="associateVideos.length" class="videos-container d-flex flex-row flex-wrap">
+      <div
+        v-if="associateVideos.length"
+        class="videos-container d-flex video-mobile flex-row flex-wrap"
+      >
         <video-thumbnail v-for="video in associateVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
       <p v-else="!associateVideos.length">No Videos</p>
 
       <h5>Your Videos</h5>
-      <div v-if="myVideos.length" class="videos-container d-flex flex-row flex-wrap">
+      <div v-if="myVideos.length" class="videos-container d-flex video-mobile flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
@@ -120,5 +126,21 @@ export default {
   max-width: 100%;
   width: auto;
   max-height: calc(100% - 73px);
+}
+
+@media (max-width: 767px) {
+  .v-application div.video-mobile {
+    flex-direction: column !important;
+  }
+
+  .v-application div.video-mobile .video-thumbnail {
+    width: 100%;
+  }
+
+  .video-player-container {
+    height: auto;
+    /* top:50%;
+    transform: translateY(-50%) */
+  }
 }
 </style>

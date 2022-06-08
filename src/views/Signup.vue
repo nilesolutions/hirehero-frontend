@@ -32,12 +32,12 @@
           </div>
         </v-col>
 
-        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0">
+        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0 signup-form">
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
               <v-card flat>
                 <v-card-text>
-                  <p class="cursive-font text-2xl font-weight-semibold text--primary mb-2">
+                  <p class="cursive-font text-2xl font-weight-semibold text--primary mb-2 signup-title">
                     Welcome to HireHeroes!
                   </p>
                   <p class="cursive-font mb-4">
@@ -227,4 +227,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
+
+@media(max-width:767px){
+  .signup-form{
+    padding-top: 80px !important;
+  }
+
+  .signup-form .signup-title{
+    font-size: 1.3rem !important
+  }
+}
 </style>
