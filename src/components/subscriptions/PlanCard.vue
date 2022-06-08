@@ -26,12 +26,14 @@
 <script>
 import { reactive, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
+import { useCheckout } from "@/composables/user/checkout";
 
 export default {
   name: "PlanCard",
   props: { plan: Object },
   setup({ plan }) {
-    const { isSubscribed, setClickedPrice, activePlan } = useSubscription();
+    const { isSubscribed, activePlan } = useSubscription();
+    const { setClickedPrice } = useCheckout();
 
     const state = reactive({
       isLoading: false,

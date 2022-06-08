@@ -28,6 +28,7 @@ import UpdatePaymentMethod from "@/components/subscriptions/UpdatePaymentMethod.
 
 import { onMounted, reactive, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
+import { useCheckout } from "@/composables/user/checkout";
 
 export default {
   name: "Subscription",
@@ -39,8 +40,10 @@ export default {
     UpdatePaymentMethod,
   },
   setup() {
-    const { isCheckingOut, setSubInfo, setPlans, isSubscribed, isUpdatingPayment, isUpdatingPlan } =
+    const { setSubInfo, setPlans, isSubscribed, isUpdatingPayment, isUpdatingPlan } =
       useSubscription();
+
+    const { isCheckingOut } = useCheckout();
 
     const state = reactive({
       isLoading: true,

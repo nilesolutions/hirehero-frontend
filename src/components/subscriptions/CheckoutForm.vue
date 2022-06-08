@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    :loading="state.isInitting || state.isSubmitting"
-    :disabled="state.isSubmitting || state.isInitting"
-  >
+  <v-card :loading="isCardDisabled" :disabled="isCardDisabled">
     <v-card-title>
       <span class="cursive-font">Checkout</span>
       <v-btn class="ml-auto" @click="closeForm" icon>
@@ -10,38 +7,18 @@
       </v-btn>
     </v-card-title>
 
-    <div class="d-flex flex-row mt-2 mb-4" v-if="state.isInitting">
-      <v-progress-circular
-        class="ml-auto mr-auto"
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
-    </div>
+    <v-stepper v-model="checkoutState.step" elevation="0">
+      <v-stepper-header>
+        <v-stepper-step step="1">Apply coupon</v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step step="2">Checkout details</v-stepper-step>
+      </v-stepper-header>
+    </v-stepper>
 
-    <div v-if="!state.initError">
-      <v-card-text class="text-center">
-        <b>Subscribing to {{ checkoutPlan.name }} </b> <br />
-        <b>{{ planPrice }}</b>
-      </v-card-text>
+    <apply-coupon-step v-if="checkoutState.step == 1"></apply-coupon-step>
+    <billing-details-step v-if="checkoutState.step == 2"></billing-details-step>
 
-      <v-card-text>
-        <form
-          id="payment-form"
-          class="d-flex flex-column align-center"
-          @submit.prevent="handleSubmit"
-        >
-          <div id="payment-element">
-            <!--Stripe.js injects the Payment Element-->
-          </div>
-
-          <v-btn type="submit" class="mt-2" color="primary" :loading="state.isInitting">
-            Confirm
-          </v-btn>
-          <div id="payment-message" class="mt-2 warning--text">{{ state.msg }}</div>
-        </form>
-      </v-card-text>
-    </div>
-    <div class="text-center" v-else>
+    <div class="text-center" v-if="state.initError">
       {{ state.initError }}
     </div>
   </v-card>
@@ -55,15 +32,17 @@ import { mdiClose } from "@mdi/js";
 import { reactive, onMounted, computed } from "@vue/composition-api";
 import { useSubscription } from "@/composables/user/subscription";
 
+import ApplyCouponStep from "@/components/subscriptions/ApplyCouponStep.vue";
+import BillingDetailsStep from "@/components/subscriptions/BillingDetailsStep.vue";
+import { useCheckout } from "@/composables/user/checkout";
+
 export default {
   name: "CheckoutForm",
+  components: { ApplyCouponStep, BillingDetailsStep },
   setup() {
-    const {
-      state: subscriptionState,
-      checkoutPlan,
-      isCheckingOut,
-      setClickedPrice,
-    } = useSubscription();
+    const { state: subscriptionState } = useSubscription();
+
+    const { state: checkoutState, checkoutPlan, resetCheckoutState } = useCheckout();
 
     const state = reactive({
       isInitting: true,
@@ -79,15 +58,13 @@ export default {
 
     async function closeForm() {
       if (subId) cancelCheckout();
-      setClickedPrice("");
+      resetCheckoutState();
     }
 
-    const planPrice = computed(() => {
-      const currency = checkoutPlan.value.currency.toUpperCase();
-      const amount = checkoutPlan.value.amount / 100;
-      const interval = checkoutPlan.value.interval;
-
-      return `${amount} ${currency}/${interval}`;
+    const isCardDisabled = computed(() => {
+      if (checkoutState.isBillingLoading && checkoutState.step == 2) return true;
+      if (checkoutState.isSubmitting) return true;
+      return false;
     });
 
     async function handleSubmit(e) {
@@ -105,6 +82,43 @@ export default {
 
       if (error) {
         state.msg = error.message;
+        state.isSubmitting = false;
+      }
+    }
+
+    async function applyCoupon() {
+      if (!state.promotionCode) return;
+
+      try {
+        state.isSubmitting = true;
+        const { data: appliedCoupon } = await axios.post("/coupons/apply", {
+          subId: subId,
+          code: state.promotionCode,
+        });
+
+        state.appliedCoupon = appliedCoupon;
+      } catch (err) {
+        const status = err.response.status;
+        if (status == 403) state.couponError = "Code expired";
+        else if (status == 400) state.couponError = "Code does not exist";
+        else state.couponError = "Invalid code";
+
+        state.appliedCoupon = {};
+      } finally {
+        state.isSubmitting = false;
+      }
+    }
+
+    async function removeCoupon() {
+      try {
+        state.isSubmitting = true;
+        await axios.post("/coupons/clear", {
+          subId: subId,
+        });
+        state.appliedCoupon = {};
+      } catch (err) {
+        console.log(err);
+      } finally {
         state.isSubmitting = false;
       }
     }
@@ -135,7 +149,7 @@ export default {
     }
 
     onMounted(() => {
-      initForm();
+      //initForm();
     });
 
     async function cancelCheckout() {
@@ -146,12 +160,11 @@ export default {
 
     return {
       state,
-
+      checkoutState,
       subscriptionState,
-      isCheckingOut,
 
       checkoutPlan,
-      planPrice,
+      isCardDisabled,
 
       handleSubmit,
       closeForm,
