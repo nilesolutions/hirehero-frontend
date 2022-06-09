@@ -115,7 +115,7 @@ export default {
     async function cancelScheduledUpdate() {
       var confirm = await this.$confirm("Are you sure you want to cancel scheduled update?", {
         buttonFalseText: "Go back",
-        buttonTrueText: "Cancel scheduled update"
+        buttonTrueText: "Cancel scheduled update",
       });
       if (!confirm) return;
 
@@ -123,7 +123,6 @@ export default {
       try {
         await axios.post("subscriptions/cancel-scheduled-update");
         setScheduledUpdate({});
-        console.log("Toggling off the update form");
         toggleActivePlanUpdate(false);
       } catch (err) {
         console.log(err);

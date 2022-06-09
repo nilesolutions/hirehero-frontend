@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!state.isPaidFor">
     <div class="d-flex flex-row mt-2 mb-4" v-if="checkoutState.isBillingLoading">
       <v-progress-circular
         class="ml-auto mr-auto"
@@ -51,6 +51,14 @@
       </v-card-text>
     </div>
   </div>
+  <div v-else>
+    <v-card-text class="text-center">
+      Coupon applied and your subscription was successful.
+    </v-card-text>
+    <v-card-text class="text-center">
+      <v-btn color="primary" @click="goToDashboard">Head to dashboard</v-btn>
+    </v-card-text>
+  </div>
 </template>
 
 <script>
@@ -74,11 +82,13 @@ export default {
       toggleIsBillingLoading,
       toggleIsSubmitting,
       checkoutPlan,
+      resetCheckoutState,
     } = useCheckout();
 
     const state = reactive({
       isSubmitting: false,
       initError: "",
+      isPaidFor: false,
       msg: "",
     });
 
@@ -101,6 +111,12 @@ export default {
           priceId: checkoutState.clickedPrice,
           couponId: appliedCoupon.value.id,
         });
+
+        if (paymentIntent.isPaidFor) {
+          state.isPaidFor = true;
+          toggleIsBillingLoading(false);
+          return;
+        }
 
         subId = paymentIntent.subscriptionId;
 
@@ -145,9 +161,14 @@ export default {
         toggleIsSubmitting(false);
       }
     }
+
+    function goToDashboard() {
+      this.$router.push({ name: "dashboard" });
+      resetCheckoutState();
+    }
+
     onMounted(() => {
       toggleIsBillingLoading(true);
-      console.log("from component", checkoutState);
       nextTick(() => initForm());
     });
 
@@ -167,6 +188,7 @@ export default {
       appliedCoupon,
 
       handleSubmit,
+      goToDashboard,
 
       icons: {
         mdiClose,

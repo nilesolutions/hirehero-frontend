@@ -33,14 +33,20 @@
 
     <v-card-actions>
       <v-btn
-        color="primary"
+        :color="isCouponApplied ? 'secondary' : 'primary'"
         @click="isCouponApplied ? setAppliedCoupon({}) : fetchCoupon()"
         :disabled="state.isValidating"
         :loading="state.isValidating"
       >
         {{ isCouponApplied ? "Clear Coupon" : "Apply" }}
       </v-btn>
-      <v-btn @click="setActiveStep(2)" :disabled="state.isValidating"> Continue </v-btn>
+      <v-btn
+        :color="isCouponApplied ? 'primary' : 'secondary'"
+        @click="setActiveStep(2)"
+        :disabled="state.isValidating"
+      >
+        Continue
+      </v-btn>
     </v-card-actions>
   </div>
 </template>
