@@ -6,15 +6,15 @@
         <v-img
           :src="appLogo"
           max-height="30px"
-          max-width="30px"
+          max-width="120px"
           alt="logo"
           contain
           class="me-3"
         ></v-img>
 
-        <h2 class="text--primary mt-3">
+        <!-- <h2 class="text--primary mt-3">
           {{ appName }}
-        </h2>
+        </h2> -->
       </router-link>
       <!--/ brand logo -->
 
@@ -36,17 +36,27 @@
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
               <v-card flat>
-                <v-card-text>
-                  <p class="cursive-font text-2xl font-weight-semibold text--primary mb-2 signup-title">
+                <v-card-text class="auth-mob-padding">
+                  <p
+                    class="
+                      cursive-font
+                      text-2xl
+                      font-weight-semibold
+                      text--primary
+                      mb-2
+                      signup-title
+                      auth-text
+                    "
+                  >
                     Welcome to HireHeroes!
                   </p>
-                  <p class="cursive-font mb-4">
+                  <p class="cursive-font mb-4 auth-text">
                     Join our platform to start optimizing your projects
                   </p>
                 </v-card-text>
 
                 <!-- signup form -->
-                <v-card-text>
+                <v-card-text class="auth-mob-padding auth-mob-padding-2">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="state.username"
@@ -228,13 +238,39 @@ export default {
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 
-@media(max-width:767px){
-  .signup-form{
+.auth-submit-btn {
+  border-radius: 0;
+}
+
+@media (max-width: 767px) {
+  .signup-form {
     padding-top: 80px !important;
   }
 
-  .signup-form .signup-title{
-    font-size: 1.3rem !important
+  .signup-form .signup-title {
+    font-size: 1.3rem !important;
+  }
+
+  .auth-submit-btn.v-btn:not(.v-btn--round).v-size--default {
+    margin-top: 0 !important;
+  }
+  .auth-text {
+    text-align: center;
+  }
+  p.auth-text {
+    margin-bottom: 0 !important;
+  }
+  .auth-mob-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .auth-footer ul li {
+    opacity: 0.6;
+    font-weight: 300;
+  }
+
+  .auth-mob-padding-2 {
+    padding-bottom: 0;
   }
 }
 </style>

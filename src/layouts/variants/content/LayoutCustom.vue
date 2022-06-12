@@ -38,12 +38,12 @@
       <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
       <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
       <slot v-else> </slot>
+      <!-- <slot> </slot> -->
     </div>
   </v-app>
 </template>
 
 <script>
-import { useRouter } from "@/@core/utils";
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
 import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
@@ -51,6 +51,8 @@ import SubscriptionNotificationMessage from "@/components/subscriptions/Subscrip
 import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+
+import { useRouter } from "@/@core/utils";
 import { useMessages } from "@/composables/chat/messages";
 import { useNotifications } from "@/composables/chat/notifications";
 import {
@@ -220,7 +222,7 @@ export default {
 
 @media (max-width: 768px) {
   .dashboard__content {
-    padding: 0.5rem 1rem;
+    padding: 1.5rem 1rem;
   }
 }
 </style>

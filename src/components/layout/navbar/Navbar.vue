@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import { mdiMenu } from "@mdi/js";
-import { useNavigation } from "@/composables/navigation";
 import AppBarUserMenu from "@/components/AppBarUserMenu.vue";
 import NavbarActions from "@/components/layout/navbar/NavbarActions.vue";
+import { useNavigation } from "@/composables/navigation";
+import { mdiMenu } from "@mdi/js";
 
 export default {
   name: "Navbar",
@@ -60,7 +60,7 @@ export default {
   padding: 1rem 2rem;
 
   @media (max-width: 550px) {
-    padding: 0.25rem;
+    padding: 1rem 0.25rem;
   }
 }
 
