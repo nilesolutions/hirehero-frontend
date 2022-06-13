@@ -5,7 +5,7 @@
         <v-img
           :src="appLogo"
           max-height="30px"
-          max-width="130px"
+          max-width="150px"
           alt="logo"
           contain
           class="me-3"
