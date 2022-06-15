@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-6">
+  <div class="d-flex flex-column col-12 col-md-6 dashboard-padding">
     <v-card :loading="state.isLoading">
       <v-card-title>
         <v-icon class="mr-2">{{ icons.mdiChartDonut }}</v-icon>
@@ -47,11 +47,11 @@
 </template>
 
 <script>
-import axios from "@axios";
 import { generateWeekRange } from "@/helpers";
+import axios from "@axios";
+import { mdiChartDonut } from "@mdi/js";
 import { onMounted, reactive } from "@vue/composition-api";
 import VueApexCharts from "vue-apexcharts";
-import { mdiChartDonut } from "@mdi/js";
 
 export default {
   name: "TasksProgress",

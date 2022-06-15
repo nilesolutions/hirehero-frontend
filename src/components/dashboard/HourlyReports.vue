@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-6">
+  <div class="d-flex flex-column col-12 col-md-6 dashboard-padding">
     <v-card :loading="state.isLoading">
       <v-card-title>Hourly Reports</v-card-title>
 
@@ -44,7 +44,7 @@ import axios from "@axios";
 import VueApexCharts from "vue-apexcharts";
 
 import { generateWeekRange } from "@/helpers";
-import { reactive, onMounted } from "@vue/composition-api";
+import { onMounted, reactive } from "@vue/composition-api";
 
 export default {
   name: "HourlyReports",
@@ -109,4 +109,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media (max-width: 767px) {
+  .dashboard-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+</style>

@@ -5,15 +5,15 @@
         <v-img
           :src="appLogo"
           max-height="30px"
-          max-width="30px"
+          max-width="150px"
           alt="logo"
           contain
           class="me-3"
         ></v-img>
 
-        <h2 class="text--primary mt-3">
+        <!-- <h2 class="text--primary mt-3">
           {{ appName }}
-        </h2>
+        </h2> -->
       </router-link>
 
       <v-row class="auth-row ma-0">
@@ -34,14 +34,18 @@
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
               <v-card flat>
-                <v-card-text>
-                  <p class="cursive-font text-2xl font-weight-semibold text--primary mb-1">
+                <v-card-text class="auth-mob-padding">
+                  <p
+                    class="cursive-font text-2xl font-weight-semibold text--primary auth-text mb-1"
+                  >
                     Welcome Back!
                   </p>
-                  <p class="cursive-font mb-2">Enter your email and password to sign in</p>
+                  <p class="cursive-font auth-text mb-2">
+                    Enter your email and password to sign in
+                  </p>
                 </v-card-text>
 
-                <v-card-text>
+                <v-card-text class="auth-mob-padding auth-mob-padding-2">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="email"
@@ -70,7 +74,7 @@
                     <div class="d-flex align-center justify-space-between flex-wrap">
                       <v-checkbox hide-details label="Remember Me" class="mt-0"> </v-checkbox>
 
-                      <a class="ms-3" href="#"> Forgot Password? </a>
+                      <a class="ms-3 text-decoration-underline" href="#"> Forgot Password? </a>
                     </div>
 
                     <v-btn
@@ -172,4 +176,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
+.auth-submit-btn {
+  border-radius: 0;
+}
+
+@media (max-width: 767px) {
+  .auth-text {
+    text-align: center;
+  }
+  .auth-mob-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .auth-mob-padding-2 {
+    padding-bottom: 0;
+  }
+
+  .auth-footer ul li {
+    opacity: 0.6;
+    font-weight: 300;
+  }
+}
 </style>

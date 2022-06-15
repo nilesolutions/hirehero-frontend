@@ -4,7 +4,7 @@
   </div>
   <div class="my-2 d-flex flex-wrap flex-row" v-else>
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading gray-heading font-weight-bold">Not done</div>
+      <div class="section-heading gray-heading font-weight-bold task-due-m">Not done</div>
 
       <div class="tasks-column">
         <task-item
@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading blue-heading font-weight-bold">Due Soon</div>
+      <div class="section-heading blue-heading font-weight-bold task-due-m">Due Soon</div>
 
       <div class="tasks-column">
         <task-item
@@ -36,7 +36,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading red-heading font-weight-bold">Overdue</div>
+      <div class="section-heading red-heading font-weight-bold task-due-m">Overdue</div>
 
       <div class="tasks-column">
         <task-item
@@ -52,7 +52,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading green-heading font-weight-bold">Completed</div>
+      <div class="section-heading green-heading font-weight-bold task-due-m">Completed</div>
 
       <div class="tasks-column">
         <task-item
@@ -161,5 +161,11 @@ export default {
 
 .tasks-column .item-margin {
   margin-bottom: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .task-due-m {
+    margin-bottom: 0.3rem;
+  }
 }
 </style>

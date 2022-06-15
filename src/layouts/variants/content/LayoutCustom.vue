@@ -21,7 +21,9 @@
       {{ infoMsg }}
     </v-alert>
     <v-alert v-if="userState.isPreviewMode" color="primary" class="mb-0" rounded="0" type="info">
-      You are currently previewing the website as {{ userName }}.<span class="ml-1">Any changes you make will be saved.</span>
+      You are currently previewing the website as {{ userName }}.<span class="ml-1"
+        >Any changes you make will be saved.</span
+      >
     </v-alert>
 
     <div class="dashboard--layout">
@@ -36,6 +38,7 @@
       <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
       <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
       <slot v-else> </slot>
+      <!-- <slot> </slot> -->
     </div>
   </v-app>
 </template>
@@ -43,27 +46,27 @@
 <script>
 import Navbar from "@/components/layout/navbar/Navbar.vue";
 import Navigation from "@/components/layout/navigation/Navigation.vue";
+import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
 import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
 import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
 import VideoCall from "@/components/videocall/VideoCall.vue";
 import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
-import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
 
-import axios from "@axios";
-import { mdiClose } from "@mdi/js";
 import { useRouter } from "@/@core/utils";
-import { usePusher } from "@/composables/pusher";
-import { useUser } from "@/composables/user/user";
 import { useMessages } from "@/composables/chat/messages";
-import { useSubscription } from "@/composables/user/subscription";
 import { useNotifications } from "@/composables/chat/notifications";
-import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
 import {
   notificationEvents,
   subscriptionEvents,
   videoCallEvents,
   videoCallPresenceEvents,
 } from "@/composables/event-listeners";
+import { usePusher } from "@/composables/pusher";
+import { useSubscription } from "@/composables/user/subscription";
+import { useUser } from "@/composables/user/user";
+import axios from "@axios";
+import { mdiClose } from "@mdi/js";
+import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
 
 export default {
   name: "LayoutCustom",
@@ -219,7 +222,7 @@ export default {
 
 @media (max-width: 768px) {
   .dashboard__content {
-    padding: 0.5rem 1rem;
+    padding: 1.5rem 1rem;
   }
 }
 </style>

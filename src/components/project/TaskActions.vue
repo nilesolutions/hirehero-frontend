@@ -1,5 +1,5 @@
 <template>
-  <v-card-actions class="d-flex col-12 flex-wrap">
+  <v-card-actions class="d-flex col-12 flex-wrap task-action-mobile">
     <v-file-input
       ref="filePicker"
       @change="uploadAttachments"
@@ -20,7 +20,7 @@
       <span class="ml-2">Edit Task</span>
     </v-btn>
 
-    <v-btn class="mb-2" @click="del" :loading="state.isDeleting">
+    <v-btn class="mb-2 task-att" @click="del" :loading="state.isDeleting">
       <v-icon>{{ icons.mdiDelete }} </v-icon>
       <span class="ml-2">Delete Task</span>
     </v-btn>
@@ -152,4 +152,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media(max-width:767px){
+  .task-action-mobile{
+    justify-content: center ;
+  }
+
+  .task-att{
+    margin-top: 5px;
+  }
+}
+</style>

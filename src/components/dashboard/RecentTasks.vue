@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-12">
+  <div class="d-flex flex-column col-12 dashboard-padding">
     <v-card :loading="state.isLoading">
       <v-card-title>
         <span>Recent Tasks</span>
@@ -26,7 +26,7 @@
 
 <script>
 import axios from "@axios";
-import { reactive, onMounted } from "@vue/composition-api";
+import { onMounted, reactive } from "@vue/composition-api";
 
 export default {
   name: "RecentTasks",

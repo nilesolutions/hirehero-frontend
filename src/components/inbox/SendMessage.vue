@@ -27,7 +27,7 @@
       </v-tooltip>
     </form>
 
-    <div class="d-flex mt-3">
+    <div class="d-flex mt-3 chat-att">
       <div class="d-flex flex-row align-center audio-recorder">
         <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
@@ -234,5 +234,16 @@ export default {
 <style>
 .send-msg-btn:hover {
   color: #ff4c51 !important;
+}
+
+@media (max-width: 767px) {
+  .chat-att {
+    flex-direction: column !important;
+    align-items: center;
+  }
+
+  .chat-att button {
+    margin: 5px 0;
+  }
 }
 </style>

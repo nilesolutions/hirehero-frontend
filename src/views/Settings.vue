@@ -2,7 +2,7 @@
   <div class="dashboard__content">
     <h2 class="cursive-font black--text mb-2">Settings</h2>
 
-    <v-tabs background-color="transparent" v-model="activeTab">
+    <v-tabs background-color="transparent setting-tabs" v-model="activeTab">
       <v-tab :disabled="!canSwitchTabs">Account</v-tab>
       <v-tab :disabled="!canSwitchTabs">Security</v-tab>
       <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection">Subscription</v-tab>
@@ -73,5 +73,11 @@ export default {
 .account-tab {
   background-color: #fff;
   padding: 2rem;
+}
+
+@media(max-width:767px){
+  .setting-tabs .v-tab{
+    font-size: 12px;
+  }
 }
 </style>
