@@ -1,9 +1,9 @@
 <template>
   <div class="col-md-4 col-12">
     <v-card class="d-flex flex-column align-center" elevation="4">
-      <v-card-title class="cursive-font"
-        >{{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}</v-card-title
-      >
+      <v-card-title class="cursive-font plan-card__title">
+        {{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}
+      </v-card-title>
 
       <v-card-text class="text-center">{{ planPrice }}</v-card-text>
 
@@ -81,4 +81,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.plan-card__title {
+  word-break: break-all;
+}
+</style>
