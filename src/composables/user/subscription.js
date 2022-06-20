@@ -22,7 +22,7 @@ const toggleActivePlanUpdate = (val) => (state.isUpdatingPlan = val);
 const toggleIsRetryingPayment = (val) => (state.isRetryingPayment = val);
 const toggleIsRemovingCard = (val) => (state.isRemovingCard = val);
 
-const plans = computed(() => state.plans);
+const plans = computed(() => state.plans.filter((plan) => !plan.is_disabled));
 
 // Subscription Getters
 const isSubscribed = computed(() => {
