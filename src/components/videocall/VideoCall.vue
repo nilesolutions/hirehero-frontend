@@ -10,8 +10,8 @@
         </v-card-title>
 
         <div class="d-flex flex-row">
-          <video class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
-          <video class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
+          <video class="col-6 video-preview" ref="localVideoPreview" muted autoplay></video>
+          <video class="col-6 video-preview" ref="remoteVideoPreview" autoplay controls></video>
         </div>
 
         <v-card-actions class="d-flex flex-row justify-center">

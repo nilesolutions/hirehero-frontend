@@ -57,7 +57,28 @@ const isCamDisabled = computed(() => {
 
 function initRTC() {
   state.rtc = null;
-  state.rtc = new RTCPeerConnection();
+  state.rtc = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302",
+      },
+      {
+        urls: "turn:openrelay.metered.ca:80",
+        username: "openrelayproject",
+        credential: "openrelayproject",
+      },
+      {
+        urls: "turn:openrelay.metered.ca:443",
+        username: "openrelayproject",
+        credential: "openrelayproject",
+      },
+      {
+        urls: "turn:openrelay.metered.ca:443?transport=tcp",
+        username: "openrelayproject",
+        credential: "openrelayproject",
+      },
+    ],
+  });
 
   state.rtc.onicecandidate = (event) => {
     if (event.candidate) {
@@ -70,6 +91,11 @@ function initRTC() {
   state.rtc.ontrack = (event) => {
     console.log("Track added", event.streams[0]);
     remoteVideoPreview.value.srcObject = event.streams[0];
+  };
+
+  state.rtc.oniceconnectionstatechange = function () {
+    console.log("ICE state: ", state.rtc.iceConnectionState);
+    console.log(state.rtc.iceGatheringState);
   };
 }
 
@@ -137,7 +163,6 @@ async function initCall() {
       sdp: callOffer,
       name: userName.value,
     });
-    console.log(callOffer);
   } catch (err) {
     console.log(err);
   }
@@ -181,7 +206,7 @@ async function answerCall() {
       .forEach((track) => state.rtc.addTrack(track, state.activeMediaStream));
 
     localVideoPreview.value.srcObject = state.activeMediaStream;
-    state.rtc.setRemoteDescription(new RTCSessionDescription(state.incomingCallRequest.sdp));
+    await state.rtc.setRemoteDescription(new RTCSessionDescription(state.incomingCallRequest.sdp));
 
     const answer = await state.rtc.createAnswer();
     state.rtc.setLocalDescription(new RTCSessionDescription(answer));
