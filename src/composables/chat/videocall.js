@@ -1,5 +1,6 @@
 import { usePusher } from "@/composables/pusher";
 import { computed, reactive, ref } from "@vue/composition-api";
+import { Peer } from "peerjs";
 import { useUser } from "../user/user";
 import { useMessages } from "./messages";
 
@@ -31,6 +32,9 @@ const state = reactive({
   isBeingCalled: false,
   isPeerOnline: false,
 
+  myPeer: new Peer(),
+  activeCall: null,
+
   activeMediaStream: null,
   isMicEnabled: false,
   isCamEnabled: false,
@@ -42,43 +46,21 @@ const state = reactive({
   candidateBuffer: [],
 });
 
+state.myPeer.on("call", (call) => {
+  state.activeCall = call;
+
+  state.activeCall.answer(state.activeMediaStream);
+  state.activeCall.on("stream", (stream) => {
+    remoteVideoPreview.value.srcObject = stream;
+  });
+});
+
 const localVideoPreview = ref(null);
 const remoteVideoPreview = ref(null);
 
-const micStatus = computed(() => {
-  if (!state.activeMediaStream) return false;
-  return state.activeMediaStream.getAudioTracks()[0].enabled;
-});
-
-const isCamDisabled = computed(() => {
-  if (!state.activeMediaStream) return false;
-  return state.activeMediaStream.getVideoTracks()[0].enabled;
-});
-
 function initRTC() {
   state.rtc = null;
-  state.rtc = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.l.google.com:19302",
-      },
-      {
-        urls: "turn:openrelay.metered.ca:80",
-        username: "openrelayproject",
-        credential: "openrelayproject",
-      },
-      {
-        urls: "turn:openrelay.metered.ca:443",
-        username: "openrelayproject",
-        credential: "openrelayproject",
-      },
-      {
-        urls: "turn:openrelay.metered.ca:443?transport=tcp",
-        username: "openrelayproject",
-        credential: "openrelayproject",
-      },
-    ],
-  });
+  state.rtc = new RTCPeerConnection();
 
   state.rtc.onicecandidate = (event) => {
     if (event.candidate) {
@@ -113,9 +95,13 @@ async function readyMediaStream() {
       audio: true,
       video: true,
     });
+
     state.activeMediaStream = stream;
-    state.isCamEnabled = stream.getVideoTracks()[0].enabled;
-    state.isMicEnabled = stream.getAudioTracks()[0].enabled;
+    state.activeMediaStream.getAudioTracks()[0].enabled = false;
+    state.activeMediaStream.getVideoTracks()[0].enabled = false;
+
+    state.isCamEnabled = false;
+    state.isMicEnabled = false;
   } catch (err) {
     console.log(err);
     alert("Please check camera & mic permissions");
@@ -150,17 +136,10 @@ async function initCall() {
     state.isInCall = true;
 
     await readyMediaStream();
-    state.activeMediaStream
-      .getTracks()
-      .forEach((track) => state.rtc.addTrack(track, state.activeMediaStream));
-
     localVideoPreview.value.srcObject = state.activeMediaStream;
 
-    const callOffer = await state.rtc.createOffer();
-    await state.rtc.setLocalDescription(new RTCSessionDescription(callOffer));
-
     triggerEvent(peerChannel.value, "client-call-handshake", {
-      sdp: callOffer,
+      peerId: state.myPeer.id,
       name: userName.value,
     });
   } catch (err) {
@@ -174,11 +153,7 @@ function handleIncomingHandshake(request) {
 }
 
 async function handleCallAnswer(event) {
-  try {
-    await state.rtc.setRemoteDescription(new RTCSessionDescription(event.sdp));
-  } catch (err) {
-    console.log(err);
-  }
+  console.log("Recieved call answer");
 }
 
 function handleIceCandidate(event) {
@@ -200,18 +175,13 @@ function handleIceCandidate(event) {
 async function answerCall() {
   try {
     state.isInCall = true;
+
     await readyMediaStream();
-    state.activeMediaStream
-      .getTracks()
-      .forEach((track) => state.rtc.addTrack(track, state.activeMediaStream));
-
     localVideoPreview.value.srcObject = state.activeMediaStream;
-    await state.rtc.setRemoteDescription(new RTCSessionDescription(state.incomingCallRequest.sdp));
 
-    const answer = await state.rtc.createAnswer();
-    state.rtc.setLocalDescription(new RTCSessionDescription(answer));
-    triggerEvent(peerChannel.value, "client-call-answer", {
-      sdp: answer,
+    state.activeCall = state.myPeer.call(state.incomingCallRequest.peerId, state.activeMediaStream);
+    state.activeCall.on("stream", (stream) => {
+      remoteVideoPreview.value.srcObject = stream;
     });
   } catch (err) {
     console.log(err);
@@ -230,9 +200,14 @@ async function endCall(event) {
   state.isBeingCalled = false;
 
   clearMediaStream();
-  initRTC();
+  //initRTC();
 
   state.incomingCallRequest = {};
+
+  if (state.activeCall) {
+    state.activeCall.close();
+    state.activeCall = null;
+  }
 
   if (localVideoPreview.value) {
     localVideoPreview.value.srcObject = null;
