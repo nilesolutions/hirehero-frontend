@@ -173,8 +173,14 @@ export default {
         if (userType.value == "client") msg.push("No VA Assigned");
         else msg.push("No Client Assigned");
       }
+
+      /* 
+      * REMOVING SUBSCRIPTION NOTIFICATION FOR NOW: 
+      * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+
       if (!isSubscribed.value && userType.value == "client")
         msg.push("You are not subscribed to a plan");
+      */
 
       if (msg.length) return msg.join(" | ");
       return "";
