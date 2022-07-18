@@ -2,7 +2,6 @@
   <div class="d-flex flex-col align-self-center mx-auto width">
     <v-card class="mobile-css">
       <v-card-text>Activate your account by subscribing to a plan.</v-card-text>
-
       <v-card-actions v-if="!userState.isPreviewMode">
         <router-link class="mx-auto text-decoration-none" to="/settings">
           <v-btn color="primary">Go to settings</v-btn></router-link
@@ -37,7 +36,7 @@ export default {
 }
   .mobile-css{
     margin: auto 20px;
-    
+
   }
 }
 </style>
