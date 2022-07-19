@@ -5,7 +5,11 @@
     <v-tabs background-color="transparent setting-tabs" v-model="activeTab">
       <v-tab :disabled="!canSwitchTabs">Account</v-tab>
       <v-tab :disabled="!canSwitchTabs">Security</v-tab>
+      <!--
+      REMOVED AS WE'RE NOT GONNA USE SUBSCRIPTION FOR NOW
+      Ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1  
       <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection">Subscription</v-tab>
+      -->
     </v-tabs>
 
     <v-tabs-items v-model="activeTab" class="setting-tabs">
@@ -17,9 +21,14 @@
         <account-security></account-security>
       </v-tab-item>
 
+      <!--
+      REMOVED AS WE'RE NOT GONNA USE SUBSCRIPTION FOR NOW
+      Ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+
       <v-tab-item key="subscriptionSettings" v-if="showSubscriptionSection">
         <subscription></subscription>
       </v-tab-item>
+      -->
     </v-tabs-items>
   </div>
 </template>

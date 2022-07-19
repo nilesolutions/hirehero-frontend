@@ -36,7 +36,11 @@
         <v-progress-circular color="primary" indeterminate></v-progress-circular>
       </div>
       <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
-      <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
+      <!--
+        REMOVED
+        Ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+        <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
+      -->
       <slot v-else> </slot>
       <!-- <slot> </slot> -->
     </div>
@@ -100,17 +104,40 @@ export default {
     async function initApp() {
       try {
         state.isLoading = true;
-        const [user, associate, notifications, sub] = await Promise.all([
+        /*
+        * Removing subscription call: 
+        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+        * 
+        * OLD VERSION
+        * const [user, associate, notifications, sub] = await Promise.all([
+            axios.get("/users/me"),
+            axios.get("/users/associate"),
+            axios.get("/conversations/notifications"),
+            axios.get("/subscriptions/"),
+          ]);
+        */
+        const [user, associate, notifications] = await Promise.all([
           axios.get("/users/me"),
           axios.get("/users/associate"),
-          axios.get("/conversations/notifications"),
-          axios.get("/subscriptions/"),
+          axios.get("/conversations/notifications")
         ]);
-
+        
         setUserData(user.data);
         setAssociatedUser(associate.data);
         setNotification(notifications.data);
-        setSubInfo(sub.data);
+
+        /*
+        * Removed subscription call so, to bypass that call
+        * introducing a default value for subInfo: 
+        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+        * 
+        * OLD VERSION
+        * setSubInfo(sub.data);
+        * 
+        * Defualt / subscription response data is {}
+        * that's why passing {} to set subInfo
+        */
+        setSubInfo({});
 
         videoCallChannel += user.data.id;
         privateUserChannel += user.data.id;
@@ -173,8 +200,14 @@ export default {
         if (userType.value == "client") msg.push("No VA Assigned");
         else msg.push("No Client Assigned");
       }
+
+      /* 
+      * REMOVING SUBSCRIPTION NOTIFICATION FOR NOW: 
+      * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+
       if (!isSubscribed.value && userType.value == "client")
         msg.push("You are not subscribed to a plan");
+      */
 
       if (msg.length) return msg.join(" | ");
       return "";
