@@ -58,69 +58,268 @@
                 <!-- signup form -->
                 <v-card-text class="auth-mob-padding auth-mob-padding-2">
                   <v-form @submit.prevent>
-                    <v-text-field
-                      v-model="state.username"
-                      outlined
-                      label="Username"
-                      placeholder="Username"
-                      hide-details="auto"
-                      class="mb-4"
-                    ></v-text-field>
+                    <v-stepper v-model="state.e1">
+                      <v-stepper-header>
+                        <v-stepper-step
+                          :complete="state.e1 > 1"
+                          step="1"
+                        >
+                          1
+                        </v-stepper-step>
 
-                    <v-text-field
-                      v-model="state.email"
-                      outlined
-                      label="Email"
-                      placeholder="Email"
-                      hide-details="auto"
-                      class="mb-4"
-                    ></v-text-field>
+                        <v-divider></v-divider>
 
-                    <v-text-field
-                      v-model="state.password"
-                      outlined
-                      :type="state.isPasswordVisible ? 'text' : 'password'"
-                      label="Password"
-                      placeholder="Password"
-                      :append-icon="
-                        state.isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
-                      "
-                      hide-details="auto"
-                      class="mb-4"
-                      @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                    ></v-text-field>
+                        <v-stepper-step
+                          :complete="state.e1 > 2"
+                          step="2"
+                        >
+                          2
+                        </v-stepper-step>
 
-                    <v-text-field
-                      v-model="state.confirmPassword"
-                      outlined
-                      type="password"
-                      label="Confirm Password"
-                      placeholder="Confirm Password"
-                      hide-details="auto"
-                      class="mb-4"
-                      @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                    ></v-text-field>
+                        <v-divider></v-divider>
 
-                    <v-select
-                      v-model="state.accType"
-                      label="I'm looking to"
-                      outlined
-                      :items="accTypeOpts"
-                    >
-                    </v-select>
+                        <v-stepper-step
+                          :complete="state.e1 > 3"
+                          step="3"
+                        >
+                          3
+                        </v-stepper-step>
+                      </v-stepper-header>
+                      <v-stepper-items>
+                        <v-stepper-content step="1">
+                          <v-card
+                            class="mb-12"
+                            color="grey lighten-1"
+                          >
+                            <v-row>
+                              <v-col>
+                                <v-text-field
+                                  v-model="state.first_name"
+                                  outlined
+                                  label="First name"
+                                  placeholder="First name"
+                                  hide-details="auto"
+                                  class="mb-4"
+                                ></v-text-field>
+                              </v-col>
 
-                    <v-btn
-                      block
-                      color="primary"
-                      type="submit"
-                      class="mt-6 auth-submit-btn"
-                      @click="signup"
-                      :disabled="state.isLoading"
-                      :loading="state.isLoading"
-                    >
-                      Signup
-                    </v-btn>
+                              <v-col>
+                                <v-text-field
+                                v-model="state.last_name"
+                                outlined
+                                label="Last name"
+                                placeholder="Last name"
+                                hide-details="auto"
+                                class="mb-4"
+                              ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            
+                            <v-text-field
+                              v-model="state.username"
+                              outlined
+                              label="Username"
+                              placeholder="Username"
+                              hide-details="auto"
+                              class="mb-4"
+                            ></v-text-field>
 
+                            <v-text-field
+                              v-model="state.email"
+                              outlined
+                              label="Email"
+                              placeholder="Email"
+                              hide-details="auto"
+                              class="mb-4"
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="state.phone"
+                              outlined
+                              label="Phone"
+                              placeholder="Phone"
+                              hide-details="auto"
+                              class="mb-4"
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="state.password"
+                              outlined
+                              :type="state.isPasswordVisible ? 'text' : 'password'"
+                              label="Password"
+                              placeholder="Password"
+                              :append-icon="
+                                state.isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline
+                              "
+                              hide-details="auto"
+                              class="mb-4"
+                              @click:append="state.isPasswordVisible = !state.isPasswordVisible"
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="state.confirmPassword"
+                              outlined
+                              type="password"
+                              label="Confirm Password"
+                              placeholder="Confirm Password"
+                              hide-details="auto"
+                              class="mb-4"
+                              @click:append="state.isPasswordVisible = !state.isPasswordVisible"
+                            ></v-text-field>
+                          </v-card>
+
+                          <v-btn
+                            color="primary"
+                            @click="state.e1 = 2"
+                          >
+                            Next
+                          </v-btn>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="2">
+                          <v-card
+                            class="mb-12"
+                            color="grey lighten-1"
+                          >
+                            <v-select
+                              style="margin-top: 10px"
+                              v-model="state.accType"
+                              label="I'm looking to"
+                              outlined
+                              :items="accTypeOpts"
+                            >
+                            </v-select>
+
+                            <v-text-field
+                              v-if="state.accType == 'client'"
+                              v-model="state.number_of_va"
+                              outlined
+                              type="number"
+                              step="1"
+                              label="How many Virtual Assistants do you need?"
+                              placeholder="0"
+                              hide-details="auto"
+                              class="mb-4"
+                            ></v-text-field>
+
+                            <v-textarea
+                              v-if="state.accType == 'client'"
+                              outlined
+                              clear-icon="mdi-close-circle"
+                              label="What tasks are you needing your VA to handle?"
+                              placeholder="Type here"
+                              rows="3"
+                              row-height="25"
+                            ></v-textarea>
+
+                            <v-textarea
+                              v-if="state.accType == 'client'"
+                              outlined
+                              clear-icon="mdi-close-circle"
+                              label="What softwares/applications do you need your VA to use?"
+                              placeholder="Type here"
+                              rows="3"
+                              row-height="25"
+                            ></v-textarea>
+                          </v-card>
+
+                          <v-btn
+                            @click="state.e1 = 1"
+                          >
+                            Back
+                          </v-btn>
+                          <v-btn
+                            color="primary"
+                            @click="state.e1 = 3"
+                          >
+                            Next
+                          </v-btn>
+                          
+                        </v-stepper-content>
+
+                        <v-stepper-content step="3">
+                          <v-card
+                            class="mb-12"
+                            color="grey lighten-1"
+                          >
+                            <h2>How did you hear about us? </h2>
+                            <v-checkbox
+                              v-model="state.source.type"
+                              label="Word of Mouth"
+                              value="Word of Mouth"
+                              style="margin-top: 20px"
+                            ></v-checkbox>
+
+                            <v-checkbox
+                              v-model="state.source.type"
+                              label="Social Media"
+                              value="Social Media"
+                              style="margin-top: 0px"
+                            ></v-checkbox>
+
+                            <v-checkbox
+                              v-model="state.source.type"
+                              label="Website"
+                              value="Website"
+                              style="margin-top: 0px"
+                            ></v-checkbox>
+
+                            <v-checkbox
+                              v-model="state.source.type"
+                              label="Other"
+                              value="Other"
+                              style="margin-top: 0px"
+                            ></v-checkbox>
+                            
+                            <!--other value-->
+                            <v-text-field
+                                v-if="state.source.type == 'Other'"
+                                v-model="state.source.value"
+                                placeholder="Please type another option here"
+                                outlined
+                                hide-details="auto"
+                                class="mb-4"
+                              ></v-text-field>
+                            <!--mouth of word value-->
+
+                            <h4 v-if="state.source.type == 'Word of Mouth'">What is the name of the person that referred you to us?</h4>
+                            <v-text-field
+                                v-if="state.source.type == 'Word of Mouth'"
+                                v-model="state.source.value"
+                                outlined
+                                hide-details="auto"
+                                class="mb-4"
+                              ></v-text-field>
+                          </v-card>
+
+
+                          <v-checkbox
+                            v-model="state.tos_agreement"
+                            label="I acknowledge that I have read and agree to the Terms."
+                            value="yes"
+                            style="margin-top: 0px"
+                          ></v-checkbox>
+
+                          <v-btn
+                            @click="state.e1 = 2"
+                          >
+                            Back
+                          </v-btn>
+                          <v-btn
+                            color="primary"
+                            type="submit"
+                            class="auth-submit-btn"
+                            @click="signup"
+                            :disabled="state.isLoading"
+                            :loading="state.isLoading"
+                          >
+                            Signup
+                          </v-btn>
+                          
+                        </v-stepper-content>
+                      </v-stepper-items>
+                    </v-stepper>
+                    
                     <v-card-text v-show="state.errorMsg" class="my-2 text-center">
                       {{ state.errorMsg }}
                     </v-card-text>
@@ -172,12 +371,22 @@ export default {
       isPasswordVisible: false,
       isLoading: false,
       errorMsg: "",
+      first_name: "",
+      last_name: "",
       username: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
-      accType: {},
+      accType: "",
+      number_of_va: 0,
+      source: {
+        type: "",
+        value: ""
+      },
       accCreated: false,
+      tos_agreement: 'no',
+      e1: 1
     });
 
     const accTypeOpts = [
@@ -187,7 +396,24 @@ export default {
 
     async function signup() {
       try {
-        if (state.password != state.confirmPassword) throw "Passwords do not match";
+        // validate tos agreement
+        if ( state.tos_agreement == 'no' ) {
+          let _msg = "You must agree to terms and conditions to signup."
+          state.errorMsg = _msg
+          throw _msg
+        }
+
+        // validate password match
+        if (state.password != state.confirmPassword) {
+          state.errorMsg = "Passwords did not match"
+          throw "Passwords did not match";
+        }
+
+        // validate account type selection
+        if ( state.accType == "" ) {
+          state.errorMsg = '"I am looking to" is required field.'
+          throw '"I am looking to" is required field.'
+        }
 
         state.errorMsg = "";
         state.isLoading = true;
