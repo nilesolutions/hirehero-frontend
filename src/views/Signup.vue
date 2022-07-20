@@ -49,35 +49,28 @@
                         <v-stepper-step
                           :complete="state.e1 > 1"
                           step="1"
-                        >
-                          1
-                        </v-stepper-step>
+                        ></v-stepper-step>
 
                         <v-divider></v-divider>
 
                         <v-stepper-step
                           :complete="state.e1 > 2"
                           step="2"
-                        >
-                          2
-                        </v-stepper-step>
+                        ></v-stepper-step>
 
                         <v-divider></v-divider>
 
                         <v-stepper-step
                           :complete="state.e1 > 3"
                           step="3"
-                        >
-                          3
-                        </v-stepper-step>
+                        ></v-stepper-step>
                       </v-stepper-header>
                       <v-stepper-items>
                         <v-stepper-content step="1">
                           <v-card
-                            class="mb-12"
                             color="grey lighten-1"
                           >
-                            <v-row>
+                            <v-row style="margin-top: 1px">
                               <v-col>
                                 <v-text-field
                                   v-model="state.first_name"
@@ -145,7 +138,7 @@
                             <v-text-field
                               v-model="state.confirmPassword"
                               outlined
-                              type="password"
+                              :type="state.isPasswordVisible ? 'text' : 'password'"
                               label="Confirm Password"
                               placeholder="Confirm Password"
                               hide-details="auto"
@@ -156,7 +149,7 @@
 
                           <v-btn
                             color="primary"
-                            @click="state.e1 = 2"
+                            @click="validateStep1"
                           >
                             Next
                           </v-btn>
@@ -164,7 +157,6 @@
 
                         <v-stepper-content step="2">
                           <v-card
-                            class="mb-12"
                             color="grey lighten-1"
                           >
                             <v-select
@@ -190,6 +182,7 @@
 
                             <v-textarea
                               v-if="state.accType == 'client'"
+                              v-model="state.task_description"
                               outlined
                               clear-icon="mdi-close-circle"
                               label="What tasks are you needing your VA to handle?"
@@ -200,6 +193,7 @@
 
                             <v-textarea
                               v-if="state.accType == 'client'"
+                              v-model="state.software_description"
                               outlined
                               clear-icon="mdi-close-circle"
                               label="What softwares/applications do you need your VA to use?"
@@ -216,7 +210,7 @@
                           </v-btn>
                           <v-btn
                             color="primary"
-                            @click="state.e1 = 3"
+                            @click="validateStep2"
                           >
                             Next
                           </v-btn>
@@ -225,7 +219,6 @@
 
                         <v-stepper-content step="3">
                           <v-card
-                            class="mb-12"
                             color="grey lighten-1"
                           >
                             <h2>How did you hear about us? </h2>
@@ -280,6 +273,7 @@
 
 
                           <v-checkbox
+                            class="mt-4"
                             v-model="state.tos_agreement"
                             label="I acknowledge that I have read and agree to the Terms."
                             value="yes"
@@ -332,15 +326,16 @@
           </v-row>
         </v-col>
 
+        <v-col cols="12" class="mx-auto">
+          <div class="auth-footer" style="background: transparent !important;">
+            <ul>
+              <li>Privacy Policy</li>
+              <li>Contact us</li>
+              <li>FAQ</li>
+            </ul>
+          </div>
+        </v-col>
       </v-row>
-
-      <div class="auth-footer">
-        <ul>
-          <li>Privacy Policy</li>
-          <li>Contact us</li>
-          <li>FAQ</li>
-        </ul>
-      </div>
     </div>
   </div>
 </template>
@@ -368,6 +363,8 @@ export default {
       confirmPassword: "",
       accType: "",
       number_of_va: 0,
+      task_description: "",
+      software_description: "",
       source: {
         type: "",
         value: ""
@@ -381,6 +378,59 @@ export default {
       { value: "client", text: "Hire a virtual assistant" },
       { value: "va", text: "Work as a virtual assistant" },
     ];
+
+    function validateStep1() {
+      state.errorMsg = ""
+      if (state.first_name == "") {
+        state.errorMsg = "First name is required";
+      }
+      if (state.last_name == "") {
+        state.errorMsg = "Last name is required";
+      }
+      if (state.username == "") {
+        state.errorMsg = "Username is required";
+      }
+      if (state.email == "") {
+        state.errorMsg = "Email is required";
+      }
+      if (state.phone == "") {
+        state.errorMsg = "Phone is required";
+      }
+
+      if ( state.password.length < 6 ) {
+        state.errorMsg = "Too short password";
+      }
+      if (state.password != state.confirmPassword) {
+        state.errorMsg = "Passwords did not match";
+      }
+
+      if ( state.errorMsg == "" ) {
+        state.e1 = 2
+      }
+    }
+
+    function validateStep2() {
+      state.errorMsg = ""
+      if (state.accType == "") {
+        state.errorMsg = "Please select a account type";
+      }
+
+      if ( state.accType == 'client' ) {
+        if ( state.number_of_va == 0 ) {
+          state.errorMsg = "Please set number of VA you need.";
+        }
+        if ( state.task_description == "" ) {
+          state.errorMsg = "Please write down task requirements.";
+        }
+        if ( state.software_description == "" ) {
+          state.errorMsg = "Please write down software requirements.";
+        }
+      }
+
+      if ( state.errorMsg == "" ) {
+        state.e1 = 3
+      }
+    }
 
     async function signup() {
       try {
@@ -450,6 +500,8 @@ export default {
       appLogo: themeConfig.app.logo,
       signupBg: require("@/assets/images/signup.svg"),
       signup,
+      validateStep1,
+      validateStep2
     };
   },
 };
