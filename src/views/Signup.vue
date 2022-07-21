@@ -116,7 +116,7 @@
                               v-model="state.phone"
                               outlined
                               label="Phone"
-                              placeholder="Phone"
+                              placeholder="(000) 000-0000"
                               hide-details="auto"
                               class="mb-4"
                             ></v-text-field>
@@ -182,7 +182,7 @@
 
                             <v-textarea
                               v-if="state.accType == 'client'"
-                              v-model="state.task_description"
+                              v-model="state.va_description"
                               outlined
                               clear-icon="mdi-close-circle"
                               label="What tasks are you needing your VA to handle?"
@@ -193,7 +193,7 @@
 
                             <v-textarea
                               v-if="state.accType == 'client'"
-                              v-model="state.software_description"
+                              v-model="state.va_assist_application"
                               outlined
                               clear-icon="mdi-close-circle"
                               label="What softwares/applications do you need your VA to use?"
@@ -223,28 +223,28 @@
                           >
                             <h2>How did you hear about us? </h2>
                             <v-checkbox
-                              v-model="state.source.type"
+                              v-model="state.source"
                               label="Word of Mouth"
                               value="Word of Mouth"
                               style="margin-top: 20px"
                             ></v-checkbox>
 
                             <v-checkbox
-                              v-model="state.source.type"
+                              v-model="state.source"
                               label="Social Media"
                               value="Social Media"
                               style="margin-top: 0px"
                             ></v-checkbox>
 
                             <v-checkbox
-                              v-model="state.source.type"
+                              v-model="state.source"
                               label="Website"
                               value="Website"
                               style="margin-top: 0px"
                             ></v-checkbox>
 
                             <v-checkbox
-                              v-model="state.source.type"
+                              v-model="state.source"
                               label="Other"
                               value="Other"
                               style="margin-top: 0px"
@@ -252,8 +252,8 @@
 
                             <!--other value-->
                             <v-text-field
-                                v-if="state.source.type == 'Other'"
-                                v-model="state.source.value"
+                                v-if="state.source == 'Other'"
+                                v-model="state.other_source"
                                 placeholder="Please type another option here"
                                 outlined
                                 hide-details="auto"
@@ -261,10 +261,10 @@
                               ></v-text-field>
                             <!--mouth of word value-->
 
-                            <h4 v-if="state.source.type == 'Word of Mouth'">What is the name of the person that referred you to us?</h4>
+                            <h4 v-if="state.source == 'Word of Mouth'">What is the name of the person that referred you to us?</h4>
                             <v-text-field
-                                v-if="state.source.type == 'Word of Mouth'"
-                                v-model="state.source.value"
+                                v-if="state.source == 'Word of Mouth'"
+                                v-model="state.referred_person"
                                 outlined
                                 hide-details="auto"
                                 class="mb-4"
@@ -345,7 +345,7 @@
 import axios from "@axios";
 import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 import themeConfig from "@themeConfig";
-import { reactive } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 
 export default {
   name: "Signup",
@@ -354,6 +354,7 @@ export default {
       isPasswordVisible: false,
       isLoading: false,
       errorMsg: "",
+      user_id: "",
       first_name: "",
       last_name: "",
       username: "",
@@ -363,15 +364,32 @@ export default {
       confirmPassword: "",
       accType: "",
       number_of_va: 0,
-      task_description: "",
-      software_description: "",
-      source: {
-        type: "",
-        value: ""
-      },
+      va_description: "",
+      va_assist_application: "",
+      source: "",
+      other_source: "",
+      referred_person: "",
       accCreated: false,
       tos_agreement: 'no',
       e1: 1
+    });
+
+    const signupData = computed(() => {
+      return {
+        first_name: state.first_name,
+        last_name: state.last_name,
+        username: state.username,
+        email: state.email,
+        phone_number: state.phone,
+        password: state.password,
+        type: state.accType,
+        number_of_va: state.number_of_va,
+        va_description: state.va_description,
+        va_assist_application: state.va_assist_application,
+        heard_from: state.source,
+        heard_from_other: state.other_source,
+        referred_person: state.referred_person,
+      }
     });
 
     const accTypeOpts = [
@@ -379,7 +397,21 @@ export default {
       { value: "va", text: "Work as a virtual assistant" },
     ];
 
-    function validateStep1() {
+    function resetForm (state) {
+      state.first_name = "";
+      state.last_name = "";
+      state.username = "";
+      state.email = "";
+      state.phone = "";
+      state.password = "";
+      state.confirmPassword = "";
+      state.accType = {};
+      state.number_of_va = 0;
+      state.va_description = "";
+      state.va_assist_application = "";
+    }
+
+    async function validateStep1() {
       state.errorMsg = ""
       if (state.first_name == "") {
         state.errorMsg = "First name is required";
@@ -405,6 +437,7 @@ export default {
       }
 
       if ( state.errorMsg == "" ) {
+        // await axios.post("/signup", signupData.value);
         state.e1 = 2
       }
     }
@@ -419,10 +452,10 @@ export default {
         if ( state.number_of_va == 0 ) {
           state.errorMsg = "Please set number of VA you need.";
         }
-        if ( state.task_description == "" ) {
+        if ( state.va_description == "" ) {
           state.errorMsg = "Please write down task requirements.";
         }
-        if ( state.software_description == "" ) {
+        if ( state.va_assist_application == "" ) {
           state.errorMsg = "Please write down software requirements.";
         }
       }
@@ -456,12 +489,16 @@ export default {
         state.errorMsg = "";
         state.isLoading = true;
 
+        /*
+        [NOT IN USE]:
+        This sniphet is replaced by PR: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/2
         const signupData = {
           username: state.username,
           email: state.email,
           password: state.password,
           type: state.accType,
         };
+        */
 
         const response = await axios.post("/signup", signupData);
         console.log(response.data.email)
@@ -471,11 +508,8 @@ export default {
           window.fpr("referral",{email: email})
         }
 
-        state.username = "";
-        state.email = "";
-        state.password = "";
-        state.confirmPassword = "";
-        state.accType = {};
+        // reset the form
+        resetForm(state)
 
         state.accCreated = true;
       } catch (err) {
