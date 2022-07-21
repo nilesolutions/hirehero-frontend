@@ -107,7 +107,7 @@
                               v-model="state.email"
                               outlined
                               label="Email"
-                              placeholder="Email"
+                              placeholder="username@domain.com"
                               hide-details="auto"
                               class="mb-4"
                             ></v-text-field>
@@ -409,6 +409,9 @@ export default {
       state.number_of_va = 0;
       state.va_description = "";
       state.va_assist_application = "";
+      state.source = "";
+      state.other_source = "";
+      state.referred_person = "";
     }
 
     async function validateStep1() {
