@@ -13,7 +13,7 @@ const axiosIns = axios.create({
   baseURL,
   // timeout: 1000,
   // headers: {'X-Custom-Header': 'foobar'}
-});
+})
 
 axiosIns.interceptors.request.use(
   (config) => {
