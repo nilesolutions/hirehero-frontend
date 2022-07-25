@@ -1,5 +1,5 @@
 <template>
-  <v-card class="video-card mb-4 mr-4">
+  <v-card class="video-card mb-5 mt-3 m-right p-relative">
     <video
       @click="setClickedVidUrl(video.url)"
       class="video-thumbnail"
@@ -26,10 +26,10 @@
         </v-btn>
       </template>
 
-      <span class="tooltip-font">Delete Video</span>
+      <span class="tooltip-font ">Delete</span>
     </v-tooltip>
 
-    <v-card-text class="mt-2 black--text d-flex flex-row align-center text-capitalize">
+    <v-card-text class="mt-2 black--text d-flex flex-row align-right text-capitalize">
       <span class="d-block text-capitalize">{{ video.title || "No Title" }}</span>
       <v-tooltip bottom color="error">
         <template v-slot:activator="{ on, attrs }">
@@ -45,7 +45,7 @@
             <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
           </v-btn>
         </template>
-        <span class="tooltip-font">Edit Video Title</span>
+        <span class="tooltip-font">Edit Title</span>
       </v-tooltip>
     </v-card-text>
 
@@ -188,13 +188,18 @@ export default {
 </script>
 
 <style>
+
 .video-card {
   cursor: pointer;
 }
+.p-relative{
+  position: relative !important;
+}
 
 .video-thumbnail {
-  width: 210px;
-  height: 118px;
+  max-width: 325px !important;
+  height: 100%;
+  max-height: 185px !important;
 }
 
 .video-player-container {
@@ -212,5 +217,56 @@ export default {
 .theme--light.v-btn::before,
 button.theme--light.v-btn:hover::before {
   opacity: 0.08 !important;
+}
+
+.m-right{
+    margin-right: 20px;
+  }
+.v-btn--fab.v-size--x-small.v-btn--absolute.v-btn--top{
+  top: 16px !important;
+}
+.d-block.text-capitalize{
+  word-break: break-all !important;
+}
+.v-card__text.mt-2.black--text.d-flex.flex-row.align-center.text-capitalize{
+  overflow: hidden;
+  word-break: break-all !important;
+  max-width: 325px !important;
+}
+.video-card.mb-5.mt-3.m-right.p-relative.v-card.v-sheet.theme--light{
+max-width: 325px !important;
+}
+
+.v-dialog > .v-card > .v-card__title{
+  max-height: 100px !important;
+}
+
+.v-card.title.d-flex.flex-row{
+  padding: 0 !important;
+}
+.text-capitalize {
+  padding: 5px 2px !important;
+  padding-right: 20px !important;
+}
+.ml-auto.my-hover-btn.v-btn.v-btn--icon.v-btn--round.theme--light.v-size--default{
+  position: absolute !important;
+  right: 5px;
+}
+.v-card__text.mt-2.black--text.d-flex.flex-row.align-right.text-capitalize{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+@media (max-width:768px) {
+  .m-right{
+    margin-right: 0px !important;
+  }
+  .video-thumbnail {
+  max-width: 415px !important;
+  max-height: 100% !important;
+  /* max-height: 185px !important; */
+}
+.video-card.mb-5.mt-3.m-right.p-relative.v-card.v-sheet.theme--light{
+max-width: 415px !important;
+}
 }
 </style>

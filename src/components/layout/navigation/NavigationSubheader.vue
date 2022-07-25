@@ -4,7 +4,7 @@
       <div class="navigation__subdivider"></div>
     </v-fade-transition>
     <v-fade-transition v-else hide-on-leave>
-      <small class="navigation__subheader">{{ item.subheader }}</small>
+      <small class="navigation__subheader bold-sub-heaing">{{ item.subheader }}</small>
     </v-fade-transition>
   </div>
 </template>
@@ -51,5 +51,9 @@ export default {
 .navigation__subdivider:first-of-type,
 .navigation__subheader:first-of-type {
   margin-top: 0.5rem;
+}
+.bold-sub-heaing{
+  font-weight: 600;
+  letter-spacing: 0.06rem;
 }
 </style>

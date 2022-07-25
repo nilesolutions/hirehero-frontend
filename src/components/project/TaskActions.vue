@@ -10,23 +10,35 @@
       hide-input
     ></v-file-input>
 
-    <v-btn class="mb-2" :loading="state.isUploading" @click="openFilePicker">
-      <v-icon>{{ icons.mdiAttachment }}</v-icon>
-      <span class="ml-2">Attach</span>
-    </v-btn>
+    <div class="attach-box">
 
-    <v-btn class="mb-2" @click="toggleEdit(true)">
-      <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
-      <span class="ml-2">Edit Task</span>
-    </v-btn>
+    <div class="attach-inner-box">
+        <v-btn class="mb-2" :loading="state.isUploading" @click="openFilePicker">
+            <v-icon>{{ icons.mdiAttachment }}</v-icon>
+            <span class="ml-2">Attach</span>
+        </v-btn>
+        <small class="ml-2"> Attachment size limit is {{ uploadSizeLimit }}MB </small>
+    </div>
+    
+    <div class="attach-inner-box-2">
 
-    <v-btn class="mb-2 task-att" @click="del" :loading="state.isDeleting">
-      <v-icon>{{ icons.mdiDelete }} </v-icon>
-      <span class="ml-2">Delete Task</span>
-    </v-btn>
+      <v-btn class="mb-2 button-padding" @click="toggleEdit(true)" >
+        <v-icon>{{ icons.mdiTooltipEdit }}</v-icon>
+        <span class="ml-2 ">Edit Task</span>
+      </v-btn>
+  
+      <v-btn class="mb-2 task-att button-padding" @click="del" :loading="state.isDeleting">
+        <v-icon>{{ icons.mdiDelete }} </v-icon>
+        <span class="ml-2">Delete Task</span>
+      </v-btn>
+    </div>
+   
+   </div>
+
+
 
     <br />
-    <small class="ml-2"> Attachment size limit is {{ uploadSizeLimit }}MB </small>
+    <!-- <small class="ml-2"> Attachment size limit is {{ uploadSizeLimit }}MB </small> -->
     <small v-show="state.error"> {{ state.error }} </small>
   </v-card-actions>
 </template>
@@ -153,7 +165,45 @@ export default {
 </script>
 
 <style>
+.attach-box{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.attach-inner-box{
+  display: flex;
+  flex-direction: column;
+}
+.attach-inner-box-2{
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
 @media(max-width:767px){
+  .attach-box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.attach-inner-box-2{
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+   gap: 0.3rem;
+}
+.attach-inner-box{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-padding{
+  width: 48%;
+  padding: 0 0.5rem !important;
+}
+
   .task-action-mobile{
     justify-content: center ;
   }

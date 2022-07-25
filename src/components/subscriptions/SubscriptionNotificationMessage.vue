@@ -101,7 +101,6 @@ export default {
     return {
       state,
       closeNotification,
-
       icons: {
         mdiArrowRight,
       },

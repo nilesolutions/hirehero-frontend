@@ -25,7 +25,7 @@ const setHovering = (val) => {
   }
 };
 
-const setMenuActive = (val) => (state.isMenuFixed = val);
+const setMenuActive = (val) => state.isMenuFixed = val;
 
 const breakpoint = computed(() => {
   if (state.windowWidth < 550) {

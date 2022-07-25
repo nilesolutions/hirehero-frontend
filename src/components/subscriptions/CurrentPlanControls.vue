@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-btn class="d-block mb-2" small elevation="0" @click="toggleActivePlanUpdate(true)">
-      <b>
+  <div class="py-4">
+    <v-btn class="d-block mb-2 " elevation="0" @click="toggleActivePlanUpdate(true)">
+      <b class="heading-size">
         Manage plan
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
@@ -14,21 +14,21 @@
       elevation="0"
       @click="removeCard"
     >
-      <b>
+      <b class="heading-size">
         Remove card
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
-    <v-btn class="d-block mb-2" small elevation="0" @click="togglePaymentMethodUpdate(true)">
-      <b>
+    <v-btn class="d-block mb-2" elevation="0" @click="togglePaymentMethodUpdate(true)">
+      <b class="heading-size">
         Update payment method
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
-    <v-btn @click="cancelSubscription" small elevation="0">
-      <b>
+    <v-btn @click="cancelSubscription"  elevation="0">
+      <b class="heading-size">
         Cancel subscription
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
@@ -150,4 +150,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+@media (max-width:767px) {
+  .heading-size{
+  font-size: 16px !important;
+}
+}
+
+</style>

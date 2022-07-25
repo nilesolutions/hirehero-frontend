@@ -2,10 +2,11 @@
   <div class="dashboard__content">
     <h2 class="cursive-font black--text mb-2">Settings</h2>
 
-    <v-tabs background-color="transparent setting-tabs" v-model="activeTab">
-      <v-tab :disabled="!canSwitchTabs">Account</v-tab>
-      <v-tab :disabled="!canSwitchTabs">Security</v-tab>
-      <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection">Subscription</v-tab>
+    <v-tabs background-color="transparent setting-tabs hide-arrows fontSize" v-model="activeTab">
+      <v-tab :disabled="!canSwitchTabs" class="fontSize">Account</v-tab>
+      <v-tab :disabled="!canSwitchTabs"  class="fontSize">Security</v-tab>
+      <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection"  class="fontSize">Subscription</v-tab>
+
     </v-tabs>
 
     <v-tabs-items v-model="activeTab" class="setting-tabs">
@@ -75,9 +76,18 @@ export default {
   padding: 2rem;
 }
 
-@media(max-width:767px){
-  .setting-tabs .v-tab{
+@media (max-width: 767px) {
+  .account-tab {
+  padding: 1rem;
+}
+  .setting-tabs .v-tab {
     font-size: 12px;
+  }
+  .v-slide-group__prev ,.v-slide-group__next{
+    display: none !important;
+  }
+  .fontSize{
+    font-size: 14px !important;
   }
 }
 </style>

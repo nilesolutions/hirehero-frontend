@@ -1,16 +1,16 @@
 <template>
   <div class="d-flex flex-column col-12">
     <v-card-actions>
-      Details
+      <h3 class="heading">Details</h3>
       <v-btn @click="showDetails = !showDetails" x-small class="ml-auto" icon>
         <v-icon>{{ showDetails ? icons.mdiChevronUp : icons.mdiChevronDown }}</v-icon>
       </v-btn>
     </v-card-actions>
 
     <v-expand-transition>
-      <div v-show="showDetails">
+      <div v-show="showDetails" >
         <v-card-text v-for="(value, field) in taskFields" :key="field">
-          <b> {{ field }}</b> : {{ value }}
+          <b class="key-heading"> {{ field }}</b> : <span class="value-size">{{ value }}</span>
         </v-card-text>
       </div>
     </v-expand-transition>
@@ -66,4 +66,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.task__comment{
+  margin: 0.8rem 0 0 0 !important;
+}
+@media (max-width:767px) {
+  .heading{
+  font-size: 22px !important;
+}
+.key-heading{
+  font-size: 18px !important;
+}
+.value-size{
+  font-size: 1.15rem !important;
+}
+}
+
+</style>

@@ -32,8 +32,10 @@
 
       <navigation></navigation>
 
-      <div v-if="state.isLoading" class="ml-auto mr-auto mt-6">
-        <v-progress-circular color="primary" indeterminate></v-progress-circular>
+      <!--  class="ml-auto mr-auto" -->
+
+      <div v-if="state.isLoading" class="loading-box">
+        <v-progress-circular color="primary" indeterminate class="loading-spinner"></v-progress-circular>
       </div>
       <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
       <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
@@ -67,6 +69,7 @@ import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiClose } from "@mdi/js";
 import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
+import { fa } from "vuetify/lib/locale";
 
 export default {
   name: "LayoutCustom",
@@ -86,7 +89,7 @@ export default {
       hasSubNotification: true,
     });
 
-    const { setSubInfo, isSubscribed } = useSubscription();
+    const { setSubInfo, isSubscribed ,isSubscriptionActive} = useSubscription();
     const { state: userState, userData, userName, userType, setUserData } = useUser();
     const { setNotification } = useNotifications();
     const { setAssociatedUser, associatedUser } = useMessages();
@@ -156,8 +159,9 @@ export default {
 
     const showSubPaywall = computed(() => {
       if (userType.value == "va") return false;
-
-      if (!isSubscribed.value && route.value.name != "settings") return true;
+      // if (!isSubscribed.value && route.value.name != "settings") return true;
+      if (!isSubscriptionActive.value && route.value.name != "settings") return true;
+      console.log('isSubscriptionActive : ', isSubscriptionActive.value)
       return false;
     });
 
@@ -173,6 +177,7 @@ export default {
         if (userType.value == "client") msg.push("No VA Assigned");
         else msg.push("No Client Assigned");
       }
+
       if (!isSubscribed.value && userType.value == "client")
         msg.push("You are not subscribed to a plan");
 
@@ -198,8 +203,27 @@ export default {
 </script>
 
 <style lang="scss">
+
+.loading-spinner{
+    /* position: absolute; */
+    /* display: flex; */
+    /* justify-items: center; */
+    position: absolute;
+    margin: auto auto;
+    // margin-left: auto;
+    // margin-right: auto;
+    // margin-top: auto;
+    // margin-bottom: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+}
+
 .dashboard--layout {
   position: relative;
+  width: 100vw;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -220,9 +244,15 @@ export default {
   background-color: #f34c57;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 545px) {
   .dashboard__content {
     padding: 1.5rem 1rem;
   }
+  .dashboard--layout {
+  height: 100%;
+      display: block;
 }
+}
+
+
 </style>

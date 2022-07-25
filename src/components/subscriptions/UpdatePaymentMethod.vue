@@ -4,7 +4,7 @@
     :disabled="state.isSubmitting || state.isInitting"
   >
     <v-card-title>
-      <span class="cursive-font">Update your payment method</span>
+      <span class="cursive-font main-headding">payment method</span>
       <v-btn class="ml-auto" @click="closeUpdateForm" icon>
         <v-icon>{{ icons.mdiClose }}</v-icon>
       </v-btn>
@@ -18,8 +18,8 @@
       ></v-progress-circular>
     </div>
 
-    <div>
-      <v-card-text class="text-center">
+    <div class="pb-6">
+      <v-card-text class="text-center lg-text py-4">
         <b>Changing Default Card </b> <br />
         <b>
           Currently using : <span class="text-capitalize">{{ defaultCardInfo }}</span>
@@ -143,4 +143,13 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style scoped>
+.main-headding{
+  font-size: 22px !important;
+}
+@media (max-width:767px) {
+  .lg-text{
+  font-size: 1rem;
+}
+}
+</style>

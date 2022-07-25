@@ -1,11 +1,11 @@
 <template>
-  <div class="col-md-4 col-12">
-    <v-card class="d-flex flex-column align-center" elevation="4">
+  <div class="col-md-4 col-12 card">
+    <v-card class="d-flex flex-column align-center py-4" elevation="4">
       <v-card-title class="cursive-font plan-card__title">
         {{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}
       </v-card-title>
 
-      <v-card-text class="text-center">{{ planPrice }}</v-card-text>
+      <v-card-text class="text-center price">{{ planPrice }}</v-card-text>
 
       <v-card-actions>
         <v-btn
@@ -32,7 +32,7 @@ export default {
   name: "PlanCard",
   props: { plan: Object },
   setup({ plan }) {
-    const { isSubscribed, activePlan } = useSubscription();
+    const { isSubscribed, activePlan,isSubscriptionActive } = useSubscription();
     const { setClickedPrice } = useCheckout();
 
     const state = reactive({
@@ -46,20 +46,20 @@ export default {
     });
 
     const isActivePlan = computed(() => {
-      if (!isSubscribed) return false;
+      if (!isSubscriptionActive.value) return false;
       if (activePlan.value.id == plan.id) return true;
       return false;
     });
 
     const showCheckoutBtn = computed(() => {
       //if (isSubscribed.value && isActivePlan.value) return true;
-      if (isSubscribed.value) return false;
+      if (isSubscriptionActive.value) return false;
       return true;
     });
 
     async function checkout() {
       try {
-        if (isSubscribed.value) return;
+        if (isSubscriptionActive.value) return;
 
         setClickedPrice(plan.price_id);
       } catch (err) {
@@ -84,5 +84,23 @@ export default {
 <style>
 .plan-card__title {
   word-break: break-all;
+}
+.card{
+padding: 15px 10px !important;
+/* margin: 0 5px !important; */
+}
+.price{
+  padding: 0;
+  font-size: 18px !important;
+}
+
+@media (max-width:767px) {
+  .card{
+    padding: 10px 0 !important;
+  }
+  .price{
+  padding: 0;
+  font-size: 20px !important;
+}
 }
 </style>

@@ -1,39 +1,40 @@
 <template>
   <div class="col-12">
-    <div class="d-flex flex-row align-center mb-2">
-      <div class="black--text">User Info</div>
-    </div>
 
     <profile-picture></profile-picture>
 
-    <label for=""><small>Basic Info</small></label>
-    <v-card :loading="state.isLoading" :disabled="state.isUpdating" elevation="0">
-      <v-card-text>
+    <div class="mt-10">
+  <label for="" class="heading">
+   Basic Info
+  </label>
+    <v-card :loading="state.isLoading" :disabled="state.isUpdating" elevation="0" >
+      <v-card-text class="px-0">
         <v-text-field
           hide-details=""
-          dense
+          
           outlined
           label="Username"
+          class="w-full text-sm-${16px}"
           v-model="state.userInfo.username"
         >
         </v-text-field>
       </v-card-text>
 
-      <v-card-text>
+      <v-card-text class="px-0">
         <v-text-field
           hide-details=""
-          dense
           outlined
           :disabled="!state.isEditing"
           label="Email"
           v-model="state.userInfo.email"
+         
         >
           {{ state.userInfo.email }}
         </v-text-field>
       </v-card-text>
 
-      <v-card-actions>
-        <v-btn @click="updateInfo" :loading="state.isUpdating" color="primary">Update Info</v-btn>
+      <v-card-actions class="py-4 px-0">
+        <v-btn @click="updateInfo" :loading="state.isUpdating" color="primary" class="w-sm-full px">Update Info</v-btn>
       </v-card-actions>
 
       <v-card-text class="py-0">
@@ -42,6 +43,10 @@
         </v-btn>
       </v-card-text>
     </v-card>
+
+    </div>
+
+    
   </div>
 </template>
 
@@ -113,4 +118,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.m-t{
+  margin-top: 30px;
+}
+.w-full{
+  width: 100%;
+  padding: 12px  0 !important;
+}
+.px{
+  padding: 0 32px !important;
+}
+@media (max-width: 767px){
+.w-sm-full{
+  width: 100%;
+  font-size: 16px;
+}
+.heading{
+  font-size: 18px;
+}
+.v-text-field{
+  font-size: 1rem !important;
+}
+}
+</style>>

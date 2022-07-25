@@ -11,6 +11,7 @@
     <div class="ml-2">
       <span class="d-block cursive-font black--text">
         {{ msgsState.associatedUser.username }}
+
       </span>
     </div>
 

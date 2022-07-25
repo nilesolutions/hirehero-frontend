@@ -2,14 +2,14 @@
   <div>
     <!-- Different layout depending on user type -->
     <div v-if="userType == 'client'">
-      <h5>Your Videos</h5>
+      <h4 class="sub-heading">Your Videos</h4>
       <div v-if="myVideos.length" class="videos-container d-flex video-mobile flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
       </div>
       <p v-else="!myVideos.length">No videos</p>
 
-      <h5>Your Virtual Assistant(s) Videos</h5>
+      <h4 class="sub-heading">Your Virtual Assistant(s) Videos</h4>
       <div
         v-if="associateVideos.length"
         class="videos-container d-flex flex-row video-mobile flex-wrap"
@@ -20,7 +20,7 @@
       <p v-else="!associateVideos.length">No Videos</p>
     </div>
     <div v-else>
-      <h5>Your Client's Videos</h5>
+      <h4 class="sub-heading">Your Client's Videos</h4>
       <div
         v-if="associateVideos.length"
         class="videos-container d-flex video-mobile flex-row flex-wrap"
@@ -30,7 +30,7 @@
       </div>
       <p v-else="!associateVideos.length">No Videos</p>
 
-      <h5>Your Videos</h5>
+      <h4 class="sub-heading">Your Videos</h4>
       <div v-if="myVideos.length" class="videos-container d-flex video-mobile flex-row flex-wrap">
         <video-thumbnail v-for="video in myVideos" :key="video.id" :video="video">
         </video-thumbnail>
@@ -105,6 +105,11 @@ export default {
 </script>
 
 <style>
+.sub-heading{
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
 .v-dialog {
   /* overflow: hidden; */
   max-height: 100vh;
