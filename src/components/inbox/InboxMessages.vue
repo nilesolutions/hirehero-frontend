@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-8">
-    <v-card class="chat-wrapper">
+  <div class="d-flex flex-column col-12 col-md-8 padding-0">
+    <v-card class="chat-wrapper ">
       <messages-log></messages-log>
       <send-message></send-message>
     </v-card>
@@ -20,4 +20,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+.padding-0{
+  padding: 0;
+}
+</style>

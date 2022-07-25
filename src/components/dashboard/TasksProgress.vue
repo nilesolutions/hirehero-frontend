@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-6 dashboard-padding">
+  <div class="d-flex flex-column col-12 col-md-6 dashboard-padding height">
     <v-card :loading="state.isLoading">
       <v-card-title>
         <v-icon class="mr-2">{{ icons.mdiChartDonut }}</v-icon>
@@ -17,7 +17,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               outlined
-              v-model="state.dateRange"
+              v-model="state.dateRange.toString().replace(',','  to  ')"
               label="Choose date range"
               v-bind="attrs"
               v-on="on"
@@ -126,4 +126,5 @@ export default {
 .apexcharts-legend > div:last-child .apexcharts-legend-text::before {
   background: #e5ce02;
 }
+
 </style>

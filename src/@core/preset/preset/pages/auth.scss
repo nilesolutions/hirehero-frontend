@@ -152,4 +152,18 @@
       display: none;
     }
   }
+  
+}
+
+@media (max-width:767px){
+  .auth-footer{
+    width: 100%;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #fff;
+    min-height: 2%;
+}
 }

@@ -2,15 +2,8 @@
   <div class="auth-wrapper auth-v2">
     <div class="auth-inner">
       <!-- brand logo -->
-      <router-link to="/" class="brand-logo d-flex align-center">
-        <v-img
-          :src="appLogo"
-          max-height="30px"
-          max-width="150px"
-          alt="logo"
-          contain
-          class="me-3"
-        ></v-img>
+      <router-link to="/" class="brand-logo">
+        <v-img :src="appLogo" max-height="30px" max-width="150px" alt="logo" contain class="me-3" />
 
         <!-- <h2 class="text--primary mt-3">
           {{ appName }}
@@ -28,25 +21,18 @@
               max-width="350px"
               max-height="350px"
               :src="require('@/assets/logos/logo-lg.png')"
-            ></v-img>
+            />
           </div>
         </v-col>
 
         <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0 signup-form">
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
-              <v-card flat>
+
+              <v-card flat class="pb-3">
                 <v-card-text class="auth-mob-padding">
                   <p
-                    class="
-                      cursive-font
-                      text-2xl
-                      font-weight-semibold
-                      text--primary
-                      mb-2
-                      signup-title
-                      auth-text
-                    "
+                    class="cursive-font text-2xl font-weight-semibold text--primary mb-2 signup-title auth-text"
                   >
                     Welcome to HireHeroes!
                   </p>
@@ -65,7 +51,7 @@
                       placeholder="Username"
                       hide-details="auto"
                       class="mb-4"
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="state.email"
@@ -74,7 +60,7 @@
                       placeholder="Email"
                       hide-details="auto"
                       class="mb-4"
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="state.password"
@@ -88,7 +74,7 @@
                       hide-details="auto"
                       class="mb-4"
                       @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="state.confirmPassword"
@@ -99,24 +85,23 @@
                       hide-details="auto"
                       class="mb-4"
                       @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                    ></v-text-field>
+                    />
 
                     <v-select
                       v-model="state.accType"
                       label="I'm looking to"
                       outlined
                       :items="accTypeOpts"
-                    >
-                    </v-select>
+                    />
 
                     <v-btn
                       block
                       color="primary"
                       type="submit"
                       class="mt-6 auth-submit-btn"
-                      @click="signup"
                       :disabled="state.isLoading"
                       :loading="state.isLoading"
+                      @click="signup"
                     >
                       Signup
                     </v-btn>
@@ -139,12 +124,14 @@
                 <!-- create new account  -->
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
                   <p class="mb-0 me-2">Already have an account?</p>
-                  <router-link to="/login">Login</router-link>
+                  <router-link to="/login"> Login </router-link>
                 </v-card-text>
               </v-card>
+
             </v-col>
           </v-row>
         </v-col>
+        
       </v-row>
 
       <div class="auth-footer">
@@ -199,7 +186,12 @@ export default {
           type: state.accType,
         };
 
-        await axios.post("/signup", signupData);
+        const response = await axios.post("/signup", signupData);
+        console.log(response.data.email)
+        if (response) {
+          let email = response.data.email;
+          window.fpr("referral",{email: email})
+        }
 
         state.username = "";
         state.email = "";
@@ -239,7 +231,18 @@ export default {
 @import "@core/preset/preset/pages/auth.scss";
 
 .auth-submit-btn {
-  border-radius: 0;
+ padding: 24px  0 !important;
+}
+@media (max-width:1265px) {
+  .auth-mob-padding{
+    text-align: center;
+  }
+  .brand-logo{
+  left: 0 ; 
+  right: 0 ; 
+  margin: 0 auto ; 
+  width: 150px;
+  }
 }
 
 @media (max-width: 767px) {

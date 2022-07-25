@@ -28,7 +28,6 @@
 }
 
 .v-dialog {
-
   .v-btn.grey--text {
     align-items: center;
     border-radius: 5px;
@@ -71,39 +70,33 @@
     &:hover {
       box-shadow: 0 6px 18px -8px rgba(94, 86, 105, 0.56) !important;
     }
-
   }
-
 }
 
 .theme--light.v-btn.v-btn--has-bg.v-btn--is-elevated:not(.info):not(.primary):not(.no-hover):not(.toggle-task-btn.incomplete):hover,
 .v-btn--icon:hover,
 .v-dialog .grey--text:hover {
-  background: rgba(235, 87, 87, 0.20) !important;
+  background: rgba(235, 87, 87, 0.2) !important;
 }
-
-
 </style>
 <script>
 // eslint-disable-next-line object-curly-newline
-import {computed, onMounted, onUnmounted} from "@vue/composition-api";
+import { computed, onMounted } from "@vue/composition-api";
 // eslint-disable-next-line import/no-unresolved
 import useAppConfig from "@core/@app-config/useAppConfig";
-import {useRouter} from "@core/utils";
-import {useLayout} from "@core/layouts/composable/useLayout";
-import {useUser} from "./composables/user/user";
+import { useLayout } from "@core/layouts/composable/useLayout";
+import { useRouter } from "@core/utils";
+import { useUser } from "./composables/user/user";
 
 // Layouts
-import LayoutContentVerticalNav
-  from "@/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue";
-import LayoutContentHorizontalNav
-  from "@/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue";
 import LayoutBlank from "@/layouts/variants/blank/LayoutBlank.vue";
+import LayoutContentHorizontalNav from "@/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue";
 import LayoutCustom from "@/layouts/variants/content/LayoutCustom.vue";
+import LayoutContentVerticalNav from "@/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue";
 
 // Dynamic vh
 import useDynamicVh from "@core/utils/useDynamicVh";
-import {usePusher} from "./composables/pusher";
+import { usePusher } from "./composables/pusher";
 
 import router from "@/router";
 
@@ -115,12 +108,12 @@ export default {
     LayoutCustom,
   },
   setup() {
-    const {route} = useRouter();
-    const {updateAuthCreds} = usePusher();
-    const {state: userState, togglePreviewMode, toggleIsSettingUpPreview} = useUser();
-    const {appContentLayoutNav, appSkinVariant, appRouteTransition} = useAppConfig();
+    const { route } = useRouter();
+    const { updateAuthCreds } = usePusher();
+    const { state: userState, togglePreviewMode, toggleIsSettingUpPreview } = useUser();
+    const { appContentLayoutNav, appSkinVariant, appRouteTransition } = useAppConfig();
 
-    const {handleBreakpointLayoutSwitch} = useLayout();
+    const { handleBreakpointLayoutSwitch } = useLayout();
     handleBreakpointLayoutSwitch();
 
     const resolveLayoutVariant = computed(() => {
@@ -128,7 +121,6 @@ export default {
       if (route.value.meta.layout === "content")
         return `layout-content-${appContentLayoutNav.value}-nav`;
       if (route.value.meta.layout === "custom") return "layout-custom";
-
       return null;
     });
 
@@ -149,7 +141,7 @@ export default {
           sessionStorage.setItem("accessToken", previewCreds.accessToken);
           sessionStorage.setItem("userData", JSON.stringify(previewCreds.userData));
           updateAuthCreds();
-          router.push({name: "dashboard"});
+          router.push({ name: "dashboard" });
           toggleIsSettingUpPreview(false);
         }
       });

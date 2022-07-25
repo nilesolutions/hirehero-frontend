@@ -28,12 +28,12 @@
     </form>
 
     <div class="d-flex mt-3 chat-att">
-      <div class="d-flex flex-row align-center audio-recorder">
+      <div class="d-flex flex-row align-center audio-recorder chat-buttons">
         <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
             {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
           </v-icon>
-          {{ state.isRecording ? "Stop recording" : "Record a voice note" }}
+          {{ state.isRecording ? "Stop recording" : "Record note" }}
         </v-btn>
 
         <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
@@ -238,12 +238,16 @@ export default {
 
 @media (max-width: 767px) {
   .chat-att {
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center;
   }
 
   .chat-att button {
-    margin: 5px 0;
+   margin-top: 5px !important;
+    padding: 20px 10px !important;
+  }
+  .chat-buttons > div{
+    width: 100%;
   }
 }
 </style>

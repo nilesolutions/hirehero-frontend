@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 col-sm-6 col-lg-4">
+  <div class="col-12 col-sm-6 col-lg-4 box-padding">
     <v-card class="mb-2" @click="goToProject">
       <v-card-title class="font-weight-black black--text text-capitalize">
         {{ project.name }}
@@ -96,4 +96,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.box-padding{
+  padding-right:20px !important;
+  padding-left: 0 !important;
+}
+@media (max-width:767px){
+  .box-padding{
+  padding: 0 0 10px 0 !important;
+}
+}
+</style>

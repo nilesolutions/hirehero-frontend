@@ -7,10 +7,10 @@
     </div>
 
     <v-card elevation="0">
-      <v-card-text>
+      <v-card-text class="px-0">
         <v-text-field
           hide-details=""
-          dense
+          
           disabled
           v-model="state.associateInfo.username"
           outlined
@@ -20,18 +20,21 @@
       </v-card-text>
     </v-card>
   </div>
-  <div v-else>No Assigned {{ associatedUserType }}</div>
+  <div v-else class="px-3">No Assigned {{ associatedUserType }}</div>
 </template>
 
 <script>
 import axios from "@axios";
 import { onMounted, reactive, computed } from "@vue/composition-api";
 import { useUser } from "@/composables/user/user";
+import { useSubscription } from "@/composables/user/subscription";
 
 export default {
   name: "AssociateInfo",
   setup() {
     const { userType } = useUser();
+    const {isSubscriptionActive } = useSubscription();
+
     const state = reactive({
       isLoading: true,
       associateInfo: {},
@@ -49,7 +52,7 @@ export default {
     }
 
     const hasAssociateUser = computed(() => {
-      if (Object.keys(state.associateInfo).length) return true;
+      if (Object.keys(state.associateInfo).length && isSubscriptionActive.value) return true;
       return false;
     });
 

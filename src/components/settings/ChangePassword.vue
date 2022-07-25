@@ -9,10 +9,11 @@
         <v-text-field
           v-model="state.oldPassword"
           hide-details=""
-          dense
+          
           outlined
           type="password"
           label="Old Password"
+          class="fontSize input-height"
         >
         </v-text-field>
       </v-card-text>
@@ -21,20 +22,21 @@
         <v-text-field
           v-model="state.newPassword"
           hide-details=""
-          dense
           outlined
           type="password"
           label="New Password"
+          class="fontSize input-height"
         >
         </v-text-field>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions class="py-4 px-0">
         <v-btn
           :disabled="!canUpdate"
           @click="updatePassword"
           :loading="state.isUpdating"
           color="primary"
+          class="px w-sm-full"
           >Change</v-btn
         >
       </v-card-actions>
@@ -70,7 +72,6 @@
 
 <script>
 import axios from "@axios";
-
 import { reactive, computed } from "@vue/composition-api";
 import { usePusher } from "@/composables/pusher";
 
@@ -86,6 +87,7 @@ export default {
       isUpdating: false,
       updateSuccessful: false,
       updateFailed: false,
+
     });
 
     const canUpdate = computed(() => {
@@ -109,11 +111,19 @@ export default {
         updateAuthCreds();
 
         state.updateSuccessful = true;
+        state.updateFailed = false;
         state.oldPassword = "";
         state.newPassword = "";
+        setTimeout(()=>{
+          state.updateSuccessful = false;
+        },2000)
       } catch (err) {
+        state.updateSuccessful = false;
         state.errorMsg = err.response.data.message;
         state.updateFailed = true;
+        setTimeout(()=>{
+          state.updateFailed = false;
+        },2000)
       } finally {
         state.isUpdating = false;
       }
@@ -128,4 +138,19 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+@media (max-width: 767px){
+.w-sm-full{
+  width: 100%;
+  font-size: 16px;
+}}
+.v-card__text{
+  padding: 16px 0;
+}
+.fontSize{
+  font-size: 18px;
+}
+.px{
+  padding: 0 32px !important;
+}
+</style>

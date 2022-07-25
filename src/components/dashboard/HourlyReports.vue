@@ -14,7 +14,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               outlined
-              v-model="state.dateRange"
+              v-model="state.dateRange.toString().replace(',','  to  ')"
               label="Choose date range"
               v-bind="attrs"
               v-on="on"
@@ -68,6 +68,7 @@ export default {
 
     onMounted(() => {
       state.dateRange = generateWeekRange(1);
+      console.log(state.dateRange)
       fetchActivity();
     });
 

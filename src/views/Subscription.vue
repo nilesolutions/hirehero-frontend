@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="showPlans">
-      <current-plan v-if="isSubscribed"></current-plan>
+      <current-plan v-if="isSubscriptionActive"></current-plan>
       <available-plans></available-plans>
     </div>
 
@@ -40,11 +40,11 @@ export default {
     UpdatePaymentMethod,
   },
   setup() {
-    const { setSubInfo, setPlans, isSubscribed, isUpdatingPayment, isUpdatingPlan } =
+    const { setSubInfo, setPlans, isSubscribed, isSubscriptionActive, isUpdatingPayment, isUpdatingPlan } =
       useSubscription();
 
     const { isCheckingOut } = useCheckout();
-
+    console.log('from SUb ',isSubscriptionActive.value);
     const state = reactive({
       isLoading: true,
     });
@@ -98,18 +98,18 @@ export default {
 
     async function fetchActiveSubscription() {
       const { data: sub } = await axios.get("/subscriptions/");
+      console.log(sub);
       setSubInfo(sub);
     }
 
     return {
       state,
-
       showPlans,
       showCheckoutForm,
       showPlanUpdateForm,
       showUpdatePaymentForm,
-
       isSubscribed,
+      isSubscriptionActive
     };
   },
 };

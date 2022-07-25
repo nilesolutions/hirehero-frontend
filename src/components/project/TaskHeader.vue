@@ -1,26 +1,42 @@
 <template>
-  <div class="d-flex col-12">
-    <v-card-text class="d-flex flex-row flex-wrap align-center" style="padding-top: 20px">
-      <h2 class="d-block" style="text-transform: capitalize">{{ task.name }}</h2>
-      <v-btn
-        class="ml-4"
-        :class="{ 'btn-high': task.priority == 'High' }"
-        x-small
-        depressed
-        :color="colorFromPriority()"
-      >{{ task.priority }}
-      </v-btn>
+  <div class="d-flex col-12 heading-box">
+    <v-card-text class="" style="padding-top: 20px">
+  
+      <div class="group">
 
-      <v-btn class="toggle-task-btn ml-4" :class="{
+      
+      <h2 class="d-block" style="text-transform: capitalize">{{ task.name }}</h2>
+
+      <div class="mt-4">
+
+        <v-btn
+          class=""
+          :class="{ 'btn-high': task.priority == 'High' }"
+          x-small
+          depressed
+          :color="colorFromPriority()"
+        >{{ task.priority }}
+        </v-btn>
+
+        <v-btn class="toggle-task-btn ml-4" :class="{
         'incomplete' : !task.completed
       }" small @click="toggleStatus" :loading="state.isLoading">
         Mark as {{ task.completed ? "Uncomplete" : "Complete" }}
         <v-icon class="ml-2" small :color="task.completed ? '#4CAF' : 'grey'">
           {{ task.completed ? icons.mdiCheckboxMarked : icons.mdiCheckboxBlank }}
         </v-icon>
-      </v-btn>
+        </v-btn>
 
-      <v-btn class="ml-auto" icon @click="setActiveTaskId('')" :disabled="state.isLoading">
+      </div>
+</div>
+      
+        
+      
+      
+
+ 
+
+      <v-btn class="ml-auto close-btn" icon @click="setActiveTaskId('')" :disabled="state.isLoading">
         <v-icon>{{ icons.mdiClose }}</v-icon>
       </v-btn>
     </v-card-text>
@@ -84,6 +100,24 @@ export default {
 </script>
 
 <style scoped>
+
+.group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.heading-box{
+  position: relative;
+}
+.close-btn{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+
+}
+
 .btn-high {
   color: white;
 }
@@ -94,5 +128,8 @@ export default {
 
 .toggle-task-btn:hover {
   background: rgba(48, 217, 136, 0.2) !important;
+}
+@media (max-width:767px) {
+ 
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="auth-wrapper auth-v2">
     <div class="auth-inner">
-      <router-link to="/" class="brand-logo d-flex align-center">
+      <router-link to="/" class="brand-logo">
         <v-img
           :src="appLogo"
           max-height="30px"
@@ -30,10 +30,10 @@
           </div>
         </v-col>
 
-        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0">
+        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0 login-form">
           <v-row>
             <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
-              <v-card flat>
+              <v-card flat class="pb-3">
                 <v-card-text class="auth-mob-padding">
                   <p
                     class="cursive-font text-2xl font-weight-semibold text--primary auth-text mb-1"
@@ -55,6 +55,7 @@
                       placeholder="Email"
                       hide-details="auto"
                       class="mb-6"
+                      
                     ></v-text-field>
 
                     <v-text-field
@@ -70,8 +71,8 @@
                       class="mb-2"
                       @click:append="isPasswordVisible = !isPasswordVisible"
                     ></v-text-field>
-
-                    <div class="d-flex align-center justify-space-between flex-wrap">
+<!-- d-flex align-center justify-space-between flex-wrap -->
+                    <div class="custom-box">
                       <v-checkbox hide-details label="Remember Me" class="mt-0"> </v-checkbox>
 
                       <a class="ms-3 text-decoration-underline" href="#"> Forgot Password? </a>
@@ -94,7 +95,7 @@
 
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
                   <p class="mb-0 me-2">or</p>
-                  <br />
+                  <br/>
                   <router-link to="/signup"> Register </router-link>
                 </v-card-text>
               </v-card>
@@ -140,6 +141,8 @@ export default {
           email: email.value,
           password: password.value,
         });
+        
+        
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("userData", JSON.stringify(response.data.userData));
         updateAuthCreds();
@@ -177,14 +180,38 @@ export default {
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 .auth-submit-btn {
-  border-radius: 0;
+  padding: 24px  0 !important;
+}
+.custom-box{
+  display: flex ;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width:1265px) {
+  .auth-mob-padding{
+
+    text-align: center !important;
+  }
+  .brand-logo{
+  left: 0 ; 
+  right: 0 ; 
+  margin: 0 auto ; 
+  width: 150px;
+  }
 }
 
 @media (max-width: 767px) {
+  .login-form{
+    padding-top: 80px !important;
+  }
+  
   .auth-text {
     text-align: center;
   }
   .auth-mob-padding {
+    
     padding-left: 0 !important;
     padding-right: 0 !important;
   }

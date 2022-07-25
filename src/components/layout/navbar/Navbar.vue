@@ -15,7 +15,7 @@
     </div>
 
     <div v-show="breakpoint == 'md'" class="navbar__divider"></div>
-    <div class="navbar__user-profile">
+    <div class="navbar__user-profile " id="abccc">
       <app-bar-user-menu></app-bar-user-menu>
     </div>
     <div class="navbar__divider"></div>

@@ -34,6 +34,8 @@
       @projectCreated="addProject"
       :isOpen="isCreateDialogOpen"
     ></create-project-dialog>
+
+
   </div>
 </template>
 

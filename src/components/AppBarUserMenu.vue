@@ -1,5 +1,6 @@
 <template>
-  <v-menu offset-y left nudge-bottom="14" min-width="230" content-class="user-profile-menu-content">
+  <v-menu offset-y left nudge-bottom="14" min-width="230" content-class="user-profile-menu-content abc1">
+
     <template v-slot:activator="{ on, attrs }">
       <div class="d-flex flex-row align-center" v-on="on" v-bind="attrs">
         <v-badge bottom color="success" overlap offset-x="12" offset-y="12" dot>
@@ -19,13 +20,14 @@
       </div>
     </template>
 
-    <v-list>
+
+    <v-list class="">
       <div class="pb-3 pt-2">
-        <v-badge bottom color="success" overlap offset-x="12" offset-y="12" class="ms-4" dot>
+        <!-- <v-badge bottom color="success" overlap offset-x="12" offset-y="12" class="ms-4" dot>
           <v-avatar size="40px" color="primary" class="v-avatar-light-bg primary--text">
             <v-img :src="profilePicture"></v-img>
           </v-avatar>
-        </v-badge>
+        </v-badge> -->
         <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
           <span class="text--primary font-weight-semibold mb-n1"> {{ userData.username }} </span>
           <small class="text--disabled">{{ userData.type == "va" ? "VA" : "Client" }}</small>
@@ -34,7 +36,7 @@
 
       <v-divider class="my-2"></v-divider>
 
-      <!-- Unread messages -->
+     
       <v-list-item @click="goToInbox" v-show="notificationsState.notification.unreadCount">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
@@ -48,7 +50,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <!-- Logout -->
+  
       <v-list-item @click="logout" class="logout-btn">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
@@ -59,7 +61,9 @@
           <v-list-item-title>Logout</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-    </v-list>
+
+    </v-list> 
+  
   </v-menu>
 </template>
 
@@ -125,5 +129,9 @@ export default {
 .logout-btn:hover .v-list-item__title,
 .logout-btn:hover svg {
   color: #fff;
+}
+.v-menu__content.menuable__content__active.user-profile-menu-content {
+	transform-origin: unset !important;
+  top: 70px !important;
 }
 </style>

@@ -1,28 +1,39 @@
 <template>
   <div>
     <v-card-text class="d-flex flex-row">
-      Active Plan:
-      <span class="ml-auto">{{ activePlan.name }}</span>
+      <span class="heading">
+        Active Plan:
+      </span>
+        
+      <span class="ml-auto data">{{ activePlan.name }}</span>
     </v-card-text>
 
     <v-card-text v-show="!isTrialing" class="d-flex flex-row">
-      Started On :
-      <span class="ml-auto">{{ subscriptionStart }}</span>
+      <span class="heading">
+        Started On :
+      </span>
+      <span class="ml-auto data">{{ subscriptionStart }}</span>
     </v-card-text>
 
     <v-card-text v-show="!isTrialing" class="d-flex flex-row">
-      Ends On :
-      <span class="ml-auto">{{ subscriptionEnd }}</span>
+      <span class="heading">
+        Ends On :
+      </span>
+      <span class="ml-auto data">{{ subscriptionEnd }}</span>
     </v-card-text>
 
     <v-card-text class="d-flex flex-row">
-      Status :
-      <span class="ml-auto text-capitalize">{{ subDetails.status.replaceAll("_", " ") }}</span>
+      <span class="heading">
+        Status :
+      </span>
+      <span class="ml-auto text-capitalize data">{{ subDetails.status.replaceAll("_", " ") }}</span>
     </v-card-text>
 
     <v-card-text class="d-flex flex-row">
-      Payment Card :
-      <span class="ml-auto text-capitalize">{{ defaultCardInfo }}</span>
+      <span class="heading">
+        Payment Card :
+      </span>
+      <span class="ml-auto text-capitalize data">{{ defaultCardInfo }}</span>
     </v-card-text>
 
     <v-card-text v-show="updatePlanInfo">
@@ -158,4 +169,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.heading{
+  font-weight: 700;
+  font-size: 16px;
+}
+.data{
+  font-size: 16px;
+}
+@media (max-width:767px) {
+  .heading{
+  font-weight: 800;
+  font-size: 16px;
+}
+}
+</style>

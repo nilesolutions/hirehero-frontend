@@ -1,13 +1,13 @@
 <template>
-  <div class="d-flex flex-row mt-4">
+  <div class="d-flex flex-row mt-4 ">
     <v-card
-      class="col-lg-8 col-12"
+      class="col-lg-8 col-12 box"
       elevation="4"
       :loading="subscriptionState.isRetryingPayment || subscriptionState.isRemovingCard"
       :disabled="subscriptionState.isRetryingPayment || subscriptionState.isRemovingCard"
     >
       <div class="d-flex">
-        <v-card-title class="cursive-font ml-auto mr-auto">Your Subscription</v-card-title>
+        <v-card-title class="cursive-font ml-auto mr-auto pb-8">Your Subscription</v-card-title>
       </div>
 
       <current-plan-details></current-plan-details>
@@ -37,4 +37,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.box{
+ padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (max-width:767px) {
+  .box{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+</style>

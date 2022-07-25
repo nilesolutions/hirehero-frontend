@@ -1,11 +1,13 @@
 <template>
-  <div class="my-2 d-flex flex-row align-center">
-    <router-link class="mr-4" to="/projects">
-      <v-icon>{{ icons.mdiChevronLeft }}</v-icon>
-    </router-link>
-    <h2 class="cursive-font black--text">{{ projectName }}</h2>
+  <div class="outer-box">
+    <div class="heading-box">
+      <router-link class="mr-4" to="/projects">
+        <v-icon>{{ icons.mdiChevronLeft }}</v-icon>
+      </router-link>
+      <h2 class="cursive-font black--text">{{ projectName }}</h2>
+    </div>
 
-    <div class="ml-auto" v-if="userType == 'client'">
+    <div class="ml-auto btn-box" v-if="userType == 'client'">
       <v-btn color="primary" large tile @click="isCreateDiagOpen = true">
         Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
       </v-btn>
@@ -49,4 +51,38 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.outer-box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding:15px 0;
+  }
+  .heading-box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: flex-start;
+  }
+@media (max-width:767px) {
+  .outer-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .heading-box{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  .btn-box{
+    width: 100%;
+    display: flex;
+    padding: 20px 0;
+  }
+  .btn-box > button{
+    width: 100%;
+    display: flex;
+  }
+}
+</style>

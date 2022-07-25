@@ -1,6 +1,7 @@
 import axios from "@axios";
 import { computed, reactive, readonly } from "@vue/composition-api";
 
+
 const state = reactive({
   subInfo: {},
   isUpdatingPayment: false,
@@ -26,14 +27,32 @@ const plans = computed(() => state.plans.filter((plan) => !plan.is_disabled));
 
 // Subscription Getters
 const isSubscribed = computed(() => {
-  if (!Object.keys(state.subInfo).length) return false;
+
+  if (!Object.keys(state.subInfo).length){
+    console.log('state.subInfo : ',state.subInfo);
+    console.log('Subscription Getters : ',!Object.keys(state.subInfo).length)
+    console.log('Subscription Getters : ', Object.keys(state.subInfo).length)
+    return false
+  };
+
+  console.log('state.subInfo : ',state.subInfo);
   return true;
 });
 
 const isSubscriptionActive = computed(() => {
-  if (!isSubscribed.value) return false;
+  
+  // if (!isSubscribed.value) return false;
+  // console.log('!isSubscribed.value ', !isSubscribed.value)
+  // if (state.subInfo.subDetails.status != "active") return false;
+  // console.log('subDetails.status ', state.subInfo.subDetails.status)
+  // return true;
+
+  if (!state.subInfo.subDetails.status) return false;
+  console.log('!state.subInfo.subDetails.status ', !state.subInfo.subDetails.status)
   if (state.subInfo.subDetails.status != "active") return false;
+  console.log('subDetails.status ', state.subInfo.subDetails.status)
   return true;
+
 });
 
 const subDetails = computed(() => {
@@ -52,7 +71,6 @@ const subscriptionStart = computed(() => {
 const subscriptionEnd = computed(() => {
   const periodEnd = subDetails.value.current_period_end;
   if (!periodEnd) return "";
-
   const endDate = new Date(periodEnd * 1000);
   return endDate.toLocaleDateString();
 });
@@ -94,7 +112,7 @@ const hasPaymentMethodAttached = computed(() => {
 
 // Active Plan Getters
 const activePlan = computed(() => {
-  if (isSubscribed.value) return state.subInfo.activePlan;
+  if (isSubscriptionActive.value) return state.subInfo.activePlan;
   return {};
 });
 
@@ -127,8 +145,13 @@ const updatePlanInfo = computed(() => {
   return `${name} (${amount / 100} ${currency.toUpperCase()} / ${interval})`;
 });
 
+// Get Subscription
+
 async function handleSubUpdate() {
   const { data: sub } = await axios.get("/subscriptions");
+  if(sub){
+    console.log(sub);
+  }
   setSubInfo(sub);
 }
 

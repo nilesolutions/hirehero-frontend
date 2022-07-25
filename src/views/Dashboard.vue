@@ -17,6 +17,7 @@ import RecentTasks from "@/components/dashboard/RecentTasks.vue";
 import HourlyReports from "@/components/dashboard/HourlyReports.vue";
 import TasksProgress from "@/components/dashboard/TasksProgress.vue";
 
+
 export default {
   name: "Dashboard",
   components: { RecentTasks, HourlyReports, TasksProgress },

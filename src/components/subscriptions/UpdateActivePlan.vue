@@ -4,7 +4,7 @@
     :loading="state.isInitting || state.isLoading"
   >
     <v-card-title>
-      <span class="cursive-font">Upgrade / Downgrade your plan</span>
+      <span class="cursive-font main-headding">Change your plan</span>
       <v-btn class="ml-auto" icon @click="toggleActivePlanUpdate(false)">
         <v-icon>{{ icons.mdiClose }}</v-icon>
       </v-btn>
@@ -23,17 +23,18 @@
     </v-card-text>
 
     <div v-else>
-      <v-card-text class="text-center">
-        <b>Your active plan {{ activePlan.name }}</b> <br />
-        <b>Subscription ends on {{ subscriptionEnd }}</b>
+      <v-card-text class="text-left active-sub">
+        <v-subheader class="lg-heading pl-0">Your Active Plan </v-subheader>
+        <b class="active-plan-heading">{{ activePlan.name }}</b> <br />
+        <b class="active-subscription ">Subscription ends on <sapn class="text-black"> {{ subscriptionEnd }} </sapn></b>
       </v-card-text>
 
       <v-card-text class="black--text">
         <v-list>
-          <v-subheader>Avaialble Options</v-subheader>
+          <v-subheader class="lg-heading padding-left-0" >Avaialble Options</v-subheader>
 
           <v-list-item-group v-model="state.selectedPlan" color="primary">
-            <v-list-item class="bordered" v-for="option in updateOptions" :key="option.id">
+            <v-list-item class="bordered mobile-block" v-for="option in updateOptions" :key="option.id">
               <span>{{ option.name }}</span>
               <span class="ml-auto text-capitalize">
                 {{ option.amount / 100 }} {{ option.currency.toUpperCase() }} /
@@ -44,8 +45,8 @@
         </v-list>
       </v-card-text>
 
-      <v-card-text class="text-center">
-        <b>Your plan will change to {{ selectedOptionName }}. </b><br />
+      <v-card-text class="text-center lg-text">
+        <b class="pb-4">Your plan will change to {{ selectedOptionName }}. </b><br />
         <b>Changes will take effect at end of your current plan</b>
       </v-card-text>
 
@@ -153,4 +154,48 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style scoped>
+.lg-heading{
+  font-size: 18px !important;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+.active-sub{
+  padding-left: 36px !important;
+}
+.active-plan-heading{
+  font-size: 18px !important;
+}
+.active-sub > h4{
+  font-size: 18px !important;
+}
+
+.main-headding{
+  font-size: 22px !important;
+}
+.text-black{
+  color: #f34c57
+}
+.active-subscription{
+  font-size: 16px !important;
+}
+@media (max-width:767px) {
+  .active-sub{
+  padding-left: 20px !important;
+}
+.padding-left-0{
+  padding-left: 0;
+}
+.mobile-block{
+  display: block !important;
+  padding: 10px 4px !important;
+  font-size: 0.95rem
+}
+.lg-text{
+  font-size: 1rem;
+}
+.active-subscription{
+  font-size: 18px !important;
+}
+}
+</style>

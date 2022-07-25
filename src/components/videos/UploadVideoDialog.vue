@@ -8,7 +8,7 @@
     <v-card class="d-flex flex-column align-center">
       <v-card-title>Upload A Video</v-card-title>
 
-      <v-text-field v-model="state.title" outlined placeholder="Video Title" dense></v-text-field>
+      <v-text-field v-model="state.title" outlined placeholder="Video Title" dense class="video-title"></v-text-field>
 
       <label for="">Click below to choose file</label>
       <v-card-text>
@@ -109,4 +109,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.video-title{
+  width: 100% !important;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+</style>

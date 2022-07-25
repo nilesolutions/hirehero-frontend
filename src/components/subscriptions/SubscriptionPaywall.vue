@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-col align-self-center mx-auto">
-    <v-card>
+  <div class="d-flex flex-col align-self-center mx-auto width">
+    <v-card class="mobile-css">
       <v-card-text>Activate your account by subscribing to a plan.</v-card-text>
 
       <v-card-actions v-if="!userState.isPreviewMode">
@@ -26,4 +26,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+@media (max-width:767px) {
+.width{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70vh;
+}
+  .mobile-css{
+    margin: auto 20px;
+    
+  }
+}
+</style>

@@ -11,7 +11,7 @@
     </v-btn>
 
     <ul class="navigation__menu">
-      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item">
+      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item ">
       </component>
     </ul>
   </div>
@@ -94,7 +94,7 @@ export default {
   position: absolute;
   height: 100%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  width: 200px;
+  width: 270px;
   z-index: 9;
 }
 

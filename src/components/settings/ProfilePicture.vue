@@ -1,18 +1,17 @@
 <template>
   <div>
-    <label for=""><small>Profile Picture</small></label>
-
-    <v-card-text class="d-flex flex-row flex-wrap align-center">
-      <div class="col-md-6">
-        <v-avatar>
-          <img :src="profilePicture" alt="" />
+    <label for="" class="heading">Profile Picture</label>
+    <v-card-text class="d-flex flex-row flex-wrap align-left px-0">
+      <div class="avtar-box">
+        <v-avatar size="70">
+          <img :src="profilePicture" alt="profile picture" />
         </v-avatar>
-        <small class="d-block mt-2">Profile Picture max size is 5MB</small>
+        
       </div>
-
-      <div class="ml-md-auto d-flex flex-row flex-wrap">
-        <v-btn small @click="openImgPicker" class="mb-2 mb-md-0 mr-2">Update Profile Picture</v-btn>
-        <v-btn small @click="deleteProfilePic">Remove Profile Picture</v-btn>
+<!-- ml-md-auto d-flex flex-row flex-wrap gap-3 -->
+      <div class="ml-md-auto d-flex flex-row flex-wrap gap-3 ">
+        <v-btn small @click="openImgPicker" class="mb-2 mb-md-0 mr-2 btn-customization">Update Profile Picture</v-btn>
+        <v-btn small @click="deleteProfilePic" class="btn-customization">Remove Profile Picture</v-btn>
       </div>
 
       <input
@@ -162,4 +161,34 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.v-card__text{
+  padding: 16px 0;
+}
+.gap-3{
+  gap: 10px;
+}
+.padding{
+  padding: 12px 12px !important;
+  font-size: 12px;
+}
+@media (max-width:767px){
+  .btn-customization{
+    width: 100%;
+  padding: 20px 12px !important;
+  font-size: 16px;
+}
+.text-md{
+  font-size: 16px;
+}
+.avtar-box{
+ width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.heading{
+  font-size: 18px;
+}
+
+}
+</style>
