@@ -38,11 +38,7 @@
         <v-progress-circular color="primary" indeterminate class="loading-spinner"></v-progress-circular>
       </div>
       <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
-      <!--
-        REMOVED
-        Ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
-      -->
+      <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
       <slot v-else> </slot>
       <!-- <slot> </slot> -->
     </div>
@@ -107,40 +103,18 @@ export default {
     async function initApp() {
       try {
         state.isLoading = true;
-        /*
-        * Removing subscription call: 
-        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        * 
-        * OLD VERSION
-        * const [user, associate, notifications, sub] = await Promise.all([
-            axios.get("/users/me"),
-            axios.get("/users/associate"),
-            axios.get("/conversations/notifications"),
-            axios.get("/subscriptions/"),
-          ]);
-        */
-        const [user, associate, notifications] = await Promise.all([
+        const [user, associate, notifications, sub] = await Promise.all([
           axios.get("/users/me"),
           axios.get("/users/associate"),
-          axios.get("/conversations/notifications")
+          axios.get("/conversations/notifications"),
+          axios.get("/subscriptions/"),
         ]);
-        
+
         setUserData(user.data);
         setAssociatedUser(associate.data);
         setNotification(notifications.data);
 
-        /*
-        * Removed subscription call so, to bypass that call
-        * introducing a default value for subInfo: 
-        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        * 
-        * OLD VERSION
-        * setSubInfo(sub.data);
-        * 
-        * Defualt / subscription response data is {}
-        * that's why passing {} to set subInfo
-        */
-        setSubInfo({});
+        setSubInfo(sub.data);
 
         videoCallChannel += user.data.id;
         privateUserChannel += user.data.id;

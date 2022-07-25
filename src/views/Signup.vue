@@ -440,7 +440,6 @@ export default {
       }
 
       if ( state.errorMsg == "" ) {
-        // await axios.post("/signup", signupData.value);
         state.e1 = 2
       }
     }
@@ -478,13 +477,13 @@ export default {
         }
 
         // validate password match
-        if (state.password != state.confirmPassword) {
-          state.errorMsg = "Passwords did not match"
-          throw "Passwords did not match";
+        if (state.password !== state.confirmPassword) {
+          state.errorMsg = 'Passwords did not match'
+          throw 'Passwords did not match';
         }
 
         // validate account type selection
-        if ( state.accType == "" ) {
+        if (state.accType === '') {
           state.errorMsg = '"I am looking to" is required field.'
           throw '"I am looking to" is required field.'
         }
@@ -492,24 +491,8 @@ export default {
         state.errorMsg = "";
         state.isLoading = true;
 
-        /*
-        [NOT IN USE]:
-        This sniphet is replaced by PR: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/2
-        const signupData = {
-          username: state.username,
-          email: state.email,
-          password: state.password,
-          type: state.accType,
-        };
-        */
-
-        const response = await axios.post("/signup", signupData);
-        console.log(response.data.email)
-        if (response) {
-          console.log('Window : ', window.fpr)
-          let email = response.data.email;
-          window.fpr("referral",{email: email})
-        }
+        const response = await axios.post('/signup', signupData.value);
+        if (response) window.fpr('referral', { email: response.data.email })
 
         // reset the form
         resetForm(state)
@@ -549,9 +532,6 @@ export default {
 
 .auth-submit-btn {
  padding: 24px  0 !important;
-}
-.logo-img-size{
-    max-width: 150px !important;
 }
 @media (max-width:1265px) {
   .auth-mob-padding{

@@ -53,7 +53,7 @@
                       placeholder="Email"
                       hide-details="auto"
                       class="mb-6"
-                      
+
                     ></v-text-field>
 
                     <v-text-field
@@ -139,8 +139,8 @@ export default {
           email: email.value,
           password: password.value,
         });
-        
-        
+
+
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("userData", JSON.stringify(response.data.userData));
         updateAuthCreds();
@@ -196,9 +196,9 @@ export default {
     text-align: center !important;
   }
   .brand-logo{
-  left: 0 ; 
-  right: 0 ; 
-  margin: 0 auto ; 
+  left: 0 ;
+  right: 0 ;
+  margin: 0 auto ;
   width: 100%;
   }
 }
@@ -216,12 +216,12 @@ export default {
   .login-form{
     padding-top: 80px !important;
   }
-  
+
   .auth-text {
     text-align: center;
   }
   .auth-mob-padding {
-    
+
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
