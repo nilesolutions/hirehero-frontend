@@ -1,7 +1,5 @@
 import axios from "@axios";
 import { computed, reactive, readonly } from "@vue/composition-api";
-import { useUser } from "./user";
-
 
 const state = reactive({
   subInfo: {},
@@ -13,7 +11,6 @@ const state = reactive({
   isRemovingCard: false,
 });
 
-const { userData,setUserData } = useUser()
 const setSubInfo = (val) => (state.subInfo = val);
 const setClickedPrice = (val) => (state.clickedPrice = val);
 const setPlans = (val) => (state.plans = val);
@@ -29,57 +26,14 @@ const plans = computed(() => state.plans.filter((plan) => !plan.is_disabled));
 
 // Subscription Getters
 const isSubscribed = computed(() => {
-
-<<<<<<< HEAD
-  // if (!Object.keys(state.subInfo).length){
-  //   console.log('state.subInfo : ',state.subInfo);
-  //   console.log('Subscription Getters : ',!Object.keys(state.subInfo).length)
-  //   console.log('Subscription Getters : ', Object.keys(state.subInfo).length)
-  //   return false
-  // };
-  // console.log('state.subInfo : ',state.subInfo);
-
-  if (userData.value == null) return false;
-  console.log('User : ' , userData.value.is_subscribed)
-=======
-  if (!Object.keys(state.subInfo).length){
-    console.log('state.subInfo : ',state.subInfo);
-    console.log('Subscription Getters : ',!Object.keys(state.subInfo).length)
-    console.log('Subscription Getters : ', Object.keys(state.subInfo).length)
-    return false
-  };
-
-  console.log('state.subInfo : ',state.subInfo);
->>>>>>> ba7ba13 (Mobile Responsive)
+  if (!Object.keys(state.subInfo).length) return false;
   return true;
 });
 
 const isSubscriptionActive = computed(() => {
-  
-  // if (!isSubscribed.value) return false;
-  // console.log('!isSubscribed.value ', !isSubscribed.value)
-  // if (state.subInfo.subDetails.status != "active") return false;
-  // console.log('subDetails.status ', state.subInfo.subDetails.status)
-  // return true;
-
-<<<<<<< HEAD
-  // if (!state.subInfo.subDetails.status) return false;
-  // console.log('!state.subInfo.subDetails.status ', !state.subInfo.subDetails.status)
-  // if (state.subInfo.subDetails.status != "active") return false;
-  // console.log('subDetails.status ', state.subInfo.subDetails.status)
-  // return true;
-
-  if (userData.value == null) return false
-  if (userData.value.is_subscribed === 0) return false
-  return true
-=======
-  if (!state.subInfo.subDetails.status) return false;
-  console.log('!state.subInfo.subDetails.status ', !state.subInfo.subDetails.status)
+  if (!isSubscribed.value) return false;
   if (state.subInfo.subDetails.status != "active") return false;
-  console.log('subDetails.status ', state.subInfo.subDetails.status)
   return true;
->>>>>>> ba7ba13 (Mobile Responsive)
-
 });
 
 const subDetails = computed(() => {
@@ -98,6 +52,7 @@ const subscriptionStart = computed(() => {
 const subscriptionEnd = computed(() => {
   const periodEnd = subDetails.value.current_period_end;
   if (!periodEnd) return "";
+
   const endDate = new Date(periodEnd * 1000);
   return endDate.toLocaleDateString();
 });
@@ -139,7 +94,7 @@ const hasPaymentMethodAttached = computed(() => {
 
 // Active Plan Getters
 const activePlan = computed(() => {
-  if (isSubscriptionActive.value) return state.subInfo.activePlan;
+  if (isSubscribed.value) return state.subInfo.activePlan;
   return {};
 });
 
@@ -172,27 +127,9 @@ const updatePlanInfo = computed(() => {
   return `${name} (${amount / 100} ${currency.toUpperCase()} / ${interval})`;
 });
 
-<<<<<<< HEAD
-// Get Subscription 
-
 async function handleSubUpdate() {
   const { data: sub } = await axios.get("/subscriptions");
-  const { data: subUser } = await axios.get("/users/me");
-  if(sub && subUser){
-    console.log(sub);
-    console.log(subUser);
-=======
-// Get Subscription
-
-async function handleSubUpdate() {
-  const { data: sub } = await axios.get("/subscriptions");
-  if(sub){
-    console.log(sub);
->>>>>>> ba7ba13 (Mobile Responsive)
-  }
   setSubInfo(sub);
-  setUserData(subUser)
-  
 }
 
 export function useSubscription() {

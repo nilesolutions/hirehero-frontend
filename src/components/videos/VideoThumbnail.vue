@@ -1,5 +1,5 @@
 <template>
-  <v-card class="video-card mb-5 mt-3 m-right p-relative">
+  <v-card class="video-card mb-4 mr-4">
     <video
       @click="setClickedVidUrl(video.url)"
       class="video-thumbnail"
@@ -26,10 +26,10 @@
         </v-btn>
       </template>
 
-      <span class="tooltip-font ">Delete</span>
+      <span class="tooltip-font">Delete Video</span>
     </v-tooltip>
 
-    <v-card-text class="mt-2 black--text d-flex flex-row align-right text-capitalize">
+    <v-card-text class="mt-2 black--text d-flex flex-row align-center text-capitalize">
       <span class="d-block text-capitalize">{{ video.title || "No Title" }}</span>
       <v-tooltip bottom color="error">
         <template v-slot:activator="{ on, attrs }">
@@ -45,7 +45,7 @@
             <v-icon>{{ icons.mdiPencilOutline }}</v-icon>
           </v-btn>
         </template>
-        <span class="tooltip-font">Edit Title</span>
+        <span class="tooltip-font">Edit Video Title</span>
       </v-tooltip>
     </v-card-text>
 
@@ -188,12 +188,8 @@ export default {
 </script>
 
 <style>
-
 .video-card {
   cursor: pointer;
-}
-.p-relative{
-  position: relative !important;
 }
 
 .video-thumbnail {

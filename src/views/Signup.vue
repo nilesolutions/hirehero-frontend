@@ -527,6 +527,7 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 
