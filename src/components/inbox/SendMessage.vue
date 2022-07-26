@@ -27,7 +27,9 @@
       </v-tooltip>
     </form>
 
-    <div class="d-flex mt-3 chat-att">
+<!-- d-flex mt-3 chat-att -->
+    <div class="box">
+
       <div class="d-flex flex-row align-center audio-recorder chat-buttons">
         <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
           <v-icon :color="state.isRecording ? '#F60000' : ''">
@@ -235,7 +237,22 @@ export default {
 .send-msg-btn:hover {
   color: #ff4c51 !important;
 }
-
+.box{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: baseline;
+    gap: 25px;
+  }
+  .box > div{
+     margin-top: 15px;
+  }
+  .box > div > button{
+    width: 100% !important;
+    margin-top: 15px;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
 @media (max-width: 767px) {
   .chat-att {
     flex-direction: row !important;
@@ -248,6 +265,24 @@ export default {
   }
   .chat-buttons > div{
     width: 100%;
+  }
+  .box{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .box > div{
+    width: 100% !important;
+  }
+  .box > div > button{
+    width: 100% !important;
+    margin-top: 15px;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .v-input.v-input--is-label-active.v-input--is-dirty.v-input--dense.theme--light.v-text-field.v-text-field--is-booted.v-text-field--enclosed.v-text-field--outlined.v-file-input.d-flex{
+    margin-top: 25px;
   }
 }
 </style>

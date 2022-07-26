@@ -13,7 +13,10 @@ const state = reactive({
 });
 
 const setConversation = (val) => (state.conversation = val);
-const setAssociatedUser = (val) => (state.associatedUser = val);
+const setAssociatedUser = (val) => {
+  state.associatedUser = val
+  console.log('setAssociatedUser : ', val)
+};
 
 const setMessages = (val) => (state.messages = val);
 const addMessage = (val) => (state.messages = [...state.messages, val]);

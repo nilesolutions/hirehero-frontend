@@ -48,7 +48,6 @@ const state = reactive({
 
 state.myPeer.on("call", (call) => {
   state.activeCall = call;
-
   state.activeCall.answer(state.activeMediaStream);
   state.activeCall.on("stream", (stream) => {
     remoteVideoPreview.value.srcObject = stream;

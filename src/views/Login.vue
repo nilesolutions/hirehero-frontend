@@ -4,11 +4,9 @@
       <router-link to="/" class="brand-logo">
         <v-img
           :src="appLogo"
-          max-height="30px"
-          max-width="150px"
           alt="logo"
           contain
-          class="me-3"
+          class="me-3 logo-img-size"
         ></v-img>
 
         <!-- <h2 class="text--primary mt-3">
@@ -182,6 +180,9 @@ export default {
 .auth-submit-btn {
   padding: 24px  0 !important;
 }
+.logo-img-size{
+    max-width: 150px !important;
+}
 .custom-box{
   display: flex ;
   justify-content: space-between;
@@ -198,11 +199,20 @@ export default {
   left: 0 ; 
   right: 0 ; 
   margin: 0 auto ; 
-  width: 150px;
+  width: 100%;
   }
 }
 
 @media (max-width: 767px) {
+   .brand-logo{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .logo-img-size{
+    max-width: 200px !important;
+    left: -30px;
+  }
   .login-form{
     padding-top: 80px !important;
   }

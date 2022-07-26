@@ -114,7 +114,9 @@ export default {
     };
 
     const msgTime = () => {
-      return new Date(msgData.created_at).toLocaleString();
+      let msg_date = new Date(msgData.created_at).toLocaleDateString().split('/').reverse().join('-')
+      let msg_time = new Date(msgData.created_at).toLocaleTimeString()
+      return `${msg_date} ${msg_time}`
     };
 
     const hasAttachments = () => {

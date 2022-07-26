@@ -25,6 +25,8 @@ import { useUser } from "@/composables/user/user";
 import axios from "@axios";
 import { mdiCamera } from "@mdi/js";
 import { onMounted, onUnmounted, reactive } from "@vue/composition-api";
+import VideoCall from '@/components/inbox/VideoCall.vue';
+
 
 export default {
   name: "Inbox",
@@ -32,7 +34,9 @@ export default {
     OnlineUsers,
     InboxMessages,
     StartVideoCall,
-  },
+    VideoCall,
+    VideoCall
+},
   setup() {
     const { setNotification } = useNotifications();
     const { setConversation, setAssociatedUser, activeConversation, associatedUser } =

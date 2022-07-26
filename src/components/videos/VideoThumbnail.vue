@@ -197,9 +197,9 @@ export default {
 }
 
 .video-thumbnail {
-  max-width: 325px !important;
-  height: 100%;
-  max-height: 185px !important;
+  max-width: 300px ;
+  height: 150px ;
+  max-height: 185px;
 }
 
 .video-player-container {
@@ -225,9 +225,6 @@ button.theme--light.v-btn:hover::before {
 .v-btn--fab.v-size--x-small.v-btn--absolute.v-btn--top{
   top: 16px !important;
 }
-.d-block.text-capitalize{
-  word-break: break-all !important;
-}
 .v-card__text.mt-2.black--text.d-flex.flex-row.align-center.text-capitalize{
   overflow: hidden;
   word-break: break-all !important;
@@ -240,7 +237,9 @@ max-width: 325px !important;
 .v-dialog > .v-card > .v-card__title{
   max-height: 100px !important;
 }
-
+.d-block.text-capitalize{
+  word-break: break-all !important;
+}
 .v-card.title.d-flex.flex-row{
   padding: 0 !important;
 }
@@ -261,9 +260,13 @@ max-width: 325px !important;
     margin-right: 0px !important;
   }
   .video-thumbnail {
-  max-width: 415px !important;
-  max-height: 100% !important;
-  /* max-height: 185px !important; */
+  max-width: 500px !important;
+  height: 200px !important;
+  max-height: 300px;
+  top: 0 !important;
+  bottom: 0 !important;
+  left:  0 !important;
+  right: 0 !important;
 }
 .video-card.mb-5.mt-3.m-right.p-relative.v-card.v-sheet.theme--light{
 max-width: 415px !important;

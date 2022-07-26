@@ -1,6 +1,7 @@
 <template>
   <v-card-text class="d-flex flex-row align-center pt-3">
     <div>
+      <!-- '#30D988' : '#ababab' -->
       <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
         <v-avatar rounded>
           <img :src="peerProfilePic" alt="" />
@@ -56,6 +57,8 @@ export default {
   setup() {
     const { state: vidCallState, initCall } = useVideoCall();
     const { state: msgsState } = useMessages();
+
+    console.log('MessagesLogHeader : ', vidCallState)
 
     const canStartCall = computed(() => {
       if (vidCallState.isInCall || !vidCallState.isPeerOnline || vidCallState.isBeingCalled)

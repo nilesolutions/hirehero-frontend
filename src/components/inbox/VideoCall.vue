@@ -42,10 +42,8 @@ export default {
       handleCallTermination,
       callState,
       answerCall,
-
       localVideoPreview,
       remoteVideoPreview,
-
       icons: {
         mdiClose,
       },

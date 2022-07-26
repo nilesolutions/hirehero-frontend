@@ -12,7 +12,7 @@
       <v-card-text>
         <v-data-table :items="state.tableData" :headers="headers">
           <template v-slot:item.created_at="{ item }">
-            <span>{{ new Date(item.created_at).toLocaleString() }}</span>
+            <span>{{ new Date(item.created_at).toLocaleDateString().split('/').reverse().join('-') }}</span>
           </template>
 
           <template v-slot:item.completed="{ item }">

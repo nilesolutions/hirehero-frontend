@@ -3,7 +3,7 @@
     <div class="auth-inner">
       <!-- brand logo -->
       <router-link to="/" class="brand-logo">
-        <v-img :src="appLogo" max-height="30px" max-width="150px" alt="logo" contain class="me-3" />
+        <v-img :src="appLogo"   alt="logo" contain class="me-3 logo-img-size" />
 
         <!-- <h2 class="text--primary mt-3">
           {{ appName }}
@@ -189,6 +189,7 @@ export default {
         const response = await axios.post("/signup", signupData);
         console.log(response.data.email)
         if (response) {
+          console.log('Window : ', window.fpr)
           let email = response.data.email;
           window.fpr("referral",{email: email})
         }
@@ -233,27 +234,37 @@ export default {
 .auth-submit-btn {
  padding: 24px  0 !important;
 }
+.logo-img-size{
+    max-width: 150px !important;
+}
 @media (max-width:1265px) {
   .auth-mob-padding{
     text-align: center;
   }
   .brand-logo{
-  left: 0 ; 
-  right: 0 ; 
-  margin: 0 auto ; 
-  width: 150px;
+  left: 0; 
+  right: 0; 
+  margin: auto; 
+  width: 100% !important;
   }
 }
 
 @media (max-width: 767px) {
+  .brand-logo{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .logo-img-size{
+    max-width: 200px !important;
+    left: -30px;
+  }
   .signup-form {
     padding-top: 80px !important;
   }
-
   .signup-form .signup-title {
     font-size: 1.3rem !important;
   }
-
   .auth-submit-btn.v-btn:not(.v-btn--round).v-size--default {
     margin-top: 0 !important;
   }
@@ -271,7 +282,6 @@ export default {
     opacity: 0.6;
     font-weight: 300;
   }
-
   .auth-mob-padding-2 {
     padding-bottom: 0;
   }

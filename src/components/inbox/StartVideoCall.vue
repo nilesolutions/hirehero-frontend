@@ -45,8 +45,10 @@ export default {
       try {
         state.isLoading = true;
         const { data } = await axios.get("/users/associate");
+        console.log('fetch')
         callState.associatedUser = data;
         if (data) {
+          console.log('Associate Data : ' , data)
           subscribeToChannel(`private-video-call-${data.id}`, videoCallEvents);
         }
       } catch (err) {

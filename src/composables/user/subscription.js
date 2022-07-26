@@ -2,7 +2,6 @@ import axios from "@axios";
 import { computed, reactive, readonly } from "@vue/composition-api";
 import { useUser } from "./user";
 
-
 const state = reactive({
   subInfo: {},
   isUpdatingPayment: false,
@@ -44,7 +43,7 @@ const isSubscribed = computed(() => {
 });
 
 const isSubscriptionActive = computed(() => {
-
+  
   // if (!isSubscribed.value) return false;
   // console.log('!isSubscribed.value ', !isSubscribed.value)
   // if (state.subInfo.subDetails.status != "active") return false;
@@ -153,7 +152,7 @@ const updatePlanInfo = computed(() => {
   return `${name} (${amount / 100} ${currency.toUpperCase()} / ${interval})`;
 });
 
-// Get Subscription
+// Get Subscription 
 
 async function handleSubUpdate() {
   const { data: sub } = await axios.get("/subscriptions");
@@ -164,7 +163,7 @@ async function handleSubUpdate() {
   }
   setSubInfo(sub);
   setUserData(subUser)
-
+  
 }
 
 export function useSubscription() {
