@@ -5,11 +5,10 @@
     <v-app>
       <subscription-notification-message
         @close="closeSubNotification"
-      ></subscription-notification-message
-    ></v-app>
+      /></v-app>
   </div>
   <v-app v-else>
-    <navbar></navbar>
+    <navbar />
     <v-alert
       v-if="state.isInfoVisible && infoMsg && !state.isLoading"
       color="primary"
@@ -20,59 +19,74 @@
     >
       {{ infoMsg }}
     </v-alert>
-    <v-alert v-if="userState.isPreviewMode" color="primary" class="mb-0" rounded="0" type="info">
-      You are currently previewing the website as {{ userName }}.<span class="ml-1"
-        >Any changes you make will be saved.</span
-      >
+    <v-alert
+      v-if="userState.isPreviewMode"
+      color="primary"
+      class="mb-0"
+      rounded="0"
+      type="info"
+    >
+      You are currently previewing the website as {{ userName }}.<span
+        class="ml-1"
+      >Any changes you make will be saved.</span>
     </v-alert>
 
     <div class="dashboard--layout">
-      <video-call-prompt></video-call-prompt>
-      <video-call></video-call>
+      <video-call-prompt />
+      <video-call />
 
-      <navigation></navigation>
+      <navigation />
 
       <!--  class="ml-auto mr-auto" -->
 
-      <div v-if="state.isLoading" class="loading-box">
-        <v-progress-circular color="primary" indeterminate class="loading-spinner"></v-progress-circular>
+      <div
+        v-if="state.isLoading"
+        class="loading-box"
+      >
+        <v-progress-circular
+          color="primary"
+          indeterminate
+          class="loading-spinner"
+        />
       </div>
-      <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
-      <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
-      <slot v-else> </slot>
+      <account-disabled-wall v-else-if="showAccountDisabled" />
+      <subscription-paywall v-else-if="showSubPaywall" />
+      <slot v-else />
       <!-- <slot> </slot> -->
     </div>
   </v-app>
 </template>
 
 <script>
-import Navbar from "@/components/layout/navbar/Navbar.vue";
-import Navigation from "@/components/layout/navigation/Navigation.vue";
-import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
-import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
-import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
-import VideoCall from "@/components/videocall/VideoCall.vue";
-import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+import axios from '@axios'
+import { mdiClose } from '@mdi/js'
+import {
+  computed, onMounted, onUnmounted, reactive,
+} from '@vue/composition-api'
+import { fa } from 'vuetify/lib/locale'
+import Navbar from '@/components/layout/navbar/Navbar.vue'
+import Navigation from '@/components/layout/navigation/Navigation.vue'
+import AccountDisabledWall from '@/components/misc/AccountDisabledWall.vue'
+import SubscriptionNotificationMessage from '@/components/subscriptions/SubscriptionNotificationMessage.vue'
+import SubscriptionPaywall from '@/components/subscriptions/SubscriptionPaywall.vue'
+import VideoCall from '@/components/videocall/VideoCall.vue'
+import VideoCallPrompt from '@/components/videocall/VideoCallPrompt.vue'
 
-import { useRouter } from "@/@core/utils";
-import { useMessages } from "@/composables/chat/messages";
-import { useNotifications } from "@/composables/chat/notifications";
+import { useRouter } from '@/@core/utils'
+import { useMessages } from '@/composables/chat/messages'
+import { useNotifications } from '@/composables/chat/notifications'
 import {
   notificationEvents,
   subscriptionEvents,
   videoCallEvents,
   videoCallPresenceEvents,
-} from "@/composables/event-listeners";
-import { usePusher } from "@/composables/pusher";
-import { useSubscription } from "@/composables/user/subscription";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
-import { mdiClose } from "@mdi/js";
-import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
-import { fa } from "vuetify/lib/locale";
+} from '@/composables/event-listeners'
+import { usePusher } from '@/composables/pusher'
+import { useSubscription } from '@/composables/user/subscription'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "LayoutCustom",
+  name: 'LayoutCustom',
   components: {
     Navbar,
     Navigation,
@@ -87,104 +101,104 @@ export default {
       isLoading: true,
       isInfoVisible: true,
       hasSubNotification: true,
-    });
+    })
 
-    const { setSubInfo, isSubscribed ,isSubscriptionActive} = useSubscription();
-    const { state: userState, userData, userName, userType, setUserData } = useUser();
-    const { setNotification } = useNotifications();
-    const { setAssociatedUser, associatedUser } = useMessages();
-    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
-    const { route } = useRouter();
+    const { setSubInfo, isSubscribed, isSubscriptionActive } = useSubscription()
+    const {
+      state: userState, userData, userName, userType, setUserData,
+    } = useUser()
+    const { setNotification } = useNotifications()
+    const { setAssociatedUser, associatedUser } = useMessages()
+    const { subscribeToChannel, unsubscribeFromChannel } = usePusher()
+    const { route } = useRouter()
 
-    var videoCallChannel = `presence-video-call-`;
-    var notificationsChannel = `private-notifications-`;
-    var privateUserChannel = `private-user-`;
+    let videoCallChannel = 'presence-video-call-'
+    let notificationsChannel = 'private-notifications-'
+    let privateUserChannel = 'private-user-'
 
     async function initApp() {
       try {
-        state.isLoading = true;
+        state.isLoading = true
         const [user, associate, notifications, sub] = await Promise.all([
-          axios.get("/users/me"),
-          axios.get("/users/associate"),
-          axios.get("/conversations/notifications"),
-          axios.get("/subscriptions/"),
-        ]);
+          axios.get('/users/me'),
+          axios.get('/users/associate'),
+          axios.get('/conversations/notifications'),
+          axios.get('/subscriptions/'),
+        ])
 
-        setUserData(user.data);
-        setAssociatedUser(associate.data);
-        setNotification(notifications.data);
+        setUserData(user.data)
+        setAssociatedUser(associate.data)
+        setNotification(notifications.data)
 
-        setSubInfo(sub.data);
+        setSubInfo(sub.data)
 
-        videoCallChannel += user.data.id;
-        privateUserChannel += user.data.id;
-        notificationsChannel += user.data.id;
+        videoCallChannel += user.data.id
+        privateUserChannel += user.data.id
+        notificationsChannel += user.data.id
 
-        subscribeToChannel(videoCallChannel, videoCallEvents);
-        subscribeToChannel(privateUserChannel, subscriptionEvents);
-        subscribeToChannel(notificationsChannel, notificationEvents);
+        subscribeToChannel(videoCallChannel, videoCallEvents)
+        subscribeToChannel(privateUserChannel, subscriptionEvents)
+        subscribeToChannel(notificationsChannel, notificationEvents)
 
         if (associatedUser) {
           subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
             ...videoCallPresenceEvents,
             ...videoCallEvents,
-          ]);
+          ])
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     onMounted(() => {
-      const searchParams = new URLSearchParams(window.location.search);
+      const searchParams = new URLSearchParams(window.location.search)
 
       if (
-        !searchParams.get("payment_intent_client_secret") &&
-        !searchParams.get("setup_intent_client_secret")
-      )
-        closeSubNotification();
-    });
+        !searchParams.get('payment_intent_client_secret')
+        && !searchParams.get('setup_intent_client_secret')
+      ) closeSubNotification()
+    })
 
     function closeSubNotification() {
-      state.hasSubNotification = false;
-      initApp();
+      state.hasSubNotification = false
+      initApp()
     }
 
     onUnmounted(() => {
-      unsubscribeFromChannel(videoCallChannel);
-      unsubscribeFromChannel(privateUserChannel);
-      unsubscribeFromChannel(notificationsChannel);
-    });
+      unsubscribeFromChannel(videoCallChannel)
+      unsubscribeFromChannel(privateUserChannel)
+      unsubscribeFromChannel(notificationsChannel)
+    })
 
     const showSubPaywall = computed(() => {
-      if (userType.value == "va") return false;
+      if (userType.value == 'va') return false
       // if (!isSubscribed.value && route.value.name != "settings") return true;
-      if (!isSubscriptionActive.value && route.value.name != "settings") return true;
+      if (!isSubscriptionActive.value && route.value.name != 'settings') return true
       console.log('isSubscriptionActive : ', isSubscriptionActive.value)
-      return false;
-    });
+      return false
+    })
 
     const showAccountDisabled = computed(() => {
-      if (userData.value.is_disabled) return true;
-      return false;
-    });
+      if (userData.value.is_disabled) return true
+      return false
+    })
 
     const infoMsg = computed(() => {
-      var msg = [];
+      const msg = []
 
       if (!associatedUser.value) {
-        if (userType.value == "client") msg.push("No VA Assigned");
-        else msg.push("No Client Assigned");
+        if (userType.value == 'client') msg.push('No VA Assigned')
+        else msg.push('No Client Assigned')
       }
 
-      if (!isSubscribed.value && userType.value == "client")
-        msg.push("You are not subscribed to a plan");
+      if (!isSubscribed.value && userType.value == 'client') msg.push('You are not subscribed to a plan')
 
-      if (msg.length) return msg.join(" | ");
-      return "";
-    });
+      if (msg.length) return msg.join(' | ')
+      return ''
+    })
 
     return {
       state,
@@ -198,9 +212,9 @@ export default {
       icons: {
         mdiClose,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -254,6 +268,5 @@ export default {
       display: block;
 }
 }
-
 
 </style>

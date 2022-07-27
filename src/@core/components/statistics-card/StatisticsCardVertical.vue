@@ -14,7 +14,7 @@
           {{ icon }}
         </v-icon>
       </v-avatar>
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-btn
         small

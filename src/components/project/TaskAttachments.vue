@@ -1,14 +1,31 @@
 <template>
-  <div class="d-flex flex-column col-12" v-if="!attachments.length & !state.isLoading">
+  <div
+    v-if="!attachments.length & !state.isLoading"
+    class="d-flex flex-column col-12"
+  >
     <v-card-text>No attachments</v-card-text>
   </div>
-  <div class="mx-auto" v-else-if="state.isLoading">
-    <v-progress-circular color="primary" indeterminate></v-progress-circular>
+  <div
+    v-else-if="state.isLoading"
+    class="mx-auto"
+  >
+    <v-progress-circular
+      color="primary"
+      indeterminate
+    />
   </div>
-  <div v-else class="d-flex flex-column col-12">
+  <div
+    v-else
+    class="d-flex flex-column col-12"
+  >
     <v-card-actions>
       Attachments
-      <v-btn class="ml-auto" @click="state.showAttachments = !state.showAttachments" x-small icon>
+      <v-btn
+        class="ml-auto"
+        x-small
+        icon
+        @click="state.showAttachments = !state.showAttachments"
+      >
         <v-icon>{{ state.showAttachments ? icons.mdiChevronUp : icons.mdiChevronDown }}</v-icon>
       </v-btn>
     </v-card-actions>
@@ -19,51 +36,51 @@
           v-for="attachment in attachments"
           :key="attachment.id"
           :attachment="attachment"
-        ></attachment-line>
+        />
       </div>
     </v-expand-transition>
   </div>
 </template>
 
 <script>
-import axios from "@axios";
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
-import { useAttachments } from "@/composables/tasks/attachments";
-import { mdiChevronUp, mdiChevronDown, mdiPlus } from "@mdi/js";
-import { onMounted, reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiChevronUp, mdiChevronDown, mdiPlus } from '@mdi/js'
+import { onMounted, reactive } from '@vue/composition-api'
+import { useRouter } from '@/composables/router'
+import { useTasks } from '@/composables/tasks/tasks'
+import { useAttachments } from '@/composables/tasks/attachments'
 
-import AttachmentLine from "@/components/project/AttachmentLine.vue";
+import AttachmentLine from '@/components/project/AttachmentLine.vue'
 
 export default {
-  name: "TaskAttachments",
+  name: 'TaskAttachments',
   components: { AttachmentLine },
   setup() {
-    const { setAttachments, attachments } = useAttachments();
+    const { setAttachments, attachments } = useAttachments()
 
-    const { activeTask } = useTasks();
-    const projectId = useRouter().routeParams().id;
+    const { activeTask } = useTasks()
+    const projectId = useRouter().routeParams().id
 
     const state = reactive({
       isLoading: false,
       showAttachments: true,
-    });
+    })
 
-    onMounted(() => fetchAttachments());
+    onMounted(() => fetchAttachments())
 
     async function fetchAttachments() {
       try {
-        state.isLoading = true;
-        if (attachments.value.length) return;
+        state.isLoading = true
+        if (attachments.value.length) return
 
         const { data: fetchedAttachments } = await axios.get(
-          `/projects/${projectId}/tasks/${activeTask.value.id}/attachments`
-        );
-        setAttachments(fetchedAttachments);
+          `/projects/${projectId}/tasks/${activeTask.value.id}/attachments`,
+        )
+        setAttachments(fetchedAttachments)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -76,9 +93,9 @@ export default {
         mdiChevronDown,
         mdiPlus,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

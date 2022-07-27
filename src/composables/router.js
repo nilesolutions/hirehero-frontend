@@ -1,13 +1,13 @@
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref } from '@vue/composition-api'
 
-const route = ref({});
+const route = ref({})
 
-const setRoute = (r) => (route.value = r);
-const routeName = () => route.value.name;
-const routeParams = () => route.value.params;
+const setRoute = r => (route.value = r)
+const routeName = () => route.value.name
+const routeParams = () => route.value.params
 
-const currRouteName = computed(() => route.value.name);
-const currRouteParams = computed(() => route.value.params);
+const currRouteName = computed(() => route.value.name)
+const currRouteParams = computed(() => route.value.params)
 
 export function useRouter() {
   return {
@@ -16,5 +16,5 @@ export function useRouter() {
     routeParams,
     currRouteName,
     currRouteParams,
-  };
+  }
 }

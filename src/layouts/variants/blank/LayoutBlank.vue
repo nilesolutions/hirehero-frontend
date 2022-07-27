@@ -1,6 +1,6 @@
 <template>
   <layout-blank>
-    <slot></slot>
+    <slot />
   </layout-blank>
 </template>
 

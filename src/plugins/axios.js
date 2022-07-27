@@ -1,16 +1,9 @@
 // axios
-import axios from "axios";
-import Vue from "vue";
-import router from "../router";
+import axios from 'axios'
+import Vue from 'vue'
+import router from '../router'
 
-<<<<<<< HEAD
-const baseURL = process.env.VUE_APP_API_URL || "http://localhost:3000/api";
-=======
-// const baseURL = process.env.VUE_APP_API_URL
-
-const baseURL = 'http://localhost:3000/api'
-// const baseURL = "http://192.168.1.212:3000/api";
->>>>>>> ba7ba13 (Mobile Responsive)
+const baseURL = process.env.VUE_APP_API_URL || 'http://localhost:3000/api'
 
 const axiosIns = axios.create({
   // You can add your headers here
@@ -21,38 +14,37 @@ const axiosIns = axios.create({
 })
 
 axiosIns.interceptors.request.use(
-  (config) => {
+  config => {
     // Do something before request is sent
 
-    const accessToken =
-      sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken')
 
     // eslint-disable-next-line no-param-reassign
-    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`
 
-    return config;
+    return config
   },
-  (error) => Promise.reject(error)
-);
+  error => Promise.reject(error),
+)
 
 axiosIns.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const status = error.response ? error.response.status : null;
-    const originalReq = error.config;
+  response => response,
+  async error => {
+    const status = error.response ? error.response.status : null
+    const originalReq = error.config
 
     if (status == 401) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userData");
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("userData");
-      router.push({ name: "auth-login" });
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userData')
+      sessionStorage.removeItem('accessToken')
+      sessionStorage.removeItem('userData')
+      router.push({ name: 'auth-login' })
     }
 
-    return Promise.reject(error);
-  }
-);
+    return Promise.reject(error)
+  },
+)
 
-Vue.prototype.$http = axiosIns;
+Vue.prototype.$http = axiosIns
 
-export default axiosIns;
+export default axiosIns

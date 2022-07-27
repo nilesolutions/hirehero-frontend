@@ -5,36 +5,62 @@
   >
     <v-card-title>
       <span class="cursive-font main-headding">Change your plan</span>
-      <v-btn class="ml-auto" icon @click="toggleActivePlanUpdate(false)">
+      <v-btn
+        class="ml-auto"
+        icon
+        @click="toggleActivePlanUpdate(false)"
+      >
         <v-icon>{{ icons.mdiClose }}</v-icon>
       </v-btn>
     </v-card-title>
 
     <v-card-text v-if="scheduledPlanInfo">
-      <v-alert border="left" dense type="info">
+      <v-alert
+        border="left"
+        dense
+        type="info"
+      >
         <small>
           Your plan will change to <span class="text-capitalize">{{ scheduledPlanInfo }}</span> at
           the end of your current billing period.
-          <br />
+          <br>
         </small>
       </v-alert>
 
-      <v-btn color="warning" @click="cancelScheduledUpdate" outlined small>Cancel Update</v-btn>
+      <v-btn
+        color="warning"
+        outlined
+        small
+        @click="cancelScheduledUpdate"
+      >
+        Cancel Update
+      </v-btn>
     </v-card-text>
 
     <div v-else>
       <v-card-text class="text-left active-sub">
-        <v-subheader class="lg-heading pl-0">Your Active Plan </v-subheader>
-        <b class="active-plan-heading">{{ activePlan.name }}</b> <br />
+        <v-subheader class="lg-heading pl-0">
+          Your Active Plan
+        </v-subheader>
+        <b class="active-plan-heading">{{ activePlan.name }}</b> <br>
         <b class="active-subscription ">Subscription ends on <sapn class="text-black"> {{ subscriptionEnd }} </sapn></b>
       </v-card-text>
 
       <v-card-text class="black--text">
         <v-list>
-          <v-subheader class="lg-heading padding-left-0" >Avaialble Options</v-subheader>
+          <v-subheader class="lg-heading padding-left-0">
+            Avaialble Options
+          </v-subheader>
 
-          <v-list-item-group v-model="state.selectedPlan" color="primary">
-            <v-list-item class="bordered mobile-block" v-for="option in updateOptions" :key="option.id">
+          <v-list-item-group
+            v-model="state.selectedPlan"
+            color="primary"
+          >
+            <v-list-item
+              v-for="option in updateOptions"
+              :key="option.id"
+              class="bordered mobile-block"
+            >
               <span>{{ option.name }}</span>
               <span class="ml-auto text-capitalize">
                 {{ option.amount / 100 }} {{ option.currency.toUpperCase() }} /
@@ -46,12 +72,17 @@
       </v-card-text>
 
       <v-card-text class="text-center lg-text">
-        <b class="pb-4">Your plan will change to {{ selectedOptionName }}. </b><br />
+        <b class="pb-4">Your plan will change to {{ selectedOptionName }}. </b><br>
         <b>Changes will take effect at end of your current plan</b>
       </v-card-text>
 
       <v-card-text class="d-flex">
-        <v-btn type="submit" class="ml-auto mr-auto" color="primary" @click="handlePlanUpdate">
+        <v-btn
+          type="submit"
+          class="ml-auto mr-auto"
+          color="primary"
+          @click="handlePlanUpdate"
+        >
           Confirm
         </v-btn>
       </v-card-text>
@@ -60,14 +91,14 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { mdiClose } from "@mdi/js";
+import axios from '@axios'
+import { mdiClose } from '@mdi/js'
 
-import { reactive, computed } from "@vue/composition-api";
-import { useSubscription } from "@/composables/user/subscription";
+import { reactive, computed } from '@vue/composition-api'
+import { useSubscription } from '@/composables/user/subscription'
 
 export default {
-  name: "ChangeActivePlan",
+  name: 'ChangeActivePlan',
   setup() {
     const {
       toggleActivePlanUpdate,
@@ -76,59 +107,59 @@ export default {
       subscriptionEnd,
       setScheduledUpdate,
       updatePlanInfo: scheduledPlanInfo,
-    } = useSubscription();
+    } = useSubscription()
     const state = reactive({
       selectedPlan: 0,
       isLoading: false,
       isInitting: false,
-    });
+    })
 
     const updateOptions = computed(() => {
-      const activePlanId = activePlan.value.id;
-      const remainingOptions = plans.value.filter((plan) => plan.id != activePlanId);
-      return remainingOptions;
-    });
+      const activePlanId = activePlan.value.id
+      const remainingOptions = plans.value.filter(plan => plan.id != activePlanId)
+      return remainingOptions
+    })
 
     const selectedOptionName = computed(() => {
-      if (state.selectedPlan == undefined) return "";
-      const name = updateOptions.value[state.selectedPlan].name;
-      return name;
-    });
+      if (state.selectedPlan == undefined) return ''
+      const { name } = updateOptions.value[state.selectedPlan]
+      return name
+    })
 
     async function handlePlanUpdate() {
       try {
-        state.isLoading = true;
-        const newPriceId = updateOptions.value[state.selectedPlan].price_id;
-        if (!newPriceId) return;
+        state.isLoading = true
+        const newPriceId = updateOptions.value[state.selectedPlan].price_id
+        if (!newPriceId) return
 
-        const { data: schedule } = await axios.post("/subscriptions/schedule-update", {
+        const { data: schedule } = await axios.post('/subscriptions/schedule-update', {
           newPriceId,
-        });
-        setScheduledUpdate(schedule);
-        toggleActivePlanUpdate(false);
+        })
+        setScheduledUpdate(schedule)
+        toggleActivePlanUpdate(false)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     async function cancelScheduledUpdate() {
-      var confirm = await this.$confirm("Are you sure you want to cancel scheduled update?", {
-        buttonFalseText: "Go back",
-        buttonTrueText: "Cancel scheduled update",
-      });
-      if (!confirm) return;
+      const confirm = await this.$confirm('Are you sure you want to cancel scheduled update?', {
+        buttonFalseText: 'Go back',
+        buttonTrueText: 'Cancel scheduled update',
+      })
+      if (!confirm) return
 
-      state.isLoading = true;
+      state.isLoading = true
       try {
-        await axios.post("subscriptions/cancel-scheduled-update");
-        setScheduledUpdate({});
-        toggleActivePlanUpdate(false);
+        await axios.post('subscriptions/cancel-scheduled-update')
+        setScheduledUpdate({})
+        toggleActivePlanUpdate(false)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -149,9 +180,9 @@ export default {
       icons: {
         mdiClose,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

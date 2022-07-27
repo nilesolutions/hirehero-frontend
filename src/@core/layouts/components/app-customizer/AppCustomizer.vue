@@ -39,7 +39,7 @@
         </v-btn>
       </div>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <perfect-scrollbar
         :options="perfectScrollbarOptions"
@@ -63,7 +63,7 @@
               :key="option.value"
               :label="option.label"
               :value="option.value"
-            ></v-radio>
+            />
           </v-radio-group>
           <!-- Mode -->
           <span class="mt-6 d-inline-block mb-2 text--primary">Mode</span>
@@ -73,12 +73,12 @@
               v-model="isDark"
               hide-details
               class="mt-0 mx-2"
-            ></v-switch>
+            />
             <span class="text--secondary text-sm">Dark</span>
           </div>
         </div>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- Section: Themeing -->
         <div class="customizer-section">
@@ -99,7 +99,7 @@
               :key="option.value"
               :label="option.label"
               :value="option.value"
-            ></v-radio>
+            />
           </v-radio-group>
 
           <!-- AppBar Type -->
@@ -115,7 +115,7 @@
               :key="option.value"
               :label="option.label"
               :value="option.value"
-            ></v-radio>
+            />
           </v-radio-group>
 
           <!-- Footer Type -->
@@ -131,7 +131,7 @@
               :key="option.value"
               :label="option.label"
               :value="option.value"
-            ></v-radio>
+            />
           </v-radio-group>
 
           <!-- Blur -->
@@ -141,11 +141,11 @@
               v-model="appBarIsBlurred"
               hide-details
               class="mt-0 ms-2"
-            ></v-switch>
+            />
           </div>
         </div>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- Section: Menu -->
         <div class="customizer-section">
@@ -166,7 +166,7 @@
                 :key="option.value"
                 :label="option.label"
                 :value="option.value"
-              ></v-radio>
+              />
             </v-radio-group>
           </template>
 
@@ -180,7 +180,7 @@
               v-model="menuIsVerticalNavMini"
               hide-details
               class="mt-0 ms-2"
-            ></v-switch>
+            />
           </div>
 
           <!-- Menu Hidden -->
@@ -190,10 +190,10 @@
               v-model="menuIsMenuHidden"
               hide-details
               class="mt-0 ms-2"
-            ></v-switch>
+            />
           </div>
         </div>
-        <v-divider></v-divider>
+        <v-divider />
         <!-- Section: Misc -->
         <div class="customizer-section">
           <p class="text-xs text--disabled">
@@ -206,7 +206,7 @@
               v-model="isRtl"
               hide-details
               class="mt-0 ms-2"
-            ></v-switch>
+            />
           </div>
           <!-- Router Transition -->
           <v-row class="mt-6 align-center">
@@ -219,7 +219,7 @@
                 hide-details
                 dense
                 class="select-router-transition"
-              ></v-select>
+              />
             </v-col>
           </v-row>
         </div>

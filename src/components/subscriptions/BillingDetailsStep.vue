@@ -1,16 +1,19 @@
 <template>
   <div v-if="!state.isPaidFor">
-    <div class="d-flex flex-row mt-2 mb-4" v-if="checkoutState.isBillingLoading">
+    <div
+      v-if="checkoutState.isBillingLoading"
+      class="d-flex flex-row mt-2 mb-4"
+    >
       <v-progress-circular
         class="ml-auto mr-auto"
         indeterminate
         color="primary"
-      ></v-progress-circular>
+      />
     </div>
 
     <div v-if="!state.initError">
       <v-card-text class="text-center">
-        <b>Subscribing to {{ checkoutPlan.name }} </b> <br />
+        <b>Subscribing to {{ checkoutPlan.name }} </b> <br>
         <b>{{ planPrice }}</b>
       </v-card-text>
 
@@ -24,15 +27,21 @@
             <!--Stripe.js injects the Payment Element-->
           </div>
 
-          <hr style="height: 2px" />
+          <hr style="height: 2px">
 
-          <v-alert v-show="isCouponApplied" type="success">
+          <v-alert
+            v-show="isCouponApplied"
+            type="success"
+          >
             Coupon is applied. Your will a recieve a discount of :
             <b>
               <span v-show="appliedCoupon.percent_off">
                 {{ appliedCoupon.percent_off }} % off
               </span>
-              <span v-show="appliedCoupon.amount_off" class="text-uppercase">
+              <span
+                v-show="appliedCoupon.amount_off"
+                class="text-uppercase"
+              >
                 {{ appliedCoupon.amount_off / 100 }} {{ appliedCoupon.currency }}
               </span>
             </b>
@@ -46,7 +55,12 @@
           >
             Checkout
           </v-btn>
-          <div id="payment-message" class="mt-2 warning--text">{{ state.msg }}</div>
+          <div
+            id="payment-message"
+            class="mt-2 warning--text"
+          >
+            {{ state.msg }}
+          </div>
         </form>
       </v-card-text>
     </div>
@@ -56,24 +70,31 @@
       Coupon applied and your subscription was successful.
     </v-card-text>
     <v-card-text class="text-center">
-      <v-btn color="primary" @click="goToDashboard">Head to dashboard</v-btn>
+      <v-btn
+        color="primary"
+        @click="goToDashboard"
+      >
+        Head to dashboard
+      </v-btn>
     </v-card-text>
   </div>
 </template>
 
 <script>
-import axios from "@axios";
-import { loadStripe } from "@stripe/stripe-js";
-import { mdiClose } from "@mdi/js";
+import axios from '@axios'
+import { loadStripe } from '@stripe/stripe-js'
+import { mdiClose } from '@mdi/js'
 
-import { useSubscription } from "@/composables/user/subscription";
-import { useCheckout } from "@/composables/user/checkout";
-import { reactive, onMounted, computed, onUnmounted, nextTick } from "@vue/composition-api";
+import {
+  reactive, onMounted, computed, onUnmounted, nextTick,
+} from '@vue/composition-api'
+import { useSubscription } from '@/composables/user/subscription'
+import { useCheckout } from '@/composables/user/checkout'
 
 export default {
-  name: "BillingDetailsStep",
+  name: 'BillingDetailsStep',
   setup() {
-    const { state: subscriptionState } = useSubscription();
+    const { state: subscriptionState } = useSubscription()
 
     const {
       state: checkoutState,
@@ -83,98 +104,98 @@ export default {
       toggleIsSubmitting,
       checkoutPlan,
       resetCheckoutState,
-    } = useCheckout();
+    } = useCheckout()
 
     const state = reactive({
       isSubmitting: false,
-      initError: "",
+      initError: '',
       isPaidFor: false,
-      msg: "",
-    });
+      msg: '',
+    })
 
-    var subId = "",
-      stripe = null,
-      elements = null,
-      paymentElement = null;
+    let subId = ''
+    let stripe = null
+    let elements = null
+    let paymentElement = null
 
     const planPrice = computed(() => {
-      const currency = checkoutPlan.value.currency.toUpperCase();
-      const amount = checkoutPlan.value.amount / 100;
-      const interval = checkoutPlan.value.interval;
+      const currency = checkoutPlan.value.currency.toUpperCase()
+      const amount = checkoutPlan.value.amount / 100
+      const { interval } = checkoutPlan.value
 
-      return `${amount} ${currency}/${interval}`;
-    });
+      return `${amount} ${currency}/${interval}`
+    })
 
     async function initForm() {
       try {
-        const { data: paymentIntent } = await axios.post("/subscriptions", {
+        const { data: paymentIntent } = await axios.post('/subscriptions', {
           priceId: checkoutState.clickedPrice,
           couponId: appliedCoupon.value.id,
-        });
+        })
 
         if (paymentIntent.isPaidFor) {
-          state.isPaidFor = true;
-          toggleIsBillingLoading(false);
-          return;
+          state.isPaidFor = true
+          toggleIsBillingLoading(false)
+          return
         }
 
-        subId = paymentIntent.subscriptionId;
+        subId = paymentIntent.subscriptionId
 
-        stripe = await loadStripe(process.env.VUE_APP_STRIPE_PK);
+        stripe = await loadStripe(process.env.VUE_APP_STRIPE_PK)
         elements = stripe.elements({
           clientSecret: paymentIntent.clientSecret,
-        });
-        paymentElement = elements.create("payment");
-        paymentElement.on("ready", () => {
-          toggleIsBillingLoading(false);
-        });
+        })
+        paymentElement = elements.create('payment')
+        paymentElement.on('ready', () => {
+          toggleIsBillingLoading(false)
+        })
 
-        paymentElement.mount("#payment-element");
+        paymentElement.mount('#payment-element')
       } catch (err) {
-        state.initError = "Error occured while checking out. Please try again later";
-        toggleIsBillingLoading(false);
-        console.log(err);
+        state.initError = 'Error occured while checking out. Please try again later'
+        toggleIsBillingLoading(false)
+        console.log(err)
       }
     }
 
     async function cancelCheckout() {
-      await axios.post("/subscriptions/cancel-checkout", {
+      await axios.post('/subscriptions/cancel-checkout', {
         subId,
-      });
+      })
     }
 
     async function handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      state.msg = "";
-      toggleIsSubmitting(true);
+      state.msg = ''
+      toggleIsSubmitting(true)
 
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: process.env.VUE_APP_STRIPE_REDIRECT_URL + "?type=subscribed",
+          return_url: `${process.env.VUE_APP_STRIPE_REDIRECT_URL}?type=subscribed`,
         },
-      });
+      })
 
       if (error) {
-        state.msg = error.message;
-        toggleIsSubmitting(false);
+        state.msg = error.message
+        toggleIsSubmitting(false)
       }
     }
 
     function goToDashboard() {
-      this.$router.push({ name: "dashboard" });
-      resetCheckoutState();
+      this.$router.push({ name: 'dashboard' })
+      resetCheckoutState()
     }
 
     onMounted(() => {
-      toggleIsBillingLoading(true);
-      nextTick(() => initForm());
-    });
+      toggleIsBillingLoading(true)
+      nextTick(() => initForm())
+    })
 
     onUnmounted(() => {
-      if (subId) cancelCheckout();
-    });
+      if (subId) cancelCheckout()
+    })
 
     return {
       state,
@@ -193,9 +214,9 @@ export default {
       icons: {
         mdiClose,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

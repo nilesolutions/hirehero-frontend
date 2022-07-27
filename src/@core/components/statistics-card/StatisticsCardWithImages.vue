@@ -25,12 +25,12 @@
           </v-chip>
         </v-card-text>
       </div>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <div class="illustrator-img">
         <v-img
           :width="avatarWidth"
           :src="avatar"
-        ></v-img>
+        />
       </div>
     </div>
   </v-card>

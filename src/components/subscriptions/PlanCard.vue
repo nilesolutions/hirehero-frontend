@@ -1,20 +1,25 @@
 <template>
   <div class="col-md-4 col-12 card">
-    <v-card class="d-flex flex-column align-center py-4" elevation="4">
+    <v-card
+      class="d-flex flex-column align-center py-4"
+      elevation="4"
+    >
       <v-card-title class="cursive-font plan-card__title">
         {{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}
       </v-card-title>
 
-      <v-card-text class="text-center price">{{ planPrice }}</v-card-text>
+      <v-card-text class="text-center price">
+        {{ planPrice }}
+      </v-card-text>
 
       <v-card-actions>
         <v-btn
-          @click="checkout"
           v-show="showCheckoutBtn"
           :loading="state.isLoading"
           color="primary"
           outlined
           block
+          @click="checkout"
         >
           Get it now
         </v-btn>
@@ -24,48 +29,48 @@
 </template>
 
 <script>
-import { reactive, computed } from "@vue/composition-api";
-import { useSubscription } from "@/composables/user/subscription";
-import { useCheckout } from "@/composables/user/checkout";
+import { reactive, computed } from '@vue/composition-api'
+import { useSubscription } from '@/composables/user/subscription'
+import { useCheckout } from '@/composables/user/checkout'
 
 export default {
-  name: "PlanCard",
+  name: 'PlanCard',
   props: { plan: Object },
   setup({ plan }) {
-    const { isSubscribed, activePlan,isSubscriptionActive } = useSubscription();
-    const { setClickedPrice } = useCheckout();
+    const { isSubscribed, activePlan, isSubscriptionActive } = useSubscription()
+    const { setClickedPrice } = useCheckout()
 
     const state = reactive({
       isLoading: false,
-    });
+    })
 
     const planPrice = computed(() => {
-      const price = plan.amount / 100;
-      const currency = plan.currency.toUpperCase();
-      return `$ ${price} ${currency} / Month`;
-    });
+      const price = plan.amount / 100
+      const currency = plan.currency.toUpperCase()
+      return `$ ${price} ${currency} / Month`
+    })
 
     const isActivePlan = computed(() => {
-      if (!isSubscriptionActive.value) return false;
-      if (activePlan.value.id == plan.id) return true;
-      return false;
-    });
+      if (!isSubscriptionActive.value) return false
+      if (activePlan.value.id == plan.id) return true
+      return false
+    })
 
     const showCheckoutBtn = computed(() => {
-      //if (isSubscribed.value && isActivePlan.value) return true;
-      if (isSubscriptionActive.value) return false;
-      return true;
-    });
+      // if (isSubscribed.value && isActivePlan.value) return true;
+      if (isSubscriptionActive.value) return false
+      return true
+    })
 
     async function checkout() {
       try {
-        if (isSubscriptionActive.value) return;
+        if (isSubscriptionActive.value) return
 
-        setClickedPrice(plan.price_id);
+        setClickedPrice(plan.price_id)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -76,9 +81,9 @@ export default {
       showCheckoutBtn,
       planPrice,
       checkout,
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

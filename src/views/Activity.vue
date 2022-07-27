@@ -1,21 +1,23 @@
 <template>
   <div class="dashboard__content">
-    <h2 class="cursive-font black--text mb-2">Activity</h2>
-    <time-tracking></time-tracking>
+    <h2 class="cursive-font black--text mb-2">
+      Activity
+    </h2>
+    <time-tracking />
   </div>
 </template>
 
 <script>
-import TimeTracking from "@/components/activity/TimeTracking.vue";
-import ScreenshotsTracking from "@/components/activity/ScreenshotsTracking.vue";
+import TimeTracking from '@/components/activity/TimeTracking.vue'
+import ScreenshotsTracking from '@/components/activity/ScreenshotsTracking.vue'
 
 export default {
-  name: "Activity",
+  name: 'Activity',
   components: {
     TimeTracking,
     ScreenshotsTracking,
   },
-};
+}
 </script>
 
 <style></style>

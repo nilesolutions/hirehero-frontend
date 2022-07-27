@@ -1,39 +1,55 @@
 <template>
-  <v-dialog max-width="750" v-model="isTaskDetailsOpen" @click:outside="setActiveTaskId('')">
+  <v-dialog
+    v-model="isTaskDetailsOpen"
+    max-width="750"
+    @click:outside="setActiveTaskId('')"
+  >
     <v-card>
-      <v-fade-transition v-if="!isEditingTask" hide-on-leave>
-        <div v-if="!isEditingTask" class="d-flex flex-row flex-wrap">
-          <task-header></task-header>
-          <task-details></task-details>
-          <task-attachments></task-attachments>
-          <task-actions v-if="userType == 'client'" :task="task"></task-actions>
-          <task-comments></task-comments>
+      <v-fade-transition
+        v-if="!isEditingTask"
+        hide-on-leave
+      >
+        <div
+          v-if="!isEditingTask"
+          class="d-flex flex-row flex-wrap"
+        >
+          <task-header />
+          <task-details />
+          <task-attachments />
+          <task-actions
+            v-if="userType == 'client'"
+            :task="task"
+          />
+          <task-comments />
         </div>
       </v-fade-transition>
-      <v-fade-transition v-else hide-on-leave>
+      <v-fade-transition
+        v-else
+        hide-on-leave
+      >
         <div>
-          <edit-task></edit-task>
+          <edit-task />
         </div>
       </v-fade-transition>
     </v-card>
   </v-dialog>
 </template>
 <script>
-import EditTask from "@/components/project/EditTask.vue";
-import TaskActions from "@/components/project/TaskActions.vue";
-import TaskAttachments from "@/components/project/TaskAttachments.vue";
-import TaskComments from "@/components/project/TaskComments.vue";
-import TaskDetails from "@/components/project/TaskDetails.vue";
-import TaskHeader from "@/components/project/TaskHeader.vue";
-import { useAttachments } from "@/composables/tasks/attachments";
-import { useComments } from "@/composables/tasks/commnets";
-import { useTasks } from "@/composables/tasks/tasks";
-import { useUser } from "@/composables/user/user";
-import { mdiCheckboxBlank, mdiCheckboxMarked } from "@mdi/js";
-import { onUnmounted, reactive } from "@vue/composition-api";
+import { mdiCheckboxBlank, mdiCheckboxMarked } from '@mdi/js'
+import { onUnmounted, reactive } from '@vue/composition-api'
+import EditTask from '@/components/project/EditTask.vue'
+import TaskActions from '@/components/project/TaskActions.vue'
+import TaskAttachments from '@/components/project/TaskAttachments.vue'
+import TaskComments from '@/components/project/TaskComments.vue'
+import TaskDetails from '@/components/project/TaskDetails.vue'
+import TaskHeader from '@/components/project/TaskHeader.vue'
+import { useAttachments } from '@/composables/tasks/attachments'
+import { useComments } from '@/composables/tasks/commnets'
+import { useTasks } from '@/composables/tasks/tasks'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "TaskDetailsPopup",
+  name: 'TaskDetailsPopup',
   components: {
     TaskHeader,
     TaskDetails,
@@ -43,19 +59,21 @@ export default {
     EditTask,
   },
   setup() {
-    const { setActiveTaskId, activeTask, isTaskDetailsOpen, isEditingTask } = useTasks();
+    const {
+      setActiveTaskId, activeTask, isTaskDetailsOpen, isEditingTask,
+    } = useTasks()
     const state = reactive({
       isEditing: false,
-    });
+    })
 
-    const { userType } = useUser();
-    const { setAttachments } = useAttachments();
-    const { setComments } = useComments();
+    const { userType } = useUser()
+    const { setAttachments } = useAttachments()
+    const { setComments } = useComments()
 
     onUnmounted(() => {
-      setAttachments([]);
-      setComments([]);
-    });
+      setAttachments([])
+      setComments([])
+    })
 
     return {
       state,
@@ -69,9 +87,9 @@ export default {
         mdiCheckboxMarked,
         mdiCheckboxBlank,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

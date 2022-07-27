@@ -1,13 +1,23 @@
 <template>
-  <v-dialog v-model="isDetailsOpen" @click:outside="setClickedActivityId('')">
+  <v-dialog
+    v-model="isDetailsOpen"
+    @click:outside="setClickedActivityId('')"
+  >
     <v-card :loading="isLoading">
       <v-card-title class="cursive-font text-center">
         <span class="d-block text-center"> Details </span>
-        <v-btn @click="setClickedActivityId('')" class="ml-auto" icon>
+        <v-btn
+          class="ml-auto"
+          icon
+          @click="setClickedActivityId('')"
+        >
           <v-icon>{{ icons.mdiClose }}</v-icon>
         </v-btn>
       </v-card-title>
-      <div v-for="detail in activityDetails" :key="detail.id">
+      <div
+        v-for="detail in activityDetails"
+        :key="detail.id"
+      >
         <v-card-title>Activity Level: {{ detail.activityLevel }} </v-card-title>
 
         <v-card-title>Open Apps / Websites</v-card-title>
@@ -17,46 +27,52 @@
 
         <v-card-title>Screenshot</v-card-title>
         <v-card-text class="screenshot-wrapper">
-          <a :href="detail.url" target="_blank">
-            <img :src="detail.thumbUrl" alt="" />
+          <a
+            :href="detail.url"
+            target="_blank"
+          >
+            <img
+              :src="detail.thumbUrl"
+              alt=""
+            >
           </a>
           <small class="d-block">
             Captured at {{ new Date(detail.taken * 1000).toLocaleString() }}
           </small>
         </v-card-text>
-        <v-divider></v-divider>
+        <v-divider />
       </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import axios from "@axios";
-import { useActivity } from "@/composables/activity/activity";
-import { ref, onMounted } from "@vue/composition-api";
-import { mdiClose } from "@mdi/js";
+import axios from '@axios'
+import { ref, onMounted } from '@vue/composition-api'
+import { mdiClose } from '@mdi/js'
+import { useActivity } from '@/composables/activity/activity'
 
 export default {
-  name: "ScreenshotsPopup",
+  name: 'ScreenshotsPopup',
   setup() {
-    const { setClickedActivityId, isDetailsOpen, state } = useActivity();
-    const activityDetails = ref([]);
-    const isLoading = ref(false);
+    const { setClickedActivityId, isDetailsOpen, state } = useActivity()
+    const activityDetails = ref([])
+    const isLoading = ref(false)
 
-    onMounted(() => fetchActivityDetails());
+    onMounted(() => fetchActivityDetails())
 
     async function fetchActivityDetails() {
       try {
-        isLoading.value = true;
-        const { data } = await axios.get("/tracker/screenshots", {
+        isLoading.value = true
+        const { data } = await axios.get('/tracker/screenshots', {
           params: { activityId: state.clickedActivityId },
-        });
-        console.log(data);
-        activityDetails.value = data;
+        })
+        console.log(data)
+        activityDetails.value = data
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        isLoading.value = false;
+        isLoading.value = false
       }
     }
 
@@ -67,9 +83,9 @@ export default {
       setClickedActivityId,
 
       icons: { mdiClose },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

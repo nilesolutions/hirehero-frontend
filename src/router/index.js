@@ -1,120 +1,120 @@
-import { useRouter } from "@/composables/router";
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import { useRouter } from '@/composables/router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
-const { setRoute } = useRouter();
+const { setRoute } = useRouter()
 
 const routes = [
   {
-    path: "/",
-    redirect: "dashboard",
+    path: '/',
+    redirect: 'dashboard',
   },
   {
-    path: "/dashboard",
-    name: "dashboard",
-    component: () => import("@/views/Dashboard.vue"),
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/views/Dashboard.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
       requiresAuth: true,
     },
   },
   {
-    path: "/projects",
-    name: "projects",
-    component: () => import("@/views/Projects.vue"),
+    path: '/projects',
+    name: 'projects',
+    component: () => import('@/views/Projects.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
       requiresAuth: true,
     },
   },
   {
-    path: "/project/:id",
-    name: "project",
+    path: '/project/:id',
+    name: 'project',
     props: true,
-    component: () => import("@/views/Project.vue"),
+    component: () => import('@/views/Project.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
       requiresAuth: true,
     },
   },
   {
-    path: "/videos",
-    name: "videos",
-    component: () => import("@/views/Videos.vue"),
+    path: '/videos',
+    name: 'videos',
+    component: () => import('@/views/Videos.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
     },
   },
   {
-    path: "/activity",
-    name: "activity",
-    component: () => import("@/views/Activity.vue"),
+    path: '/activity',
+    name: 'activity',
+    component: () => import('@/views/Activity.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
     },
   },
   {
-    path: "/inbox",
-    name: "inbox",
-    component: () => import("@/views/Inbox.vue"),
+    path: '/inbox',
+    name: 'inbox',
+    component: () => import('@/views/Inbox.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
     },
   },
   {
-    path: "/settings",
-    name: "settings",
-    component: () => import("@/views/Settings.vue"),
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/views/Settings.vue'),
     meta: {
-      layout: "custom",
+      layout: 'custom',
     },
   },
   {
-    path: "/login",
-    name: "auth-login",
-    component: () => import("@/views/Login.vue"),
+    path: '/login',
+    name: 'auth-login',
+    component: () => import('@/views/Login.vue'),
     meta: {
-      layout: "blank",
+      layout: 'blank',
       redirectIfLoggedIn: true,
     },
   },
   {
-    path: "/signup",
-    name: "auth-signup",
-    component: () => import("@/views/Signup.vue"),
+    path: '/signup',
+    name: 'auth-signup',
+    component: () => import('@/views/Signup.vue'),
     meta: {
-      layout: "blank",
+      layout: 'blank',
       redirectIfLoggedIn: true,
     },
   },
   {
-    path: "*",
-    redirect: "error-404",
+    path: '*',
+    redirect: 'error-404',
   },
-];
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
-    return { x: 0, y: 0 };
+    return { x: 0, y: 0 }
   },
-});
+})
 
 router.beforeEach((to, _, next) => {
-  setRoute(to);
-  const accessToken = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken");
+  setRoute(to)
+  const accessToken = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken')
 
   // Redirect to login if not logged in
-  if (!accessToken && to.meta.requiresAuth) return next({ name: "auth-login" });
+  if (!accessToken && to.meta.requiresAuth) return next({ name: 'auth-login' })
 
   // Redirect if logged in
-  //if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: "home" });
+  // if (to.meta.redirectIfLoggedIn && accessToken) return next({ name: "home" });
 
-  return next();
-});
+  return next()
+})
 
-export default router;
+export default router

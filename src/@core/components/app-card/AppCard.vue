@@ -1,6 +1,6 @@
 <template>
   <v-card class="app-card">
-    <slot></slot>
+    <slot />
   </v-card>
 </template>
 

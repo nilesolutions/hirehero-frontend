@@ -4,12 +4,12 @@
       class="misc-mask"
       height="226"
       :src="require(`@/assets/images/misc/misc-mask-${$vuetify.theme.dark ? 'dark' : 'light'}.png`)"
-    />
+    >
 
     <v-img
       class="misc-tree"
       src="@/assets/images/misc/tree-4.png"
-    ></v-img>
+    />
 
     <div class="page-title text-center px-4">
       <h2 class="text-2xl font-weight-semibold text--primary d-flex align-center justify-center">
@@ -26,7 +26,7 @@
         <v-img
           max-width="700"
           src="@/assets/images/3d-characters/error.png"
-        ></v-img>
+        />
       </div>
 
       <v-btn

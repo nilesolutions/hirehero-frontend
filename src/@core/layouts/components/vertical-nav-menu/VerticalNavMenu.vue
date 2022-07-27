@@ -5,7 +5,7 @@
     @mouseleave="isMouseHovered = false"
   >
     <slot name="v-nav-menu-header">
-      <vertical-nav-menu-header @close-nav-menu="$emit('close-nav-menu')"></vertical-nav-menu-header>
+      <vertical-nav-menu-header @close-nav-menu="$emit('close-nav-menu')" />
     </slot>
 
     <!-- Shadow -->
@@ -46,10 +46,10 @@ import VerticalNavMenuGroup from '@core/layouts/components/vertical-nav-menu/com
 import VerticalNavMenuLink from '@core/layouts/components/vertical-nav-menu/components/vertical-nav-menu-link/VerticalNavMenuLink.vue'
 
 // Composable
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import useVerticalNavMenu from '@/@core/layouts/composable/vertical-nav/useVerticalNavMenu'
 
 // 3rd Party
-import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
 export default {
   components: {

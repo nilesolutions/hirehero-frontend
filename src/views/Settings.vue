@@ -1,42 +1,75 @@
 <template>
   <div class="dashboard__content">
-    <h2 class="cursive-font black--text mb-2">Settings</h2>
+    <h2 class="cursive-font black--text mb-2">
+      Settings
+    </h2>
 
-    <v-tabs background-color="transparent setting-tabs hide-arrows fontSize" v-model="activeTab">
-      <v-tab :disabled="!canSwitchTabs" class="fontSize">Account</v-tab>
-      <v-tab :disabled="!canSwitchTabs"  class="fontSize">Security</v-tab>
-      <v-tab :disabled="!canSwitchTabs" v-if="showSubscriptionSection"  class="fontSize">Subscription</v-tab>
+    <v-tabs
+      v-model="activeTab"
+      background-color="transparent setting-tabs hide-arrows fontSize"
+    >
+      <v-tab
+        :disabled="!canSwitchTabs"
+        class="fontSize"
+      >
+        Account
+      </v-tab>
+      <v-tab
+        :disabled="!canSwitchTabs"
+        class="fontSize"
+      >
+        Security
+      </v-tab>
+      <v-tab
+        v-if="showSubscriptionSection"
+        :disabled="!canSwitchTabs"
+        class="fontSize"
+      >
+        Subscription
+      </v-tab>
 
     </v-tabs>
 
-    <v-tabs-items v-model="activeTab" class="setting-tabs">
-      <v-tab-item key="accountSettings" class="account-tab">
-        <account-management></account-management>
+    <v-tabs-items
+      v-model="activeTab"
+      class="setting-tabs"
+    >
+      <v-tab-item
+        key="accountSettings"
+        class="account-tab"
+      >
+        <account-management />
       </v-tab-item>
 
-      <v-tab-item key="securitySettings" class="account-tab">
-        <account-security></account-security>
+      <v-tab-item
+        key="securitySettings"
+        class="account-tab"
+      >
+        <account-security />
       </v-tab-item>
 
-      <v-tab-item key="subscriptionSettings" v-if="showSubscriptionSection">
-        <subscription></subscription>
+      <v-tab-item
+        v-if="showSubscriptionSection"
+        key="subscriptionSettings"
+      >
+        <subscription />
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-import AccountManagement from "@/components/settings/AccountManagement.vue";
-import AccountSecurity from "@/components/settings/AccountSecurity.vue";
-import SubscriptionManagement from "@/components/settings/SubscriptionManagement.vue";
-import Subscription from "@/views/Subscription.vue";
+import { computed } from '@vue/composition-api'
+import AccountManagement from '@/components/settings/AccountManagement.vue'
+import AccountSecurity from '@/components/settings/AccountSecurity.vue'
+import SubscriptionManagement from '@/components/settings/SubscriptionManagement.vue'
+import Subscription from '@/views/Subscription.vue'
 
-import { useSubscription } from "@/composables/user/subscription";
-import { computed } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
+import { useSubscription } from '@/composables/user/subscription'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "Settings",
+  name: 'Settings',
   components: {
     AccountManagement,
     AccountSecurity,
@@ -44,26 +77,26 @@ export default {
     Subscription,
   },
   setup() {
-    const { isCheckingOut, isUpdatingPlan, isUpdatingPayment } = useSubscription();
-    const { userType } = useUser();
+    const { isCheckingOut, isUpdatingPlan, isUpdatingPayment } = useSubscription()
+    const { userType } = useUser()
 
     const canSwitchTabs = computed(() => {
-      if (isCheckingOut.value || isUpdatingPlan.value || isUpdatingPayment.value) return false;
-      return true;
-    });
+      if (isCheckingOut.value || isUpdatingPlan.value || isUpdatingPayment.value) return false
+      return true
+    })
 
     const showSubscriptionSection = computed(() => {
-      if (userType.value == "client") return true;
-      return false;
-    });
+      if (userType.value == 'client') return true
+      return false
+    })
 
     return {
       activeTab: null,
       canSwitchTabs,
       showSubscriptionSection,
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

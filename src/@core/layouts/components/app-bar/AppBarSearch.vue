@@ -16,7 +16,7 @@
       :value="shallShowFullSearchLocal"
       hide-overlay
       persistent
-    ></v-dialog>
+    />
     <v-expand-transition>
       <v-autocomplete
         v-show="shallShowFullSearchLocal"
@@ -41,7 +41,7 @@
         @blur="shallShowFullSearchLocal = false"
       >
         <!-- Slot: Selection -->
-        <template #selection></template>
+        <template #selection />
 
         <template #prepend-inner>
           <v-icon
@@ -106,7 +106,7 @@
                 class="me-3"
                 size="40"
               >
-                <v-img :src="item.avatar"></v-img>
+                <v-img :src="item.avatar" />
               </v-avatar>
               <div class="d-flex flex-column flex-grow-1">
                 <span class="d-block text-sm">{{ item.title }}</span>

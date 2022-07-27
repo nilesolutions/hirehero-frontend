@@ -2,9 +2,17 @@
   <v-card-text class="d-flex flex-row align-center pt-3">
     <div>
       <!-- '#30D988' : '#ababab' -->
-      <v-badge :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'" dot bottom avatar>
+      <v-badge
+        :color="vidCallState.isPeerOnline ? '#30D988' : '#ababab'"
+        dot
+        bottom
+        avatar
+      >
         <v-avatar rounded>
-          <img :src="peerProfilePic" alt="" />
+          <img
+            :src="peerProfilePic"
+            alt=""
+          >
         </v-avatar>
       </v-badge>
     </div>
@@ -24,16 +32,19 @@
       >
         {{ vidCallState.isPeerOnline ? "Online" : "Offline" }}
       </v-btn>
-      <v-tooltip bottom color="error">
+      <v-tooltip
+        bottom
+        color="error"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            @click="canStartCall ? initCall() : null"
             small
             class="ml-2"
             icon
             :class="{ disabled: !canStartCall }"
             depressed
             v-bind="attrs"
+            @click="canStartCall ? initCall() : null"
             v-on="on"
           >
             <v-icon>{{ icons.mdiPhoneOutline }}</v-icon>
@@ -46,27 +57,26 @@
 </template>
 
 <script>
-import { useMessages } from "@/composables/chat/messages";
-import { useVideoCall } from "@/composables/chat/videocall";
-import { resolveProfilePic } from "@/helpers";
-import { mdiPhoneOutline } from "@mdi/js";
-import { computed, reactive } from "@vue/composition-api";
+import { mdiPhoneOutline } from '@mdi/js'
+import { computed, reactive } from '@vue/composition-api'
+import { useMessages } from '@/composables/chat/messages'
+import { useVideoCall } from '@/composables/chat/videocall'
+import { resolveProfilePic } from '@/helpers'
 
 export default {
-  name: "MessagesLogHeader",
+  name: 'MessagesLogHeader',
   setup() {
-    const { state: vidCallState, initCall } = useVideoCall();
-    const { state: msgsState } = useMessages();
+    const { state: vidCallState, initCall } = useVideoCall()
+    const { state: msgsState } = useMessages()
 
     console.log('MessagesLogHeader : ', vidCallState)
 
     const canStartCall = computed(() => {
-      if (vidCallState.isInCall || !vidCallState.isPeerOnline || vidCallState.isBeingCalled)
-        return false;
-      return true;
-    });
+      if (vidCallState.isInCall || !vidCallState.isPeerOnline || vidCallState.isBeingCalled) return false
+      return true
+    })
 
-    const state = reactive({});
+    const state = reactive({})
 
     return {
       state,
@@ -80,9 +90,9 @@ export default {
       icons: {
         mdiPhoneOutline,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

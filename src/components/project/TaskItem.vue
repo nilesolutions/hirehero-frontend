@@ -1,5 +1,8 @@
 <template>
-  <v-card class="mb-4" @click="setActiveTaskId(task.id)">
+  <v-card
+    class="mb-4"
+    @click="setActiveTaskId(task.id)"
+  >
     <v-card-text>
       <v-btn
         small
@@ -8,13 +11,17 @@
         class="task-priority font-weight-bold"
         :class="task.priority"
       >
-        {{ task.priority }}</v-btn
-      >
+        {{ task.priority }}</v-btn>
     </v-card-text>
     <v-card-text class="flex-row align-center">
-      <div style="text-transform: capitalize">{{ task.name }}</div>
+      <div style="text-transform: capitalize">
+        {{ task.name }}
+      </div>
 
-      <div v-if="task.due_on" style="margin-top: 10px">
+      <div
+        v-if="task.due_on"
+        style="margin-top: 10px"
+      >
         <strong>Due on:</strong> {{ task.due_on }}
       </div>
     </v-card-text>
@@ -22,13 +29,7 @@
 </template>
 
 <script>
-import TaskActions from "@/components/project/TaskActions.vue";
-import TaskAttachments from "@/components/project/TaskAttachments.vue";
-import TaskDetails from "@/components/project/TaskDetails.vue";
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
+import axios from '@axios'
 import {
   mdiCheckboxBlank,
   mdiCheckboxMarked,
@@ -36,45 +37,51 @@ import {
   mdiDeleteOutline,
   mdiDownload,
   mdiTooltipEdit,
-} from "@mdi/js";
-import { reactive } from "@vue/composition-api";
+} from '@mdi/js'
+import { reactive } from '@vue/composition-api'
+import TaskActions from '@/components/project/TaskActions.vue'
+import TaskAttachments from '@/components/project/TaskAttachments.vue'
+import TaskDetails from '@/components/project/TaskDetails.vue'
+import { useRouter } from '@/composables/router'
+import { useTasks } from '@/composables/tasks/tasks'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "TaskItem",
-  props: { task: Object },
+  name: 'TaskItem',
   components: { TaskAttachments, TaskActions, TaskDetails },
+  props: { task: Object },
   setup(props) {
     const state = reactive({
       isLoading: false,
       isUploading: false,
       files: [],
-    });
+    })
 
-    const { userType } = useUser();
+    const { userType } = useUser()
 
-    const taskId = props.task.id;
-    const { setActiveTaskId, updateTask } = useTasks();
-    const projectId = useRouter().routeParams().id;
+    const taskId = props.task.id
+    const { setActiveTaskId, updateTask } = useTasks()
+    const projectId = useRouter().routeParams().id
 
-    const taskUrl = `projects/${projectId}/tasks/${taskId}`;
+    const taskUrl = `projects/${projectId}/tasks/${taskId}`
 
     const colorFromPriority = () => {
-      if (props.task.priority == "High") return "#EB5757";
-      if (props.task.priority == "Medium") return "#FFC207";
-      return "#30D988";
-    };
+      if (props.task.priority == 'High') return '#EB5757'
+      if (props.task.priority == 'Medium') return '#FFC207'
+      return '#30D988'
+    }
 
     async function toggleStatus() {
       try {
-        state.isLoading = true;
-        var response = await axios.patch(taskUrl, {
+        state.isLoading = true
+        const response = await axios.patch(taskUrl, {
           completed: !props.task.completed,
-        });
-        updateTask(response.data);
+        })
+        updateTask(response.data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -94,9 +101,9 @@ export default {
         mdiDelete,
         mdiTooltipEdit,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

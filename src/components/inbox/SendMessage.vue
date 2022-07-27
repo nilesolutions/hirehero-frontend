@@ -1,24 +1,30 @@
 <template>
   <v-card-text class="d-flex flex-column">
-    <form @submit.prevent="sendMsg" class="d-flex flex-row align-center">
+    <form
+      class="d-flex flex-row align-center"
+      @submit.prevent="sendMsg"
+    >
       <v-text-field
-        class="mr-2"
         v-model="state.msgText"
+        class="mr-2"
         hide-details=""
         outlined
         dense
         placeholder="Type Here"
-      ></v-text-field>
-      <v-tooltip bottom color="error">
+      />
+      <v-tooltip
+        bottom
+        color="error"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             :color="canSend ? 'primary' : ''"
-            @click="sendMsg"
             :loading="state.isSending"
             icon
             v-bind="attrs"
-            v-on="on"
             class="send-msg-btn"
+            @click="sendMsg"
+            v-on="on"
           >
             <v-icon>{{ icons.mdiSend }}</v-icon>
           </v-btn>
@@ -27,35 +33,55 @@
       </v-tooltip>
     </form>
 
-<!-- d-flex mt-3 chat-att -->
+    <!-- d-flex mt-3 chat-att -->
     <div class="box">
 
       <div class="d-flex flex-row align-center audio-recorder chat-buttons">
-        <v-btn v-show="!state.previewUrl" @click="toggleRecording" small class="mr-2">
+        <v-btn
+          v-show="!state.previewUrl"
+          small
+          class="mr-2"
+          @click="toggleRecording"
+        >
           <v-icon :color="state.isRecording ? '#F60000' : ''">
             {{ state.isRecording ? icons.mdiStop : icons.mdiMicrophone }}
           </v-icon>
           {{ state.isRecording ? "Stop recording" : "Record note" }}
         </v-btn>
 
-        <audio v-show="state.previewUrl" ref="recordingPreview" controls src=""></audio>
+        <audio
+          v-show="state.previewUrl"
+          ref="recordingPreview"
+          controls
+          src=""
+        />
 
-        <v-btn v-show="state.previewUrl" class="ml-2 me-2" small @click="clearRecording">
+        <v-btn
+          v-show="state.previewUrl"
+          class="ml-2 me-2"
+          small
+          @click="clearRecording"
+        >
           <v-icon>{{ icons.mdiDelete }}</v-icon>
           Delete Voice Note
         </v-btn>
       </div>
 
       <div class="mt-0 d-flex align-center">
-        <v-btn small class="mr-2" v-show="!state.files.length" @click="openFilePicker">
+        <v-btn
+          v-show="!state.files.length"
+          small
+          class="mr-2"
+          @click="openFilePicker"
+        >
           <v-icon> {{ icons.mdiFile }} </v-icon>
           Add attachments
         </v-btn>
 
         <v-file-input
+          ref="filePicker"
           v-model="state.files"
           :rules="attachmentsValidation"
-          ref="filePicker"
           dense
           outlined
           label="Add attachments to message"
@@ -64,150 +90,154 @@
           small-chips
           show-size=""
           multiple
-        >
-        </v-file-input>
+        />
       </div>
     </div>
   </v-card-text>
 </template>
 
 <script>
-import { useMessages } from "@/composables/chat/messages";
-import { validateFileSizes } from "@/helpers";
-import axios from "@axios";
-import { mdiDelete, mdiFile, mdiMicrophone, mdiSend, mdiStop } from "@mdi/js";
-import { computed, onUnmounted, reactive, ref } from "@vue/composition-api";
+import axios from '@axios'
+import {
+  mdiDelete, mdiFile, mdiMicrophone, mdiSend, mdiStop,
+} from '@mdi/js'
+import {
+  computed, onUnmounted, reactive, ref,
+} from '@vue/composition-api'
+import { validateFileSizes } from '@/helpers'
+import { useMessages } from '@/composables/chat/messages'
 
 export default {
-  name: "SendMessage",
+  name: 'SendMessage',
   setup() {
-    const { activeConversation } = useMessages();
+    const { activeConversation } = useMessages()
     const state = reactive({
       sizeError: false,
-      msgText: "",
-      previewUrl: "",
+      msgText: '',
+      previewUrl: '',
       isSending: false,
       isRecording: false,
       finalBlob: null,
       files: [],
-    });
+    })
 
-    const recordingPreview = ref(null);
-    const filePicker = ref(null);
+    const recordingPreview = ref(null)
+    const filePicker = ref(null)
 
-    const uploadSizeLimit = 50;
-    const attachmentsValidation = [(files) => validateFileSizes(files, uploadSizeLimit)];
+    const uploadSizeLimit = 50
+    const attachmentsValidation = [files => validateFileSizes(files, uploadSizeLimit)]
 
     function openFilePicker() {
-      const pickerElem = filePicker.value.$el;
-      const button = pickerElem.querySelector("button");
+      const pickerElem = filePicker.value.$el
+      const button = pickerElem.querySelector('button')
 
-      button.click();
+      button.click()
     }
 
     const canSend = computed(() => {
-      if (state.isRecording) return false;
+      if (state.isRecording) return false
 
-      //const filesAboveLimit = state.files.some((file) => file.size > uploadSizeLimit * 1000 * 1000);
-      //if (filesAboveLimit) return false;
+      // const filesAboveLimit = state.files.some((file) => file.size > uploadSizeLimit * 1000 * 1000);
+      // if (filesAboveLimit) return false;
 
-      if (state.msgText || state.files.length || state.finalBlob) return true;
+      if (state.msgText || state.files.length || state.finalBlob) return true
 
-      return false;
-    });
+      return false
+    })
 
-    var audioStream = null,
-      mediaRecorder = null,
-      audioChunks = [];
+    let audioStream = null
+    let mediaRecorder = null
+    let audioChunks = []
 
     async function startRecording() {
       try {
-        audioChunks = [];
+        audioChunks = []
         audioStream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: true,
             sampleRate: 44100,
           },
-        });
+        })
 
-        mediaRecorder = new MediaRecorder(audioStream);
+        mediaRecorder = new MediaRecorder(audioStream)
 
         mediaRecorder.ondataavailable = function (event) {
-          audioChunks.push(event.data);
-        };
+          audioChunks.push(event.data)
+        }
 
-        mediaRecorder.onstop = handleStop;
-        mediaRecorder.start();
-        state.isRecording = true;
+        mediaRecorder.onstop = handleStop
+        mediaRecorder.start()
+        state.isRecording = true
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
     }
 
     function stopRecording() {
-      mediaRecorder.stop();
+      mediaRecorder.stop()
     }
 
     function handleStop() {
-      audioStream.getTracks().forEach(function (track) {
-        track.stop();
-      });
-      state.finalBlob = new Blob(audioChunks, { type: "audio/webm" });
-      state.previewUrl = URL.createObjectURL(state.finalBlob);
-      recordingPreview.value.src = state.previewUrl;
+      audioStream.getTracks().forEach(track => {
+        track.stop()
+      })
+      state.finalBlob = new Blob(audioChunks, { type: 'audio/webm' })
+      state.previewUrl = URL.createObjectURL(state.finalBlob)
+      recordingPreview.value.src = state.previewUrl
     }
 
     function toggleRecording() {
-      if (state.isRecording) stopRecording();
-      else startRecording();
-      state.isRecording = !state.isRecording;
+      if (state.isRecording) stopRecording()
+      else startRecording()
+      state.isRecording = !state.isRecording
     }
 
     function clearRecording() {
-      state.previewUrl = "";
-      audioChunks = [];
-      state.finalBlob = null;
+      state.previewUrl = ''
+      audioChunks = []
+      state.finalBlob = null
     }
 
     const hideFileDetails = computed(() => {
-      if (!state.files.length) return true;
-      return false;
-    });
+      if (!state.files.length) return true
+      return false
+    })
 
     async function sendMsg() {
       try {
-        if (!canSend.value) return;
-        state.isSending = true;
+        if (!canSend.value) return
+        state.isSending = true
 
-        const form = new FormData();
-        form.append("conversationId", activeConversation.value.id);
-        form.append("message", state.msgText);
-        for (var file of state.files) form.append("attachments", file);
-        if (state.finalBlob) form.append("attachments", state.finalBlob, `${Date.now()}.mp3`);
+        const form = new FormData()
+        form.append('conversationId', activeConversation.value.id)
+        form.append('message', state.msgText)
+        for (const file of state.files) form.append('attachments', file)
+        if (state.finalBlob) form.append('attachments', state.finalBlob, `${Date.now()}.mp3`)
 
-        const response = await axios.post("conversations/messages", form);
-        state.msgText = "";
-        state.finalBlob = null;
-        state.previewUrl = "";
-        state.files = [];
-        console.log(response);
+        const response = await axios.post('conversations/messages', form)
+        state.msgText = ''
+        state.finalBlob = null
+        state.previewUrl = ''
+        state.files = []
+        console.log(response)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isSending = false;
+        state.isSending = false
       }
     }
 
     onUnmounted(() => {
-      if (audioStream)
-        audioStream.getTracks().forEach(function (track) {
-          track.stop();
-        });
-    });
+      if (audioStream) {
+        audioStream.getTracks().forEach(track => {
+          track.stop()
+        })
+      }
+    })
 
     return {
       state,
-      //uploadSizeLimit,
+      // uploadSizeLimit,
 
       sendMsg,
       canSend,
@@ -228,9 +258,9 @@ export default {
         mdiStop,
         mdiFile,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

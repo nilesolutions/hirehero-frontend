@@ -6,16 +6,25 @@
       </v-card-title>
 
       <v-card-text
-        class="d-flex flex-row align-center"
         v-for="user in msgsState.onlineUsers"
         :key="user.id"
+        class="d-flex flex-row align-center"
       >
         <v-avatar size="30">
-          <img :src="resolveProfilePic(user)" alt="" />
+          <img
+            :src="resolveProfilePic(user)"
+            alt=""
+          >
         </v-avatar>
         <span class="black--text ml-1">{{ user.name }} {{ userIdentityText(user) }}</span>
 
-        <v-badge class="ml-auto" color="#30d988" inline dot left>
+        <v-badge
+          class="ml-auto"
+          color="#30d988"
+          inline
+          dot
+          left
+        >
           <span style="color: #30d988"> Online </span>
         </v-badge>
       </v-card-text>
@@ -24,21 +33,21 @@
 </template>
 
 <script>
-import { useMessages } from "@/composables/chat/messages";
-import { useUser } from "@/composables/user/user";
-import { resolveProfilePic } from "@/helpers";
+import { useMessages } from '@/composables/chat/messages'
+import { useUser } from '@/composables/user/user'
+import { resolveProfilePic } from '@/helpers'
 
 export default {
-  name: "OnlineUsers",
+  name: 'OnlineUsers',
   setup() {
-    const { state: msgsState } = useMessages();
-    const { userId } = useUser();
+    const { state: msgsState } = useMessages()
+    const { userId } = useUser()
 
     function userIdentityText(user) {
-      if (user.id == userId.value) return "(You)";
-      if (user.type == "admin") return "(Admin)";
-      if (user.type == "va") return "(Virtual Assistant)";
-      if (user.type == "client") return "(Client)";
+      if (user.id == userId.value) return '(You)'
+      if (user.type == 'admin') return '(Admin)'
+      if (user.type == 'va') return '(Virtual Assistant)'
+      if (user.type == 'client') return '(Client)'
     }
 
     return {
@@ -46,9 +55,9 @@ export default {
       userId,
       resolveProfilePic,
       userIdentityText,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

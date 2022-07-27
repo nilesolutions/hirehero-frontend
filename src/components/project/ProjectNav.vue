@@ -1,41 +1,54 @@
 <template>
   <div class="outer-box">
     <div class="heading-box">
-      <router-link class="mr-4" to="/projects">
+      <router-link
+        class="mr-4"
+        to="/projects"
+      >
         <v-icon>{{ icons.mdiChevronLeft }}</v-icon>
       </router-link>
-      <h2 class="cursive-font black--text">{{ projectName }}</h2>
+      <h2 class="cursive-font black--text">
+        {{ projectName }}
+      </h2>
     </div>
 
-    <div class="ml-auto btn-box" v-if="userType == 'client'">
-      <v-btn color="primary" large tile @click="isCreateDiagOpen = true">
+    <div
+      v-if="userType == 'client'"
+      class="ml-auto btn-box"
+    >
+      <v-btn
+        color="primary"
+        large
+        tile
+        @click="isCreateDiagOpen = true"
+      >
         Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
       </v-btn>
     </div>
 
     <create-task-dialog
-      :isOpen="isCreateDiagOpen"
+      :is-open="isCreateDiagOpen"
       @close="isCreateDiagOpen = false"
-    ></create-task-dialog>
+    />
   </div>
 </template>
 
 <script>
-import { ref } from "@vue/composition-api";
-import { useRouter } from "@/composables/router";
-import { useUser } from "@/composables/user/user";
-import { mdiChevronLeft, mdiPlus } from "@mdi/js";
-import CreateTaskDialog from "@/components/project/CreateTaskDialog.vue";
+import { ref } from '@vue/composition-api'
+import { mdiChevronLeft, mdiPlus } from '@mdi/js'
+import { useRouter } from '@/composables/router'
+import { useUser } from '@/composables/user/user'
+import CreateTaskDialog from '@/components/project/CreateTaskDialog.vue'
 
 export default {
-  name: "AddTasks",
+  name: 'AddTasks',
   components: {
     CreateTaskDialog,
   },
   setup() {
-    const isCreateDiagOpen = ref(false);
-    const { userType } = useUser();
-    const routeParams = useRouter().routeParams();
+    const isCreateDiagOpen = ref(false)
+    const { userType } = useUser()
+    const routeParams = useRouter().routeParams()
 
     return {
       isCreateDiagOpen,
@@ -46,9 +59,9 @@ export default {
         mdiChevronLeft,
         mdiPlus,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

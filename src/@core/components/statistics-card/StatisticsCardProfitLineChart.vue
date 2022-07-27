@@ -8,7 +8,7 @@
       :height="chartHeight"
       :options="chartOptionsComputed"
       :series="chartSeries"
-    ></vue-apex-charts>
+    />
     <v-card-text class="font-weight-semibold text-center text--primary">
       {{ statTitle }}
     </v-card-text>

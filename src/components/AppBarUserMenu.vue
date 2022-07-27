@@ -1,25 +1,51 @@
 <template>
-  <v-menu offset-y left nudge-bottom="14" min-width="230" content-class="user-profile-menu-content abc1">
+  <v-menu
+    offset-y
+    left
+    nudge-bottom="14"
+    min-width="230"
+    content-class="user-profile-menu-content abc1"
+  >
 
     <template v-slot:activator="{ on, attrs }">
-      <div class="d-flex flex-row align-center" v-on="on" v-bind="attrs">
-        <v-badge bottom color="success" overlap offset-x="12" offset-y="12" dot>
-          <v-avatar size="40px" color="primary" class="v-avatar-light-bg primary--text">
-            <v-img :src="profilePicture"></v-img>
+      <div
+        class="d-flex flex-row align-center"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <v-badge
+          bottom
+          color="success"
+          overlap
+          offset-x="12"
+          offset-y="12"
+          dot
+        >
+          <v-avatar
+            size="40px"
+            color="primary"
+            class="v-avatar-light-bg primary--text"
+          >
+            <v-img :src="profilePicture" />
           </v-avatar>
         </v-badge>
 
-        <div class="font-weight-black ml-2" v-show="breakpoint != 'sm'">
-          {{ userData.username }} <br />
+        <div
+          v-show="breakpoint != 'sm'"
+          class="font-weight-black ml-2"
+        >
+          {{ userData.username }} <br>
           <small>{{ userData.email }}</small>
         </div>
 
-        <div class="ml-2" v-show="breakpoint != 'sm'">
+        <div
+          v-show="breakpoint != 'sm'"
+          class="ml-2"
+        >
           <v-icon>{{ icons.mdiChevronDown }}</v-icon>
         </div>
       </div>
     </template>
-
 
     <v-list class="">
       <div class="pb-3 pt-2">
@@ -28,16 +54,21 @@
             <v-img :src="profilePicture"></v-img>
           </v-avatar>
         </v-badge> -->
-        <div class="d-inline-flex flex-column justify-center ms-3" style="vertical-align: middle">
+        <div
+          class="d-inline-flex flex-column justify-center ms-3"
+          style="vertical-align: middle"
+        >
           <span class="text--primary font-weight-semibold mb-n1"> {{ userData.username }} </span>
           <small class="text--disabled">{{ userData.type == "va" ? "VA" : "Client" }}</small>
         </div>
       </div>
 
-      <v-divider class="my-2"></v-divider>
+      <v-divider class="my-2" />
 
-     
-      <v-list-item @click="goToInbox" v-show="notificationsState.notification.unreadCount">
+      <v-list-item
+        v-show="notificationsState.notification.unreadCount"
+        @click="goToInbox"
+      >
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiBell }}
@@ -50,8 +81,10 @@
         </v-list-item-content>
       </v-list-item>
 
-  
-      <v-list-item @click="logout" class="logout-btn">
+      <v-list-item
+        class="logout-btn"
+        @click="logout"
+      >
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiLogoutVariant }}
@@ -62,31 +95,31 @@
         </v-list-item-content>
       </v-list-item>
 
-    </v-list> 
-  
+    </v-list>
+
   </v-menu>
 </template>
 
 <script>
-import { useNotifications } from "@/composables/chat/notifications";
-import { useNavigation } from "@/composables/navigation";
-import { useUser } from "@/composables/user/user";
-import { mdiBell, mdiChevronDown, mdiLogoutVariant } from "@mdi/js";
+import { mdiBell, mdiChevronDown, mdiLogoutVariant } from '@mdi/js'
+import { useNotifications } from '@/composables/chat/notifications'
+import { useNavigation } from '@/composables/navigation'
+import { useUser } from '@/composables/user/user'
 
 export default {
   setup() {
-    const { breakpoint } = useNavigation();
-    const { state: notificationsState } = useNotifications();
-    const { userData, profilePicture } = useUser();
+    const { breakpoint } = useNavigation()
+    const { state: notificationsState } = useNotifications()
+    const { userData, profilePicture } = useUser()
 
     function logout() {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userData");
-      this.$router.push({ name: "auth-login" });
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userData')
+      this.$router.push({ name: 'auth-login' })
     }
 
     function goToInbox() {
-      this.$router.push({ name: "inbox" });
+      this.$router.push({ name: 'inbox' })
     }
 
     return {
@@ -102,9 +135,9 @@ export default {
         mdiLogoutVariant,
         mdiChevronDown,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">
