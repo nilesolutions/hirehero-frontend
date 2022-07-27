@@ -225,6 +225,10 @@ button.theme--light.v-btn:hover::before {
 .v-btn--fab.v-size--x-small.v-btn--absolute.v-btn--top{
   top: 16px !important;
 }
+.d-block.text-capitalize{
+  word-break: break-all !important;
+}
+
 .v-card__text.mt-2.black--text.d-flex.flex-row.align-center.text-capitalize{
   overflow: hidden;
   word-break: break-all !important;

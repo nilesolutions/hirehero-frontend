@@ -3,7 +3,14 @@ import axios from "axios";
 import Vue from "vue";
 import router from "../router";
 
+<<<<<<< HEAD
 const baseURL = process.env.VUE_APP_API_URL || "http://localhost:3000/api";
+=======
+// const baseURL = process.env.VUE_APP_API_URL
+
+const baseURL = 'http://localhost:3000/api'
+// const baseURL = "http://192.168.1.212:3000/api";
+>>>>>>> ba7ba13 (Mobile Responsive)
 
 const axiosIns = axios.create({
   // You can add your headers here

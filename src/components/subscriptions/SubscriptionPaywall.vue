@@ -35,7 +35,11 @@ export default {
 }
   .mobile-css{
     margin: auto 20px;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> ba7ba13 (Mobile Responsive)
   }
 }
 </style>
