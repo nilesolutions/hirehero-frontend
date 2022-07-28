@@ -47,13 +47,14 @@ export default {
     const planPrice = computed(() => {
       const price = plan.amount / 100
       const commaSeparatedPrice = price.toLocaleString('en-US')
-      const currency = plan.currency.toUpperCase()
-      return `$${commaSeparatedPrice} / Month`
+      // const currency = plan.currency.toUpperCase()
+      const billingCycle = plan.interval.charAt(0).toUpperCase() + plan.interval.slice(1)
+      return `$${commaSeparatedPrice} / ${billingCycle}`
     })
 
     const isActivePlan = computed(() => {
       if (!isSubscriptionActive.value) return false
-      if (activePlan.value.id == plan.id) return true
+      if (activePlan.value.id === plan.id) return true
       return false
     })
 
