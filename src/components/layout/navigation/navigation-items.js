@@ -5,51 +5,51 @@ import {
   mdiMessageOutline,
   mdiVideoOutline,
   mdiViewDashboardOutline,
-} from "@mdi/js";
+} from '@mdi/js'
 
 export default [
   {
-    type: "NavigationItem",
-    title: "Dashboard",
+    type: 'NavigationItem',
+    title: 'Dashboard',
     icon: mdiViewDashboardOutline,
-    to: "dashboard",
+    to: 'dashboard',
   },
   {
-    type: "NavigationSubheader",
-    subheader: "Workspace",
+    type: 'NavigationSubheader',
+    subheader: 'Workspace',
   },
   {
-    type: "NavigationItem",
-    title: "Projects",
+    type: 'NavigationItem',
+    title: 'Projects',
     icon: mdiBriefcaseOutline,
-    to: "projects",
+    to: 'projects',
   },
   {
-    type: "NavigationItem",
-    title: "Training Videos",
+    type: 'NavigationItem',
+    title: 'Training Videos',
     icon: mdiVideoOutline,
-    to: "videos",
+    to: 'videos',
   },
   {
-    type: "NavigationItem",
-    title: "Activity",
+    type: 'NavigationItem',
+    title: 'Activity',
     icon: mdiAvTimer,
-    to: "activity",
+    to: 'activity',
   },
   {
-    type: "NavigationSubheader",
-    subheader: "Personal",
+    type: 'NavigationSubheader',
+    subheader: 'Personal',
   },
   {
-    type: "NavigationItem",
-    title: "Inbox",
+    type: 'NavigationItem',
+    title: 'Inbox',
     icon: mdiMessageOutline,
-    to: "inbox",
+    to: 'inbox',
   },
   {
-    type: "NavigationItem",
-    title: "Settings",
+    type: 'NavigationItem',
+    title: 'Settings',
     icon: mdiCogOutline,
-    to: "settings",
+    to: 'settings',
   },
-];
+]

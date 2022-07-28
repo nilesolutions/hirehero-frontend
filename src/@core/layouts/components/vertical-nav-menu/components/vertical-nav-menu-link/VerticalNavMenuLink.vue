@@ -26,8 +26,7 @@
         :color="item.badgeColor"
         inline
         :content="item.badge"
-      >
-      </v-badge>
+      />
     </v-list-item-action>
   </v-list-item>
 </template>

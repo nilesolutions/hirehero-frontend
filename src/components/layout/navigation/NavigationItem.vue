@@ -1,32 +1,43 @@
 <template>
-  <router-link class="navigation__item__wrapper" :to="`/${item.to}`">
+  <router-link
+    class="navigation__item__wrapper"
+    :to="`/${item.to}`"
+  >
     <li
       class="navigation__item"
       :class="isActive ? 'navigation__item-active' : 'navigation__item-inactive'"
+      @click="setMenuActive(false)"
     >
-      <v-icon color="black" class="navigation__item__icon">
+      <v-icon
+        color="black"
+        class="navigation__item__icon"
+      >
         {{ item.icon }}
       </v-icon>
-      <div class="navigation__item__text">{{ item.title }}</div>
+      <div class="navigation__item__text">
+        {{ item.title }}
+      </div>
     </li>
   </router-link>
 </template>
 
 <script>
-import { useRouter } from "@/composables/router";
-import { computed } from "@vue/composition-api";
+import { computed } from '@vue/composition-api'
+import { useRouter } from '@/composables/router'
+import { useNavigation } from '@/composables/navigation'
 
 export default {
-  name: "NavigationItem",
+  name: 'NavigationItem',
   props: { item: Object },
   setup(props) {
-    const { currRouteName } = useRouter();
+    const { state, setMenuActive } = useNavigation()
+    const { currRouteName } = useRouter()
 
-    const isActive = computed(() => currRouteName.value == props.item.to);
+    const isActive = computed(() => currRouteName.value == props.item.to)
 
-    return { isActive };
+    return { isActive, setMenuActive, state }
   },
-};
+}
 </script>
 
 <style lang="scss">

@@ -11,7 +11,7 @@
       :class="[{'app-system-bar-boxed': appContentWidth === 'boxed'}, { 'bg-blur': appBarIsBlurred }]"
       class="app-system-bar"
     >
-      <slot name="navbar"></slot>
+      <slot name="navbar" />
     </v-system-bar>
 
     <!-- Horizontal Nav Menu -->
@@ -27,14 +27,14 @@
       <horizontal-nav-menu
         :nav-menu-items="navMenuItems"
         :class="{'horizontal-nav-menu-boxed mx-auto': appContentWidth === 'boxed'}"
-      ></horizontal-nav-menu>
+      />
     </v-app-bar>
 
-    <slot name="v-app-content"></slot>
+    <slot name="v-app-content" />
 
     <v-main>
       <app-content-container>
-        <slot></slot>
+        <slot />
       </app-content-container>
     </v-main>
     <v-overlay
@@ -42,7 +42,7 @@
       z-index="6"
       absolute
       class="content-overlay"
-    ></v-overlay>
+    />
 
     <v-footer
       v-if="footerType !== 'hidden'"
@@ -53,7 +53,7 @@
       :color="footerType === 'static' ? 'transparent' : null"
     >
       <v-col cols="12">
-        <slot name="footer"></slot>
+        <slot name="footer" />
       </v-col>
     </v-footer>
   </v-app>

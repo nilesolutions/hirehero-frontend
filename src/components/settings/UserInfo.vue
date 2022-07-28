@@ -1,61 +1,82 @@
 <template>
   <div class="col-12">
-    <div class="d-flex flex-row align-center mb-2">
-      <div class="black--text">User Info</div>
+
+    <profile-picture />
+
+    <div class="mt-10">
+      <label
+        for=""
+        class="heading"
+      >
+        Basic Info
+      </label>
+      <v-card
+        :loading="state.isLoading"
+        :disabled="state.isUpdating"
+        elevation="0"
+      >
+        <v-card-text class="px-0">
+          <v-text-field
+            v-model="state.userInfo.username"
+
+            hide-details=""
+            outlined
+            label="Username"
+            class="w-full text-sm-${16px}"
+          />
+        </v-card-text>
+
+        <v-card-text class="px-0">
+          <v-text-field
+            v-model="state.userInfo.email"
+            hide-details=""
+            outlined
+            :disabled="!state.isEditing"
+            label="Email"
+          >
+            {{ state.userInfo.email }}
+          </v-text-field>
+        </v-card-text>
+
+        <v-card-actions class="py-4 px-0">
+          <v-btn
+            :loading="state.isUpdating"
+            color="primary"
+            class="w-sm-full px"
+            @click="updateInfo"
+          >
+            Update Info
+          </v-btn>
+        </v-card-actions>
+
+        <v-card-text class="py-0">
+          <v-btn
+            v-show="state.updateSuccessful"
+            color="success"
+            class="cursive-font"
+            small
+          >
+            Update Successfull
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
     </div>
 
-    <profile-picture></profile-picture>
-
-    <label for=""><small>Basic Info</small></label>
-    <v-card :loading="state.isLoading" :disabled="state.isUpdating" elevation="0">
-      <v-card-text>
-        <v-text-field
-          hide-details=""
-          dense
-          outlined
-          label="Username"
-          v-model="state.userInfo.username"
-        >
-        </v-text-field>
-      </v-card-text>
-
-      <v-card-text>
-        <v-text-field
-          hide-details=""
-          dense
-          outlined
-          :disabled="!state.isEditing"
-          label="Email"
-          v-model="state.userInfo.email"
-        >
-          {{ state.userInfo.email }}
-        </v-text-field>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn @click="updateInfo" :loading="state.isUpdating" color="primary">Update Info</v-btn>
-      </v-card-actions>
-
-      <v-card-text class="py-0">
-        <v-btn v-show="state.updateSuccessful" color="success" class="cursive-font" small>
-          Update Successfull
-        </v-btn>
-      </v-card-text>
-    </v-card>
   </div>
 </template>
 
 <script>
-import axios from "@axios";
-import ProfilePicture from "@/components/settings/ProfilePicture.vue";
-import { onMounted, ref, reactive } from "@vue/composition-api";
-import { useUser } from "@/composables/user/user";
+import axios from '@axios'
+import { onMounted, ref, reactive } from '@vue/composition-api'
+import ProfilePicture from '@/components/settings/ProfilePicture.vue'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "UserInfo",
+  name: 'UserInfo',
   components: { ProfilePicture },
   setup() {
-    const { setUserData, userData } = useUser();
+    const { setUserData, userData } = useUser()
 
     const state = reactive({
       isLoading: true,
@@ -63,44 +84,44 @@ export default {
       isUpdating: false,
       updateSuccessful: false,
       userInfo: {},
-    });
+    })
 
-    onMounted(() => fetchUserInfo());
+    onMounted(() => fetchUserInfo())
 
     async function fetchUserInfo() {
       try {
-        const { data: userInfo } = await axios.get("/users/me");
+        const { data: userInfo } = await axios.get('/users/me')
 
-        state.userInfo = userInfo;
-        setUserData(JSON.parse(JSON.stringify(userInfo)));
+        state.userInfo = userInfo
+        setUserData(JSON.parse(JSON.stringify(userInfo)))
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     async function updateInfo() {
       try {
-        if (!state.userInfo.username) return;
-        state.isUpdating = true;
+        if (!state.userInfo.username) return
+        state.isUpdating = true
 
         const info = {
           username: state.userInfo.username,
-        };
-        const { data: updatedUser } = await axios.patch("/users/me", info);
+        }
+        const { data: updatedUser } = await axios.patch('/users/me', info)
 
-        state.userInfo = updatedUser;
-        setUserData(JSON.parse(JSON.stringify(updatedUser)));
+        state.userInfo = updatedUser
+        setUserData(JSON.parse(JSON.stringify(updatedUser)))
 
-        state.updateSuccessful = true;
+        state.updateSuccessful = true
         setTimeout(() => {
-          state.updateSuccessful = false;
-        }, 2500);
+          state.updateSuccessful = false
+        }, 2500)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isUpdating = false;
+        state.isUpdating = false
       }
     }
 
@@ -108,9 +129,32 @@ export default {
       state,
       userData,
       updateInfo,
-    };
+    }
   },
-};
+}
 </script>
 
-<style></style>
+<style scoped>
+.m-t{
+  margin-top: 30px;
+}
+.w-full{
+  width: 100%;
+  padding: 12px  0 !important;
+}
+.px{
+  padding: 0 32px !important;
+}
+@media (max-width: 767px){
+.w-sm-full{
+  width: 100%;
+  font-size: 16px;
+}
+.heading{
+  font-size: 18px;
+}
+.v-text-field{
+  font-size: 1rem !important;
+}
+}
+</style>>

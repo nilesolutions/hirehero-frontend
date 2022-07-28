@@ -1,11 +1,30 @@
 <template>
-  <div class="navbar__actions" v-show="breakpoint != 'sm'">
+  <div
+    v-show="breakpoint != 'sm'"
+    class="navbar__actions"
+  >
     <router-link to="/inbox">
-      <v-badge overlap :content="notificationsCount" :value="notificationsCount">
-        <v-tooltip bottom color="error">
+      <v-badge
+        overlap
+        :content="notificationsCount"
+        :value="notificationsCount"
+      >
+        <v-tooltip
+          bottom
+          color="error"
+        >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn class="inbox-btn" icon outlined elevation="2" v-bind="attrs" v-on="on">
-              <v-icon color="primray">{{ icons.mdiMessageOutline }}</v-icon>
+            <v-btn
+              class="inbox-btn"
+              icon
+              outlined
+              elevation="2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon color="primray">
+                {{ icons.mdiMessageOutline }}
+              </v-icon>
             </v-btn>
           </template>
           <span class="tooltip-font">Inbox</span>
@@ -16,32 +35,32 @@
 </template>
 
 <script>
-import { useNotifications } from "@/composables/chat/notifications";
-import { useNavigation } from "@/composables/navigation";
-import { useRouter } from "@/composables/router";
-import { mdiMessageOutline } from "@mdi/js";
-import { computed } from "@vue/composition-api";
+import { mdiMessageOutline } from '@mdi/js'
+import { computed } from '@vue/composition-api'
+import { useNotifications } from '@/composables/chat/notifications'
+import { useNavigation } from '@/composables/navigation'
+import { useRouter } from '@/composables/router'
 
 export default {
-  name: "NavbarActions",
+  name: 'NavbarActions',
   setup() {
-    const { breakpoint } = useNavigation();
-    const { state: notificationsState } = useNotifications();
-    const { currRouteName } = useRouter();
+    const { breakpoint } = useNavigation()
+    const { state: notificationsState } = useNotifications()
+    const { currRouteName } = useRouter()
 
     const notificationsCount = computed(() => {
-      if (!notificationsState.notification.unreadCount) return 0;
-      if (currRouteName.value == "inbox") return 0;
-      return notificationsState.notification.unreadCount;
-    });
+      if (!notificationsState.notification.unreadCount) return 0
+      if (currRouteName.value == 'inbox') return 0
+      return notificationsState.notification.unreadCount
+    })
 
     return {
       notificationsCount,
       breakpoint,
       icons: { mdiMessageOutline },
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

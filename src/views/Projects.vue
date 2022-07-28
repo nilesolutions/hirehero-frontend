@@ -1,81 +1,98 @@
 <template>
   <div class="dashboard__content">
     <div class="d-flex flex-row align-center mb-6">
-      <h2 class="cursive-font black--text">Projects</h2>
+      <h2 class="cursive-font black--text">
+        Projects
+      </h2>
       <v-btn
         v-if="userType == 'client'"
-        @click="isCreateDialogOpen = true"
         class="ml-auto py-2"
         color="primary"
+        @click="isCreateDialogOpen = true"
       >
         Add Project
       </v-btn>
     </div>
 
-    <div class="text-center" v-show="isLoading">
-      <v-progress-circular color="primary" indeterminate></v-progress-circular>
+    <div
+      v-show="isLoading"
+      class="text-center"
+    >
+      <v-progress-circular
+        color="primary"
+        indeterminate
+      />
     </div>
 
-    <v-card class="mb-6 d" v-show="!projects.length && !isLoading">
-      <v-card-text class="align-self-center">No projects created</v-card-text>
+    <v-card
+      v-show="!projects.length && !isLoading"
+      class="mb-6 d"
+    >
+      <v-card-text class="align-self-center">
+        No projects created
+      </v-card-text>
     </v-card>
 
-    <div class="d-flex flex-wrap flex-row user-projects" v-show="projects.length && !isLoading">
+    <div
+      v-show="projects.length && !isLoading"
+      class="d-flex flex-wrap flex-row user-projects"
+    >
       <ProjectCard
         v-for="project in projects"
         :key="project.id"
         :project="project"
         @projectDeleted="deleteProject"
-      ></ProjectCard>
+      />
     </div>
 
     <create-project-dialog
+      :is-open="isCreateDialogOpen"
       @close="isCreateDialogOpen = false"
       @projectCreated="addProject"
-      :isOpen="isCreateDialogOpen"
-    ></create-project-dialog>
+    />
+
   </div>
 </template>
 
 <script>
-import CreateProjectDialog from "@/components/projects/CreateProjectDialog.vue";
-import ProjectCard from "@/components/projects/ProjectCard.vue";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
-import { onMounted, ref } from "@vue/composition-api";
+import axios from '@axios'
+import { onMounted, ref } from '@vue/composition-api'
+import CreateProjectDialog from '@/components/projects/CreateProjectDialog.vue'
+import ProjectCard from '@/components/projects/ProjectCard.vue'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "Projects",
+  name: 'Projects',
   components: {
     CreateProjectDialog,
     ProjectCard,
   },
   setup() {
-    const isLoading = ref(true);
-    const isCreateDialogOpen = ref(false);
-    const projects = ref([]);
-    const { userType } = useUser();
+    const isLoading = ref(true)
+    const isCreateDialogOpen = ref(false)
+    const projects = ref([])
+    const { userType } = useUser()
 
-    const addProject = (proj) => projects.value.push(proj);
-    const deleteProject = (projId) => {
-      projects.value = projects.value.filter((p) => p.id != projId);
-    };
+    const addProject = proj => projects.value.push(proj)
+    const deleteProject = projId => {
+      projects.value = projects.value.filter(p => p.id != projId)
+    }
 
     async function initDashboard() {
       try {
-        var response = await axios.get("/projects");
-        console.log(response);
-        projects.value = response.data;
+        const response = await axios.get('/projects')
+        console.log(response)
+        projects.value = response.data
       } catch (err) {
-        console.log(err.response);
+        console.log(err.response)
       } finally {
-        isLoading.value = false;
+        isLoading.value = false
       }
     }
 
     onMounted(() => {
-      initDashboard();
-    });
+      initDashboard()
+    })
 
     return {
       isCreateDialogOpen,
@@ -84,9 +101,9 @@ export default {
       addProject,
       deleteProject,
       userType,
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

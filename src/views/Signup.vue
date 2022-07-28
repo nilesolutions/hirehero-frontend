@@ -2,15 +2,16 @@
   <div class="auth-wrapper auth-v2">
     <div class="auth-inner">
       <!-- brand logo -->
-      <router-link to="/" class="brand-logo d-flex align-center">
+      <router-link
+        to="/"
+        class="brand-logo"
+      >
         <v-img
           :src="appLogo"
-          max-height="30px"
-          max-width="150px"
           alt="logo"
           contain
-          class="me-3"
-        ></v-img>
+          class="me-3 logo-img-size"
+        />
 
         <!-- <h2 class="text--primary mt-3">
           {{ appName }}
@@ -19,7 +20,10 @@
       <!--/ brand logo -->
 
       <v-row class="auth-row ma-0">
-        <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
+        <v-col
+          lg="6"
+          class="d-none d-lg-block position-relative overflow-hidden pa-0"
+        >
           <div class="auth-bg-wrapper">
             <!-- <v-img :src="signupBg" alt="" /> -->
             <v-img
@@ -28,25 +32,30 @@
               max-width="350px"
               max-height="350px"
               :src="require('@/assets/logos/logo-lg.png')"
-            ></v-img>
+            />
           </div>
         </v-col>
 
-        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0 signup-form">
+        <v-col
+          lg="6"
+          class="d-flex align-center auth-bg pa-10 pb-0 signup-form"
+        >
           <v-row>
-            <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
-              <v-card flat>
+            <v-col
+              cols="12"
+              sm="8"
+              md="6"
+              lg="12"
+              class="mx-auto"
+            >
+
+              <v-card
+                flat
+                class="pb-3"
+              >
                 <v-card-text class="auth-mob-padding">
                   <p
-                    class="
-                      cursive-font
-                      text-2xl
-                      font-weight-semibold
-                      text--primary
-                      mb-2
-                      signup-title
-                      auth-text
-                    "
+                    class="cursive-font text-2xl font-weight-semibold text--primary mb-2 signup-title auth-text"
                   >
                     Welcome to HireHeroes!
                   </p>
@@ -107,7 +116,7 @@
                               ></v-text-field>
                               </v-col>
                             </v-row>
-                            
+
                             <v-text-field
                               v-model="state.username"
                               outlined
@@ -228,7 +237,6 @@
                           >
                             Next
                           </v-btn>
-                          
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
@@ -263,7 +271,7 @@
                               value="Other"
                               style="margin-top: 0px"
                             ></v-checkbox>
-                            
+
                             <!--other value-->
                             <v-text-field
                                 v-if="state.source == 'Other'"
@@ -309,11 +317,11 @@
                           >
                             Signup
                           </v-btn>
-                          
+
                         </v-stepper-content>
                       </v-stepper-items>
                     </v-stepper>
-                    
+
                     <v-card-text v-show="state.errorMsg" class="my-2 text-center">
                       {{ state.errorMsg }}
                     </v-card-text>
@@ -322,7 +330,10 @@
                       v-show="state.accCreated"
                       class="text-center pt-2 pb-2 text-decoration-underline"
                     >
-                      <router-link to="/login" class="border success--text">
+                      <router-link
+                        to="/login"
+                        class="border success--text"
+                      >
                         Account created successfully. Head to login.
                       </router-link>
                     </v-card-text>
@@ -331,16 +342,21 @@
 
                 <!-- create new account  -->
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-                  <p class="mb-0 me-2">Already have an account?</p>
-                  <router-link to="/login">Login</router-link>
+                  <p class="mb-0 me-2">
+                    Already have an account?
+                  </p>
+                  <router-link to="/login">
+                    Login
+                  </router-link>
                 </v-card-text>
               </v-card>
+
             </v-col>
           </v-row>
         </v-col>
 
         <v-col cols="12" class="mx-auto">
-          <div class="auth-footer" style="background: transparent !important;">
+          <div class="auth-footer" >
             <ul>
               <li>Privacy Policy</li>
               <li>Contact us</li>
@@ -355,38 +371,39 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import axios from "@axios";
-import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
-import themeConfig from "@themeConfig";
-import { reactive, computed } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
+import themeConfig from '@themeConfig'
+import { reactive, computed } from '@vue/composition-api'
 
 export default {
-  name: "Signup",
+  name: 'Signup',
   setup() {
     const state = reactive({
       isPasswordVisible: false,
       isLoading: false,
-      errorMsg: "",
-      user_id: "",
-      first_name: "",
-      last_name: "",
-      username: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      accType: "",
+      errorMsg: '',
+      user_id: '',
+      first_name: '',
+      last_name: '',
+      username: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      accType: '',
       number_of_va: 0,
-      va_description: "",
-      va_assist_application: "",
-      source: "",
-      other_source: "",
-      referred_person: "",
+      va_description: '',
+      va_assist_application: '',
+      source: '',
+      other_source: '',
+      referred_person: '',
       accCreated: false,
       tos_agreement: 'no',
-      e1: 1
-    });
+      e1: 1,
+    })
 
+    // eslint-disable-next-line arrow-body-style
     const signupData = computed(() => {
       return {
         first_name: state.first_name,
@@ -403,80 +420,80 @@ export default {
         heard_from_other: state.other_source,
         referred_person: state.referred_person,
       }
-    });
+    })
 
     const accTypeOpts = [
-      { value: "client", text: "Hire a virtual assistant" },
-      { value: "va", text: "Work as a virtual assistant" },
-    ];
+      { value: 'client', text: 'Hire a virtual assistant' },
+      { value: 'va', text: 'Work as a virtual assistant' },
+    ]
 
-    function resetForm (state) {
-      state.first_name = "";
-      state.last_name = "";
-      state.username = "";
-      state.email = "";
-      state.phone = "";
-      state.password = "";
-      state.confirmPassword = "";
-      state.accType = {};
-      state.number_of_va = 0;
-      state.va_description = "";
-      state.va_assist_application = "";
-      state.source = "";
-      state.other_source = "";
-      state.referred_person = "";
+    // eslint-disable-next-line no-shadow
+    function resetForm(state) {
+      state.first_name = ''
+      state.last_name = ''
+      state.username = ''
+      state.email = ''
+      state.phone = ''
+      state.password = ''
+      state.confirmPassword = ''
+      state.accType = {}
+      state.number_of_va = 0
+      state.va_description = ''
+      state.va_assist_application = ''
+      state.source = ''
+      state.other_source = ''
+      state.referred_person = ''
     }
 
     async function validateStep1() {
-      state.errorMsg = ""
-      if (state.first_name == "") {
-        state.errorMsg = "First name is required";
+      state.errorMsg = ''
+      if (state.first_name === '') {
+        state.errorMsg = 'First name is required'
       }
-      if (state.last_name == "") {
-        state.errorMsg = "Last name is required";
+      if (state.last_name === '') {
+        state.errorMsg = 'Last name is required'
       }
-      if (state.username == "") {
-        state.errorMsg = "Username is required";
+      if (state.username === '') {
+        state.errorMsg = 'Username is required'
       }
-      if (state.email == "") {
-        state.errorMsg = "Email is required";
+      if (state.email === '') {
+        state.errorMsg = 'Email is required'
       }
-      if (state.phone == "") {
-        state.errorMsg = "Phone is required";
-      }
-
-      if ( state.password.length < 6 ) {
-        state.errorMsg = "Too short password";
-      }
-      if (state.password != state.confirmPassword) {
-        state.errorMsg = "Passwords did not match";
+      if (state.phone === '') {
+        state.errorMsg = 'Phone is required'
       }
 
-      if ( state.errorMsg == "" ) {
-        // await axios.post("/signup", signupData.value);
+      if (state.password.length < 6) {
+        state.errorMsg = 'Too short password'
+      }
+      if (state.password !== state.confirmPassword) {
+        state.errorMsg = 'Passwords did not match'
+      }
+
+      if (state.errorMsg === '') {
         state.e1 = 2
       }
     }
 
     function validateStep2() {
-      state.errorMsg = ""
-      if (state.accType == "") {
-        state.errorMsg = "Please select a account type";
+      state.errorMsg = ''
+      if (state.accType === '') {
+        state.errorMsg = 'Please select a account type'
       }
 
-      if ( state.accType == 'client' ) {
-        if ( state.number_of_va == 0 ) {
-          state.errorMsg = "Please set number of VA you need.";
+      if (state.accType === 'client') {
+        if (state.number_of_va === 0) {
+          state.errorMsg = 'Please set number of VA you need.'
         }
-        if ( state.va_description == "" ) {
-          state.errorMsg = "Please write down task requirements.";
+        if (state.va_description === '') {
+          state.errorMsg = 'Please write down task requirements.'
         }
-        if ( state.va_assist_application == "" ) {
-          state.errorMsg = "Please write down software requirements.";
+        if (state.va_assist_application === '') {
+          state.errorMsg = 'Please write down software requirements.'
         }
       }
 
-      if ( state.errorMsg == "" ) {
+      if (state.errorMsg === '') {
         state.e1 = 3
       }
     }
@@ -484,48 +501,54 @@ export default {
     async function signup() {
       try {
         // validate tos agreement
-        if ( state.tos_agreement == 'no' ) {
-          let _msg = "You must agree to terms and conditions to signup."
-          state.errorMsg = _msg
-          throw _msg
+        if (state.tos_agreement === 'no') {
+          const msg = 'You must agree to terms and conditions to signup.'
+          state.errorMsg = msg
+          throw msg
         }
 
         // validate password match
-        if (state.password != state.confirmPassword) {
-          state.errorMsg = "Passwords did not match"
-          throw "Passwords did not match";
+        if (state.password !== state.confirmPassword) {
+          state.errorMsg = 'Passwords did not match'
+          // eslint-disable-next-line no-throw-literal
+          throw 'Passwords did not match'
         }
 
         // validate account type selection
-        if ( state.accType == "" ) {
+        if (state.accType === '') {
           state.errorMsg = '"I am looking to" is required field.'
+          // eslint-disable-next-line no-throw-literal
           throw '"I am looking to" is required field.'
         }
 
-        state.errorMsg = "";
-        state.isLoading = true;
+        // validate password match
+        if (state.password !== state.confirmPassword) {
+          state.errorMsg = 'Passwords did not match'
+          // eslint-disable-next-line no-throw-literal
+          throw 'Passwords did not match'
+        }
 
-        /* 
-        [NOT IN USE]:
-        This sniphet is replaced by PR: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/2
-        const signupData = {
-          username: state.username,
-          email: state.email,
-          password: state.password,
-          type: state.accType,
-        };
-        */
+        // validate account type selection
+        if (state.accType === '') {
+          state.errorMsg = '"I am looking to" is required field.'
+          // eslint-disable-next-line no-throw-literal
+          throw '"I am looking to" is required field.'
+        }
 
-        await axios.post("/signup", signupData.value);
+        state.errorMsg = ''
+        state.isLoading = true
+
+        const response = await axios.post('/signup', signupData.value)
+        if (response) window.fpr('referral', { email: response.data.email })
 
         // reset the form
         resetForm(state)
 
-        state.accCreated = true;
+        state.accCreated = true
       } catch (err) {
-        state.errorMsg = err.response.data.message;
+        state.errorMsg = err.response.data.message
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -542,31 +565,79 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
-      signupBg: require("@/assets/images/signup.svg"),
+      signupBg: require('@/assets/images/signup.svg'),
       signup,
       validateStep1,
-      validateStep2
-    };
+      validateStep2,
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 
+.v-card__text.auth-mob-padding{
+  text-align: center !important;
+}
+.auth-bg-wrapper{
+  background: #f5f5f5 !important;
+}
+.auth-footer{
+  background: #fff !important;
+}
 .auth-submit-btn {
-  border-radius: 0;
+ padding: 24px  0 !important;
+}
+.logo-img-size{
+    max-width: 150px !important;
+}
+.v-application.theme--light .v-sheet.v-card:not(.v-sheet--outlined),
+.v-sheet.v-card:not(.v-sheet--outlined)
+{
+  box-shadow: none;
+}
+@media (max-width:1265px) {
+  .auth-mob-padding{
+    text-align: center;
+  }
+  .brand-logo{
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100% !important;
+  }
 }
 
 @media (max-width: 767px) {
+
+.v-application.theme--light .v-stepper:not(.v-sheet--outlined),
+.v-application.theme--light .v-sheet.v-card:not(.v-sheet--outlined),
+.v-sheet.v-card:not(.v-sheet--outlined)
+{
+  box-shadow: none;
+}
+
+
+  .v-application .pa-10{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+  .brand-logo{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .logo-img-size{
+    max-width: 200px !important;
+    left: -30px;
+  }
   .signup-form {
     padding-top: 80px !important;
   }
-
   .signup-form .signup-title {
     font-size: 1.3rem !important;
   }
-
   .auth-submit-btn.v-btn:not(.v-btn--round).v-size--default {
     margin-top: 0 !important;
   }
@@ -584,7 +655,6 @@ export default {
     opacity: 0.6;
     font-weight: 300;
   }
-
   .auth-mob-padding-2 {
     padding-bottom: 0;
   }

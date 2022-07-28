@@ -10,7 +10,7 @@
         :height="chartHeight"
         :options="chartOptionsComputed"
         :series="chartSeries"
-      ></vue-apex-charts>
+      />
     </v-card-text>
 
     <v-card-text class="font-weight-semibold text-center text--primary">

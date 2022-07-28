@@ -1,7 +1,7 @@
 <template>
   <layout-content-horizontal-nav :nav-menu-items="navMenuItems">
     <!-- Default Slot -->
-    <slot></slot>
+    <slot />
 
     <!-- Navbar -->
     <template #navbar>
@@ -13,7 +13,7 @@
         <div class="d-flex align-center">
           <v-app-bar-nav-icon
             v-if="$vuetify.breakpoint.mdAndDown"
-          ></v-app-bar-nav-icon>
+          />
           <router-link
             to="/"
             class="d-flex align-center text-decoration-none"
@@ -25,7 +25,7 @@
               alt="logo"
               contain
               class="me-3"
-            ></v-img>
+            />
             <h2 class="app-title text--primary">
               {{ appName }}
             </h2>
@@ -40,9 +40,9 @@
             :filter="searchFilterFunc"
             :search-query.sync="appBarSearchQuery"
             class="me-4"
-          ></app-bar-search>
-          <app-bar-theme-switcher></app-bar-theme-switcher>
-          <app-bar-user-menu class="ms-2"></app-bar-user-menu>
+          />
+          <app-bar-theme-switcher />
+          <app-bar-user-menu class="ms-2" />
         </div>
       </div>
       <v-overlay
@@ -50,7 +50,7 @@
         z-index="5"
         absolute
         class="system-bar-overlay"
-      ></v-overlay>
+      />
     </template>
 
     <!-- Slot: footer -->
@@ -71,7 +71,7 @@
 
     <!-- App Content -->
     <template #v-app-content>
-      <app-customizer class="d-none d-md-block"></app-customizer>
+      <app-customizer class="d-none d-md-block" />
     </template>
   </layout-content-horizontal-nav>
 </template>
@@ -79,20 +79,20 @@
 <script>
 import LayoutContentHorizontalNav from '@core/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue'
 import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
-import navMenuItems from '@/navigation/horizontal'
 
 // App Bar Components
 import AppBarSearch from '@core/layouts/components/app-bar/AppBarSearch.vue'
 import AppBarThemeSwitcher from '@core/layouts/components/app-bar/AppBarThemeSwitcher.vue'
-import AppBarUserMenu from '@/components/AppBarUserMenu.vue'
 
 // Search Data
-import appBarSearchData from '@/assets/app-bar-search-data'
 
 import { ref, watch } from '@vue/composition-api'
 
 import themeConfig from '@themeConfig'
 import { mdiHeartOutline } from '@mdi/js'
+import appBarSearchData from '@/assets/app-bar-search-data'
+import AppBarUserMenu from '@/components/AppBarUserMenu.vue'
+import navMenuItems from '@/navigation/horizontal'
 
 export default {
   components: {

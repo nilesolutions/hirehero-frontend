@@ -36,14 +36,14 @@
         name="navbar"
         :isVerticalNavMenuActive="isVerticalNavMenuActive"
         :toggleVerticalNavMenuActive="toggleVerticalNavMenuActive"
-      ></slot>
+      />
     </v-app-bar>
 
-    <slot name="v-app-content"></slot>
+    <slot name="v-app-content" />
 
     <v-main>
       <app-content-container>
-        <slot></slot>
+        <slot />
       </app-content-container>
     </v-main>
     <v-overlay
@@ -51,7 +51,7 @@
       z-index="4"
       absolute
       class="content-overlay"
-    ></v-overlay>
+    />
 
     <v-footer
       v-if="footerType !== 'hidden'"
@@ -66,7 +66,7 @@
         :class="{'px-5': footerType === 'fixed'}"
         class="py-4 w-full"
       >
-        <slot name="footer"></slot>
+        <slot name="footer" />
       </div>
     </v-footer>
   </v-app>
@@ -75,10 +75,10 @@
 <script>
 import { ref, watch } from '@vue/composition-api'
 import AppContentContainer from '@core/layouts/components/app-content-container/AppContentContainer.vue'
-import { getVuetify } from '@/@core/utils'
 import useAppConfig from '@core/@app-config/useAppConfig'
 import VerticalNavMenu from '@core/layouts/components/vertical-nav-menu/VerticalNavMenu.vue'
 import { useWindowScroll } from '@vueuse/core'
+import { getVuetify } from '@/@core/utils'
 
 export default {
   components: {

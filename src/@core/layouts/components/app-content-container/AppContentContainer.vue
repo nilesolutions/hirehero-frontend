@@ -3,7 +3,7 @@
     class="app-content-container mx-auto h-full"
     :class="{'app-content-container-boxed': appContentWidth === 'boxed'}"
   >
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

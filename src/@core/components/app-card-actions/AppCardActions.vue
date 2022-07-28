@@ -6,11 +6,11 @@
       v-on="$listeners"
     >
       <v-card-title>
-        <slot name="title"></slot>
-        <v-spacer></v-spacer>
+        <slot name="title" />
+        <v-spacer />
         <div>
           <!-- Slot: Before Actions -->
-          <slot name="before-actions"></slot>
+          <slot name="before-actions" />
 
           <!-- Action Buttons -->
 
@@ -55,13 +55,13 @@
           <!-- /Action Buttons -->
 
           <!-- Slot: After Actions -->
-          <slot name="after-actions"></slot>
+          <slot name="after-actions" />
         </div>
       </v-card-title>
 
       <v-expand-transition>
         <div v-show="!isContentCollapsed">
-          <slot></slot>
+          <slot />
         </div>
       </v-expand-transition>
 
@@ -74,7 +74,7 @@
         <v-progress-circular
           indeterminate
           color="primary"
-        ></v-progress-circular>
+        />
       </v-overlay>
     </v-card>
   </v-expand-transition>

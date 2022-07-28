@@ -26,7 +26,7 @@
           <v-img
             v-if="userData.avatar"
             :src="userData.avatar"
-          ></v-img>
+          />
           <v-icon
             v-else
             color="primary"
@@ -56,7 +56,7 @@
             <v-img
               v-if="userData.avatar"
               src="@/assets/images/avatars/1.png"
-            ></v-img>
+            />
             <v-icon
               v-else
               color="primary"
@@ -77,7 +77,7 @@
         </div>
       </div>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <!-- Profile -->
       <v-list-item :to="{ name: 'apps-user-view', params: { id: 21 } }">
@@ -119,12 +119,11 @@
             inline
             color="error"
             content="2"
-          >
-          </v-badge>
+          />
         </v-list-item-action>
       </v-list-item>
 
-      <v-divider class="my-2"></v-divider>
+      <v-divider class="my-2" />
 
       <!-- Settings -->
       <v-list-item :to="{ name: 'page-account-settings' }">
@@ -162,7 +161,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider class="my-2"></v-divider>
+      <v-divider class="my-2" />
 
       <!-- Logout -->
       <v-list-item @click="logoutUser">
@@ -191,8 +190,8 @@ import {
   mdiLogoutVariant,
 } from '@mdi/js'
 import { useRouter } from '@core/utils'
-import { initialAbility } from '@/plugins/acl/config'
 import { getCurrentInstance } from '@vue/composition-api'
+import { initialAbility } from '@/plugins/acl/config'
 
 export default {
   setup() {

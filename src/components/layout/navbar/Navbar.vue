@@ -10,43 +10,53 @@
         <v-icon>{{ icons.mdiMenu }}</v-icon>
       </v-btn>
       <router-link to="/dashboard">
-        <img class="navbar__logo-img" :src="require('@/assets/logos/logo-nav.png')" alt="" />
+        <img
+          class="navbar__logo-img"
+          :src="require('@/assets/logos/logo-nav.png')"
+          alt=""
+        >
       </router-link>
     </div>
 
-    <div v-show="breakpoint == 'md'" class="navbar__divider"></div>
-    <div class="navbar__user-profile">
-      <app-bar-user-menu></app-bar-user-menu>
+    <div
+      v-show="breakpoint == 'md'"
+      class="navbar__divider"
+    />
+    <div
+      id="abccc"
+      class="navbar__user-profile "
+    >
+      <app-bar-user-menu />
     </div>
-    <div class="navbar__divider"></div>
+    <div class="navbar__divider" />
     <!-- <div class="navbar__search">C</div> -->
-    <navbar-actions></navbar-actions>
+    <navbar-actions />
   </div>
 </template>
 
 <script>
-import AppBarUserMenu from "@/components/AppBarUserMenu.vue";
-import NavbarActions from "@/components/layout/navbar/NavbarActions.vue";
-import { useNavigation } from "@/composables/navigation";
-import { mdiMenu } from "@mdi/js";
+import { mdiMenu } from '@mdi/js'
+import AppBarUserMenu from '@/components/AppBarUserMenu.vue'
+import NavbarActions from '@/components/layout/navbar/NavbarActions.vue'
+import { useNavigation } from '@/composables/navigation'
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   components: {
     AppBarUserMenu,
     NavbarActions,
   },
   setup() {
-    const { state: navMenuState, breakpoint, setMenuActive } = useNavigation();
+    const { state: navMenuState, breakpoint, setMenuActive } = useNavigation()
 
     return {
       setMenuActive,
       navMenuState,
       breakpoint,
       icons: { mdiMenu },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

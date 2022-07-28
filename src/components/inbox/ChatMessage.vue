@@ -1,12 +1,18 @@
 <template>
   <li
-    @mouseenter="state.isHovering = true"
-    @mouseleave="state.isHovering = false"
     class="message-wrapper"
     :class="state.isHovering ? 'message-hover' : ''"
+    @mouseenter="state.isHovering = true"
+    @mouseleave="state.isHovering = false"
   >
-    <div class="d-flex flex-column message-content" :class="msgAlignment">
-      <small class="message-content__sender" :class="msgAlignment">{{ msgData.username }}</small>
+    <div
+      class="d-flex flex-column message-content"
+      :class="msgAlignment"
+    >
+      <small
+        class="message-content__sender"
+        :class="msgAlignment"
+      >{{ msgData.username }}</small>
       <p
         v-show="msgData.message"
         class="message-content__text"
@@ -20,18 +26,31 @@
         class="message-attachments"
         :class="msgAlignment"
       >
-        <div class="image-attachments d-flex flex-row flex-wrap" v-show="imageAttachments.length">
-          <div v-for="img in imageAttachments" :key="img.id" class="image-attachment">
-            <a :href="img.url" target="_blank">
-              <img :src="img.url" alt="" />
+        <div
+          v-show="imageAttachments.length"
+          class="image-attachments d-flex flex-row flex-wrap"
+        >
+          <div
+            v-for="img in imageAttachments"
+            :key="img.id"
+            class="image-attachment"
+          >
+            <a
+              :href="img.url"
+              target="_blank"
+            >
+              <img
+                :src="img.url"
+                alt=""
+              >
             </a>
           </div>
         </div>
 
         <a
-          class="py-2 px-2 d-block mb-1"
           v-for="attachment in normalAttachments"
           :key="attachment.url"
+          class="py-2 px-2 d-block mb-1"
           :href="attachment.url"
           target="blank"
         >
@@ -39,125 +58,163 @@
         </a>
       </div>
 
-      <div class="audio-attachments" v-show="audioAttachments.length">
-        <div class="audio-attachment" v-for="audio in audioAttachments" :key="audio.id">
-          <audio :src="audio.url" controls></audio>
+      <div
+        v-show="audioAttachments.length"
+        class="audio-attachments"
+      >
+        <div
+          v-for="audio in audioAttachments"
+          :key="audio.id"
+          class="audio-attachment"
+        >
+          <audio
+            :src="audio.url"
+            controls
+          />
         </div>
       </div>
 
-      <div v-if="showControls" class="message-controls">
-        <v-tooltip bottom color="error">
+      <div
+        v-if="showControls"
+        class="message-controls"
+      >
+        <v-tooltip
+          bottom
+          color="error"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
-              v-on="on"
               small
               icon
               tile
               elevation="2"
               color="warning"
+              v-on="on"
               @click="deleteMsg"
             >
-              <v-icon small>{{ icons.mdiTrashCanOutline }}</v-icon>
+              <v-icon small>
+                {{ icons.mdiTrashCanOutline }}
+              </v-icon>
             </v-btn>
           </template>
           <span class="tooltip-font">Delete Message</span>
         </v-tooltip>
       </div>
 
-      <v-dialog width="fit-content" v-model="state.isConfirmDeleteOpen">
+      <v-dialog
+        v-model="state.isConfirmDeleteOpen"
+        width="fit-content"
+      >
         <v-card>
           <v-card-title>Delete Message ?</v-card-title>
           <v-card-actions>
-            <v-btn @click="deleteMsg" color="warning" outlined>Delete</v-btn>
-            <v-btn @click="state.isConfirmDeleteOpen = false" outlined>Cancel</v-btn>
+            <v-btn
+              color="warning"
+              outlined
+              @click="deleteMsg"
+            >
+              Delete
+            </v-btn>
+            <v-btn
+              outlined
+              @click="state.isConfirmDeleteOpen = false"
+            >
+              Cancel
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
-      <small class="message-content__date" :class="msgAlignment">{{ msgTime }}</small>
+      <small
+        class="message-content__date"
+        :class="msgAlignment"
+      >{{ msgTime }}</small>
     </div>
   </li>
 </template>
 
 <script>
-import { useMessages } from "@/composables/chat/messages";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
-import { mdiTrashCanOutline } from "@mdi/js";
-import { computed, reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiTrashCanOutline } from '@mdi/js'
+import { computed, reactive } from '@vue/composition-api'
+import { useUser } from '@/composables/user/user'
+import { useMessages } from '@/composables/chat/messages'
 
 export default {
-  name: "ChatMessage",
+  name: 'ChatMessage',
   props: { msgData: Object },
   setup({ msgData }) {
-    const { userId } = useUser();
-    const { state: msgsState } = useMessages();
+    const { userId } = useUser()
+    const { state: msgsState } = useMessages()
     const state = reactive({
       isHovering: false,
       isConfirmDeleteOpen: false,
-    });
+    })
 
     const showControls = computed(() => {
-      if (state.isHovering && msgData.user_id == userId.value) return true;
-      return false;
-    });
+      if (state.isHovering && msgData.user_id == userId.value) return true
+      return false
+    })
 
     const resolveAlignment = () => {
-      if (msgData.user_id == userId.value) return "our-message";
-      return "their-message";
-    };
+      if (msgData.user_id == userId.value) return 'our-message'
+      return 'their-message'
+    }
 
     const resolveArrow = () => {
-      if (msgData.user_id == userId.value) return "right-arrow";
-      return "left-arrow";
-    };
+      if (msgData.user_id == userId.value) return 'right-arrow'
+      return 'left-arrow'
+    }
 
     const msgTime = () => {
-      return new Date(msgData.created_at).toLocaleString();
-    };
+      const msg_date = new Date(msgData.created_at).toLocaleDateString().split('/').reverse()
+        .join('-')
+      const msg_time = new Date(msgData.created_at).toLocaleTimeString()
+      return `${msg_date} ${msg_time}`
+    }
 
     const hasAttachments = () => {
-      if (msgData.files) return true;
-      return false;
-    };
+      if (msgData.files) return true
+      return false
+    }
 
     const imageAttachments = () => {
-      if (!msgData.files) return [];
-      const attachments = JSON.parse(msgData.files);
-      return attachments.filter((attachment) => attachment.type == "image");
-    };
+      if (!msgData.files) return []
+      const attachments = JSON.parse(msgData.files)
+      return attachments.filter(attachment => attachment.type == 'image')
+    }
 
     const audioAttachments = () => {
-      if (!msgData.files) return [];
-      const attachments = JSON.parse(msgData.files);
-      return attachments.filter((attachment) => attachment.type == "audio");
-    };
+      if (!msgData.files) return []
+      const attachments = JSON.parse(msgData.files)
+      return attachments.filter(attachment => attachment.type == 'audio')
+    }
 
     const normalAttachments = () => {
-      if (!msgData.files) return [];
-      const attachments = JSON.parse(msgData.files);
+      if (!msgData.files) return []
+      const attachments = JSON.parse(msgData.files)
       return attachments.filter(
-        (attachment) => attachment.type != "audio" && attachment.type != "image"
-      );
-    };
+        attachment => attachment.type != 'audio' && attachment.type != 'image',
+      )
+    }
 
     const extractAttachments = () => {
-      if (!msgData.files) return [];
-      return JSON.parse(msgData.files);
-    };
+      if (!msgData.files) return []
+      return JSON.parse(msgData.files)
+    }
 
     async function deleteMsg() {
       const confirm = await this.$confirm("Are you sure you want to delete this message?<br>This can't be undone!", {
-        title: "Warning",
+        title: 'Warning',
         buttonFalseText: 'Cancel',
-        buttonTrueText: 'Delete Message'
-      });
-      if (!confirm) return;
+        buttonTrueText: 'Delete Message',
+      })
+      if (!confirm) return
 
       try {
-        await axios.delete(`/conversations/${msgsState.conversation.id}/messages/${msgData.id}`);
-        state.isConfirmDeleteOpen = false;
+        await axios.delete(`/conversations/${msgsState.conversation.id}/messages/${msgData.id}`)
+        state.isConfirmDeleteOpen = false
       } catch (err) {}
     }
 
@@ -179,9 +236,9 @@ export default {
       icons: {
         mdiTrashCanOutline,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

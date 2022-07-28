@@ -1,15 +1,17 @@
 <template>
   <div class="dashboard__content">
     <div class="d-flex flex-row align-center mb-6">
-      <h2 class="cursive-font black--text">Videos</h2>
+      <h2 class="cursive-font black--text">
+        Videos
+      </h2>
 
       <div class="ml-auto">
         <v-btn
-          @click="toggleRecordDialog(!state.isRecordDialogOpen)"
           color="primary"
           tile
           :outlined="state.isRecordDialogOpen"
           :disabled="isCtrlDisabled"
+          @click="toggleRecordDialog(!state.isRecordDialogOpen)"
         >
           Record
         </v-btn>
@@ -18,32 +20,32 @@
           class="ml-2 video-upload"
           color="info"
           tile
-          @click="toggleUploadDialog(true)"
           :disabled="isCtrlDisabled"
+          @click="toggleUploadDialog(true)"
         >
           Upload
         </v-btn>
       </div>
     </div>
 
-    <record-video v-if="state.isRecordDialogOpen"></record-video>
-    <upload-video></upload-video>
-    <videos-grid></videos-grid>
+    <record-video v-if="state.isRecordDialogOpen" />
+    <upload-video />
+    <videos-grid />
   </div>
 </template>
 
 <script>
-import RecordVideo from "@/components/videos/RecordVideo.vue";
-import UploadVideo from "@/components/videos/UploadVideoDialog.vue";
-import VideosGrid from "@/components/videos/VideosGrid.vue";
-import { useUser } from "@/composables/user/user";
-import { useVideos } from "@/composables/videos/videos";
-import axios from "@axios";
-import { mdiDelete } from "@mdi/js";
-import { onMounted } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiDelete } from '@mdi/js'
+import { onMounted } from '@vue/composition-api'
+import RecordVideo from '@/components/videos/RecordVideo.vue'
+import UploadVideo from '@/components/videos/UploadVideoDialog.vue'
+import VideosGrid from '@/components/videos/VideosGrid.vue'
+import { useUser } from '@/composables/user/user'
+import { useVideos } from '@/composables/videos/videos'
 
 export default {
-  name: "Videos",
+  name: 'Videos',
   components: { RecordVideo, UploadVideo, VideosGrid },
   setup() {
     const {
@@ -54,31 +56,31 @@ export default {
       isCtrlDisabled,
       toggleLoading,
       toggleUploadDialog,
-    } = useVideos();
+    } = useVideos()
 
-    const { userType } = useUser();
+    const { userType } = useUser()
 
-    onMounted(() => initVideos());
+    onMounted(() => initVideos())
 
     async function initVideos() {
       try {
-        toggleLoading(true);
-        var response = await axios.get("/media");
-        console.log(response);
-        setVideos(response.data);
+        toggleLoading(true)
+        const response = await axios.get('/media')
+        console.log(response)
+        setVideos(response.data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        toggleLoading(false);
+        toggleLoading(false)
       }
     }
 
     async function del(videoId) {
       try {
-        await axios.delete(`/media/${videoId}`);
-        deleteVideo(videoId);
+        await axios.delete(`/media/${videoId}`)
+        deleteVideo(videoId)
       } catch (err) {
-        console.log(err.response);
+        console.log(err.response)
       }
     }
     return {
@@ -92,9 +94,9 @@ export default {
       icons: {
         mdiDelete,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

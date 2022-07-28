@@ -12,7 +12,7 @@
         contain
         eager
         class="app-logo me-3"
-      ></v-img>
+      />
       <v-slide-x-transition>
         <h2
           v-show="!(menuIsVerticalNavMini && !isMouseHovered)"

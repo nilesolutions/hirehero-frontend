@@ -5,11 +5,10 @@
     <v-app>
       <subscription-notification-message
         @close="closeSubNotification"
-      ></subscription-notification-message
-    ></v-app>
+      /></v-app>
   </div>
   <v-app v-else>
-    <navbar></navbar>
+    <navbar />
     <v-alert
       v-if="state.isInfoVisible && infoMsg && !state.isLoading"
       color="primary"
@@ -20,60 +19,74 @@
     >
       {{ infoMsg }}
     </v-alert>
-    <v-alert v-if="userState.isPreviewMode" color="primary" class="mb-0" rounded="0" type="info">
-      You are currently previewing the website as {{ userName }}.<span class="ml-1"
-        >Any changes you make will be saved.</span
-      >
+    <v-alert
+      v-if="userState.isPreviewMode"
+      color="primary"
+      class="mb-0"
+      rounded="0"
+      type="info"
+    >
+      You are currently previewing the website as {{ userName }}.<span
+        class="ml-1"
+      >Any changes you make will be saved.</span>
     </v-alert>
 
     <div class="dashboard--layout">
-      <video-call-prompt></video-call-prompt>
-      <video-call></video-call>
+      <video-call-prompt />
+      <video-call />
 
-      <navigation></navigation>
+      <navigation />
 
-      <div v-if="state.isLoading" class="ml-auto mr-auto mt-6">
-        <v-progress-circular color="primary" indeterminate></v-progress-circular>
+      <!--  class="ml-auto mr-auto" -->
+
+      <div
+        v-if="state.isLoading"
+        class="loading-box"
+      >
+        <v-progress-circular
+          color="primary"
+          indeterminate
+          class="loading-spinner"
+        />
       </div>
-      <account-disabled-wall v-else-if="showAccountDisabled"></account-disabled-wall>
-      <!--
-        REMOVED
-        Ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        <subscription-paywall v-else-if="showSubPaywall"></subscription-paywall>
-      -->
-      <slot v-else> </slot>
+      <account-disabled-wall v-else-if="showAccountDisabled" />
+      <subscription-paywall v-else-if="showSubPaywall" />
+      <slot v-else />
       <!-- <slot> </slot> -->
     </div>
   </v-app>
 </template>
 
 <script>
-import Navbar from "@/components/layout/navbar/Navbar.vue";
-import Navigation from "@/components/layout/navigation/Navigation.vue";
-import AccountDisabledWall from "@/components/misc/AccountDisabledWall.vue";
-import SubscriptionNotificationMessage from "@/components/subscriptions/SubscriptionNotificationMessage.vue";
-import SubscriptionPaywall from "@/components/subscriptions/SubscriptionPaywall.vue";
-import VideoCall from "@/components/videocall/VideoCall.vue";
-import VideoCallPrompt from "@/components/videocall/VideoCallPrompt.vue";
+import axios from '@axios'
+import { mdiClose } from '@mdi/js'
+import {
+  computed, onMounted, onUnmounted, reactive,
+} from '@vue/composition-api'
+import { fa } from 'vuetify/lib/locale'
+import Navbar from '@/components/layout/navbar/Navbar.vue'
+import Navigation from '@/components/layout/navigation/Navigation.vue'
+import AccountDisabledWall from '@/components/misc/AccountDisabledWall.vue'
+import SubscriptionNotificationMessage from '@/components/subscriptions/SubscriptionNotificationMessage.vue'
+import SubscriptionPaywall from '@/components/subscriptions/SubscriptionPaywall.vue'
+import VideoCall from '@/components/videocall/VideoCall.vue'
+import VideoCallPrompt from '@/components/videocall/VideoCallPrompt.vue'
 
-import { useRouter } from "@/@core/utils";
-import { useMessages } from "@/composables/chat/messages";
-import { useNotifications } from "@/composables/chat/notifications";
+import { useRouter } from '@/@core/utils'
+import { useMessages } from '@/composables/chat/messages'
+import { useNotifications } from '@/composables/chat/notifications'
 import {
   notificationEvents,
   subscriptionEvents,
   videoCallEvents,
   videoCallPresenceEvents,
-} from "@/composables/event-listeners";
-import { usePusher } from "@/composables/pusher";
-import { useSubscription } from "@/composables/user/subscription";
-import { useUser } from "@/composables/user/user";
-import axios from "@axios";
-import { mdiClose } from "@mdi/js";
-import { computed, onMounted, onUnmounted, reactive } from "@vue/composition-api";
+} from '@/composables/event-listeners'
+import { usePusher } from '@/composables/pusher'
+import { useSubscription } from '@/composables/user/subscription'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "LayoutCustom",
+  name: 'LayoutCustom',
   components: {
     Navbar,
     Navigation,
@@ -88,130 +101,104 @@ export default {
       isLoading: true,
       isInfoVisible: true,
       hasSubNotification: true,
-    });
+    })
 
-    const { setSubInfo, isSubscribed } = useSubscription();
-    const { state: userState, userData, userName, userType, setUserData } = useUser();
-    const { setNotification } = useNotifications();
-    const { setAssociatedUser, associatedUser } = useMessages();
-    const { subscribeToChannel, unsubscribeFromChannel } = usePusher();
-    const { route } = useRouter();
+    const { setSubInfo, isSubscribed, isSubscriptionActive } = useSubscription()
+    const {
+      state: userState, userData, userName, userType, setUserData,
+    } = useUser()
+    const { setNotification } = useNotifications()
+    const { setAssociatedUser, associatedUser } = useMessages()
+    const { subscribeToChannel, unsubscribeFromChannel } = usePusher()
+    const { route } = useRouter()
 
-    var videoCallChannel = `presence-video-call-`;
-    var notificationsChannel = `private-notifications-`;
-    var privateUserChannel = `private-user-`;
+    let videoCallChannel = 'presence-video-call-'
+    let notificationsChannel = 'private-notifications-'
+    let privateUserChannel = 'private-user-'
 
     async function initApp() {
       try {
-        state.isLoading = true;
-        /*
-        * Removing subscription call: 
-        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        * 
-        * OLD VERSION
-        * const [user, associate, notifications, sub] = await Promise.all([
-            axios.get("/users/me"),
-            axios.get("/users/associate"),
-            axios.get("/conversations/notifications"),
-            axios.get("/subscriptions/"),
-          ]);
-        */
-        const [user, associate, notifications] = await Promise.all([
-          axios.get("/users/me"),
-          axios.get("/users/associate"),
-          axios.get("/conversations/notifications")
-        ]);
-        
-        setUserData(user.data);
-        setAssociatedUser(associate.data);
-        setNotification(notifications.data);
+        state.isLoading = true
+        const [user, associate, notifications, sub] = await Promise.all([
+          axios.get('/users/me'),
+          axios.get('/users/associate'),
+          axios.get('/conversations/notifications'),
+          axios.get('/subscriptions/'),
+        ])
 
-        /*
-        * Removed subscription call so, to bypass that call
-        * introducing a default value for subInfo: 
-        * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
-        * 
-        * OLD VERSION
-        * setSubInfo(sub.data);
-        * 
-        * Defualt / subscription response data is {}
-        * that's why passing {} to set subInfo
-        */
-        setSubInfo({});
+        setUserData(user.data)
+        setAssociatedUser(associate.data)
+        setNotification(notifications.data)
 
-        videoCallChannel += user.data.id;
-        privateUserChannel += user.data.id;
-        notificationsChannel += user.data.id;
+        setSubInfo(sub.data)
 
-        subscribeToChannel(videoCallChannel, videoCallEvents);
-        subscribeToChannel(privateUserChannel, subscriptionEvents);
-        subscribeToChannel(notificationsChannel, notificationEvents);
+        videoCallChannel += user.data.id
+        privateUserChannel += user.data.id
+        notificationsChannel += user.data.id
+
+        subscribeToChannel(videoCallChannel, videoCallEvents)
+        subscribeToChannel(privateUserChannel, subscriptionEvents)
+        subscribeToChannel(notificationsChannel, notificationEvents)
 
         if (associatedUser) {
           subscribeToChannel(`presence-video-call-${associatedUser.value.id}`, [
             ...videoCallPresenceEvents,
             ...videoCallEvents,
-          ]);
+          ])
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     onMounted(() => {
-      const searchParams = new URLSearchParams(window.location.search);
+      const searchParams = new URLSearchParams(window.location.search)
 
       if (
-        !searchParams.get("payment_intent_client_secret") &&
-        !searchParams.get("setup_intent_client_secret")
-      )
-        closeSubNotification();
-    });
+        !searchParams.get('payment_intent_client_secret')
+        && !searchParams.get('setup_intent_client_secret')
+      ) closeSubNotification()
+    })
 
     function closeSubNotification() {
-      state.hasSubNotification = false;
-      initApp();
+      state.hasSubNotification = false
+      initApp()
     }
 
     onUnmounted(() => {
-      unsubscribeFromChannel(videoCallChannel);
-      unsubscribeFromChannel(privateUserChannel);
-      unsubscribeFromChannel(notificationsChannel);
-    });
+      unsubscribeFromChannel(videoCallChannel)
+      unsubscribeFromChannel(privateUserChannel)
+      unsubscribeFromChannel(notificationsChannel)
+    })
 
     const showSubPaywall = computed(() => {
-      if (userType.value == "va") return false;
-
-      if (!isSubscribed.value && route.value.name != "settings") return true;
-      return false;
-    });
+      if (userType.value == 'va') return false
+      // if (!isSubscribed.value && route.value.name != "settings") return true;
+      if (!isSubscriptionActive.value && route.value.name != 'settings') return true
+      console.log('isSubscriptionActive : ', isSubscriptionActive.value)
+      return false
+    })
 
     const showAccountDisabled = computed(() => {
-      if (userData.value.is_disabled) return true;
-      return false;
-    });
+      if (userData.value.is_disabled) return true
+      return false
+    })
 
     const infoMsg = computed(() => {
-      var msg = [];
+      const msg = []
 
       if (!associatedUser.value) {
-        if (userType.value == "client") msg.push("No VA Assigned");
-        else msg.push("No Client Assigned");
+        if (userType.value == 'client') msg.push('No VA Assigned')
+        else msg.push('No Client Assigned')
       }
 
-      /* 
-      * REMOVING SUBSCRIPTION NOTIFICATION FOR NOW: 
-      * ref: https://bitbucket.org/hydro780/leadheroes-frontend/pull-requests/1
+      if (!isSubscribed.value && userType.value == 'client') msg.push('You are not subscribed to a plan')
 
-      if (!isSubscribed.value && userType.value == "client")
-        msg.push("You are not subscribed to a plan");
-      */
-
-      if (msg.length) return msg.join(" | ");
-      return "";
-    });
+      if (msg.length) return msg.join(' | ')
+      return ''
+    })
 
     return {
       state,
@@ -225,14 +212,33 @@ export default {
       icons: {
         mdiClose,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">
+
+.loading-spinner{
+    /* position: absolute; */
+    /* display: flex; */
+    /* justify-items: center; */
+    position: absolute;
+    margin: auto auto;
+    // margin-left: auto;
+    // margin-right: auto;
+    // margin-top: auto;
+    // margin-bottom: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+}
+
 .dashboard--layout {
   position: relative;
+  width: 100vw;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -253,9 +259,14 @@ export default {
   background-color: #f34c57;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 545px) {
   .dashboard__content {
     padding: 1.5rem 1rem;
   }
+  .dashboard--layout {
+  height: 100%;
+      display: block;
 }
+}
+
 </style>

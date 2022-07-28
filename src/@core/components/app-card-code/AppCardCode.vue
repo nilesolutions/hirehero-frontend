@@ -7,7 +7,7 @@
     <!-- Title -->
     <v-card-title>
       {{ title }}
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-slide-x-reverse-transition>
         <div v-show="isCodeCollapsed">
@@ -32,12 +32,12 @@
       </v-icon>
     </v-card-title>
     <div class="demo-content">
-      <slot></slot>
+      <slot />
     </div>
 
     <v-expand-transition>
       <div v-show="isCodeCollapsed">
-        <v-divider></v-divider>
+        <v-divider />
 
         <!-- Code -->
         <v-card-text>

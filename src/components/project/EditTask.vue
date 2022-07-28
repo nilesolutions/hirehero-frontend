@@ -1,15 +1,27 @@
 <template>
   <div>
     <v-card-title>
-      <v-btn @click="toggleEdit(false)" icon class="mr-2">
+      <v-btn
+        icon
+        class="mr-2"
+        @click="toggleEdit(false)"
+      >
         <v-icon>{{ icons.mdiChevronLeft }}</v-icon>
       </v-btn>
       <span>Edit Task</span>
     </v-card-title>
 
     <v-card-text class="align-self-center">
-      <v-form class="mb-4" @submit.prevent>
-        <v-text-field v-model="state.name" outlined label="Task name" required></v-text-field>
+      <v-form
+        class="mb-4"
+        @submit.prevent
+      >
+        <v-text-field
+          v-model="state.name"
+          outlined
+          label="Task name"
+          required
+        />
 
         <v-menu
           ref="menu"
@@ -27,31 +39,38 @@
               readonly
               v-bind="attrs"
               v-on="on"
-            ></v-text-field>
+            />
           </template>
-          <v-date-picker v-model="state.dueOn" :min="minDate" @change=""></v-date-picker>
+          <v-date-picker
+            v-model="state.dueOn"
+            :min="minDate"
+            @change=""
+          />
         </v-menu>
 
-        <v-text-field v-model="state.notes" outlined label="Notes"></v-text-field>
+        <v-text-field
+          v-model="state.notes"
+          outlined
+          label="Notes"
+        />
 
         <label for="">Priority</label>
         <v-select
+          v-model="state.priority"
           full-width
           label="Priority"
           outlined
-          v-model="state.priority"
           :items="priorityOptions"
           @change="setPriority"
-        >
-        </v-select>
+        />
 
         <v-btn
           :loading="state.isUpdating"
           :disabled="state.isUpdating"
-          @click="update"
           width="100%"
           color="primary"
           type="submit"
+          @click="update"
         >
           Update
         </v-btn>
@@ -61,18 +80,18 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { mdiChevronLeft } from "@mdi/js";
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
-import { reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiChevronLeft } from '@mdi/js'
+import { reactive } from '@vue/composition-api'
+import { useRouter } from '@/composables/router'
+import { useTasks } from '@/composables/tasks/tasks'
 
 export default {
-  name: "EditTask",
+  name: 'EditTask',
   setup() {
-    const { toggleEdit, activeTask, updateTask } = useTasks();
-    const taskCopy = JSON.parse(JSON.stringify(activeTask.value));
-    const projectId = useRouter().routeParams().id;
+    const { toggleEdit, activeTask, updateTask } = useTasks()
+    const taskCopy = JSON.parse(JSON.stringify(activeTask.value))
+    const projectId = useRouter().routeParams().id
 
     const state = reactive({
       isUpdating: false,
@@ -80,33 +99,33 @@ export default {
       notes: taskCopy.notes,
       dueOn: taskCopy.due_on,
       priority: taskCopy.priority,
-    });
+    })
 
-    const minDate = new Date().toISOString();
-    const priorityOptions = ["Low", "Medium", "High"];
-    const setPriority = (e) => {
-      state.priority = e;
-    };
+    const minDate = new Date().toISOString()
+    const priorityOptions = ['Low', 'Medium', 'High']
+    const setPriority = e => {
+      state.priority = e
+    }
 
     async function update() {
       try {
-        state.isUpdating = true;
+        state.isUpdating = true
         const updateData = {
           name: state.name,
           notes: state.notes,
           priority: state.priority,
           due_on: state.dueOn,
-        };
+        }
         const { data } = await axios.patch(
           `projects/${projectId}/tasks/${taskCopy.id}`,
-          updateData
-        );
-        updateTask(data);
-        toggleEdit(false);
+          updateData,
+        )
+        updateTask(data)
+        toggleEdit(false)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isUpdating = false;
+        state.isUpdating = false
       }
     }
 
@@ -123,9 +142,9 @@ export default {
       icons: {
         mdiChevronLeft,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

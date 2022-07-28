@@ -1,68 +1,93 @@
 <template>
-  <div class="text-center fill-height" v-if="isLoading">
-    <v-progress-circular color="primary" indeterminate></v-progress-circular>
+  <div
+    v-if="isLoading"
+    class="text-center fill-height"
+  >
+    <v-progress-circular
+      color="primary"
+      indeterminate
+    />
   </div>
-  <div class="my-2 d-flex flex-wrap flex-row" v-else>
+  <div
+    v-else
+    class="my-2 d-flex flex-wrap flex-row"
+  >
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading gray-heading font-weight-bold task-due-m">Not done</div>
+      <div class="section-heading gray-heading font-weight-bold task-due-m">
+        Not done
+      </div>
 
       <div class="tasks-column">
         <task-item
           v-for="(task, index) in unfinishedTasks"
-          :class="{ 'item-margin': index == unfinishedTasks.length - 1 }"
           :key="task.gid"
+          :class="{ 'item-margin': index == unfinishedTasks.length - 1 }"
           :task="task"
-        ></task-item>
+        />
         <v-card>
-          <v-card-text v-show="!unfinishedTasks.length">Nothing to show...</v-card-text>
+          <v-card-text v-show="!unfinishedTasks.length">
+            Nothing to show...
+          </v-card-text>
         </v-card>
       </div>
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading blue-heading font-weight-bold task-due-m">Due Soon</div>
+      <div class="section-heading blue-heading font-weight-bold task-due-m">
+        Due Soon
+      </div>
 
       <div class="tasks-column">
         <task-item
           v-for="(task, index) in dueSoonTasks"
-          :class="{ 'item-margin': index == dueSoonTasks.length - 1 }"
           :key="task.gid"
+          :class="{ 'item-margin': index == dueSoonTasks.length - 1 }"
           :task="task"
-        ></task-item>
+        />
         <v-card>
-          <v-card-text v-show="!dueSoonTasks.length">Nothing to show...</v-card-text>
+          <v-card-text v-show="!dueSoonTasks.length">
+            Nothing to show...
+          </v-card-text>
         </v-card>
       </div>
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading red-heading font-weight-bold task-due-m">Overdue</div>
+      <div class="section-heading red-heading font-weight-bold task-due-m">
+        Overdue
+      </div>
 
       <div class="tasks-column">
         <task-item
           v-for="(task, index) in overDueTasks"
-          :class="{ 'item-margin': index == overDueTasks.length - 1 }"
           :key="task.gid"
+          :class="{ 'item-margin': index == overDueTasks.length - 1 }"
           :task="task"
-        ></task-item>
+        />
         <v-card>
-          <v-card-text v-show="!overDueTasks.length">Nothing to show...</v-card-text>
+          <v-card-text v-show="!overDueTasks.length">
+            Nothing to show...
+          </v-card-text>
         </v-card>
       </div>
     </div>
 
     <div class="col-12 col-sm-6 col-md-3">
-      <div class="section-heading green-heading font-weight-bold task-due-m">Completed</div>
+      <div class="section-heading green-heading font-weight-bold task-due-m">
+        Completed
+      </div>
 
       <div class="tasks-column">
         <task-item
           v-for="(task, index) in doneTasks"
-          :class="{ 'item-margin': index == doneTasks.length - 1 }"
           :key="task.gid"
+          :class="{ 'item-margin': index == doneTasks.length - 1 }"
           :task="task"
-        ></task-item>
+        />
         <v-card>
-          <v-card-text v-show="!doneTasks.length">Nothing to show...</v-card-text>
+          <v-card-text v-show="!doneTasks.length">
+            Nothing to show...
+          </v-card-text>
         </v-card>
       </div>
     </div>
@@ -70,35 +95,36 @@
 </template>
 
 <script>
-import TaskItem from "@/components/project/TaskItem.vue";
-import { useRouter } from "@/composables/router";
-import { useTasks } from "@/composables/tasks/tasks";
-import axios from "@axios";
-import { onBeforeMount, onMounted, ref } from "@vue/composition-api";
+import axios from '@axios'
+import { onBeforeMount, onMounted, ref } from '@vue/composition-api'
+import TaskItem from '@/components/project/TaskItem.vue'
+import { useRouter } from '@/composables/router'
+import { useTasks } from '@/composables/tasks/tasks'
 
 export default {
-  name: "TasksView",
+  name: 'TasksView',
   components: { TaskItem },
   setup() {
-    const { setTasks, setActiveTaskId, doneTasks, unfinishedTasks, dueSoonTasks, overDueTasks } =
-      useTasks();
-    const { routeParams } = useRouter();
-    const isLoading = ref(true);
+    const {
+      setTasks, setActiveTaskId, doneTasks, unfinishedTasks, dueSoonTasks, overDueTasks,
+    } = useTasks()
+    const { routeParams } = useRouter()
+    const isLoading = ref(true)
 
     async function initTasks() {
       try {
-        const projectId = routeParams().id;
-        var response = await axios.get(`/projects/${projectId}/tasks`);
-        setTasks(response.data.tasks);
+        const projectId = routeParams().id
+        const response = await axios.get(`/projects/${projectId}/tasks`)
+        setTasks(response.data.tasks)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        isLoading.value = false;
+        isLoading.value = false
       }
     }
 
-    onMounted(() => initTasks());
-    onBeforeMount(() => setTasks([]));
+    onMounted(() => initTasks())
+    onBeforeMount(() => setTasks([]))
 
     return {
       setActiveTaskId,
@@ -109,9 +135,9 @@ export default {
       overDueTasks,
 
       isLoading,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">

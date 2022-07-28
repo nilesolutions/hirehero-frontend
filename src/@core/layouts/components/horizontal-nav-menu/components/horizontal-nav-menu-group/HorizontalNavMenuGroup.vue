@@ -40,7 +40,7 @@
           v-for="child in item.children"
           :key="child.subheader || child.title"
           :item="child"
-        ></component>
+        />
       </v-list-item-group>
     </v-list>
   </v-menu>

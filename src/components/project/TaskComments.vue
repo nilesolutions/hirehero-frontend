@@ -1,50 +1,71 @@
 <template>
-  <div v-else class="d-flex flex-column col-12">
+  <div
+    v-else
+    class="d-flex flex-column col-12 px-0"
+  >
     <v-card-actions>
-      Comments
-      <v-btn class="ml-auto" @click="state.showComments = !state.showComments" x-small icon>
+      <h4>Comments</h4>
+      <v-btn
+        class="ml-auto"
+        x-small
+        icon
+        @click="state.showComments = !state.showComments"
+      >
         <v-icon>{{ state.showComments ? icons.mdiChevronUp : icons.mdiChevronDown }}</v-icon>
       </v-btn>
     </v-card-actions>
 
     <v-card-text class="mt-2">
-      <form @submit.prevent="postComment" action="" class="d-flex flex-row align-center">
+      <form
+        action=""
+        class="d-flex flex-row align-center"
+        @submit.prevent="postComment"
+      >
         <v-text-field
+          v-model="state.text"
           clearable
           outlined
           dense
           hide-details
           label="Leave a comment"
-          v-model="state.text"
+        />
+        <v-btn
+          icon
+          :loading="state.isPostingComment"
+          class="send-msg-btn"
+          @click="postComment"
         >
-        </v-text-field>
-        <v-btn icon @click="postComment" :loading="state.isPostingComment" class="send-msg-btn">
           <v-icon>{{ icons.mdiSend }} </v-icon>
         </v-btn>
       </form>
     </v-card-text>
 
-    <v-card-text v-show="!comments.length">No comments</v-card-text>
+    <v-card-text v-show="!comments.length">
+      No comments
+    </v-card-text>
     <v-expand-transition>
-      <div v-show="state.showComments">
+      <div
+        v-show="state.showComments"
+        class="comments-box"
+      >
         <comment-line
           v-for="comment in comments"
           :key="comment.id"
           :comment="comment"
-        ></comment-line>
+        />
       </div>
     </v-expand-transition>
   </div>
 </template>
 
 <script>
-import CommentLine from "@/components/project/CommentLine.vue";
-import { useRouter } from "@/composables/router";
-import { useComments } from "@/composables/tasks/commnets";
-import { useTasks } from "@/composables/tasks/tasks";
-import axios from "@axios";
-import { mdiChevronDown, mdiChevronUp, mdiSend } from "@mdi/js";
-import { computed, onMounted, reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiChevronDown, mdiChevronUp, mdiSend } from '@mdi/js'
+import { computed, onMounted, reactive } from '@vue/composition-api'
+import CommentLine from '@/components/project/CommentLine.vue'
+import { useRouter } from '@/composables/router'
+import { useComments } from '@/composables/tasks/commnets'
+import { useTasks } from '@/composables/tasks/tasks'
 
 export default {
   components: { CommentLine },
@@ -53,46 +74,46 @@ export default {
       isLoading: false,
       isPostingComment: false,
       showComments: true,
-      text: "",
-    });
+      text: '',
+    })
 
-    const { activeTask } = useTasks();
-    const { comments, setComments, addComment } = useComments();
-    const projectId = useRouter().routeParams().id;
-    const taskId = activeTask.value.id;
-    const commentsUrl = `/projects/${projectId}/tasks/${taskId}/comments`;
+    const { activeTask } = useTasks()
+    const { comments, setComments, addComment } = useComments()
+    const projectId = useRouter().routeParams().id
+    const taskId = activeTask.value.id
+    const commentsUrl = `/projects/${projectId}/tasks/${taskId}/comments`
 
-    onMounted(() => fetchComments());
+    onMounted(() => fetchComments())
 
     async function fetchComments() {
       try {
-        const { data: fetchedComments } = await axios.get(commentsUrl);
-        setComments(fetchedComments);
+        const { data: fetchedComments } = await axios.get(commentsUrl)
+        setComments(fetchedComments)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     const canSend = computed(() => {
-      if (!state.text) return false;
-      if (state.isPostingComment) return false;
-      return true;
-    });
+      if (!state.text) return false
+      if (state.isPostingComment) return false
+      return true
+    })
 
     async function postComment() {
       try {
-        if (!canSend.value) return;
-        state.isPostingComment = true;
+        if (!canSend.value) return
+        state.isPostingComment = true
         const { data: newComment } = await axios.post(commentsUrl, {
           text: state.text,
-        });
-        addComment(newComment);
-        state.text = "";
+        })
+        addComment(newComment)
+        state.text = ''
       } catch (err) {
       } finally {
-        state.isPostingComment = false;
+        state.isPostingComment = false
       }
     }
 
@@ -107,13 +128,16 @@ export default {
         mdiChevronUp,
         mdiChevronDown,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style>
 .send-msg-btn:hover {
   color: #ff4c51 !important;
+}
+.comments-box{
+  margin: 0 20px !important;
 }
 </style>

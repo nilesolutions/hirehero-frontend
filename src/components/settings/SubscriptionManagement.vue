@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "SubscriptionManagement",
-};
+  name: 'SubscriptionManagement',
+}
 </script>
 
 <style></style>

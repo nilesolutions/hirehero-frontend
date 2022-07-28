@@ -19,7 +19,7 @@
           height="14px"
           width="22px"
           class="me-2"
-        ></v-img>
+        />
         <span v-if="$vuetify.breakpoint.smAndUp">{{ locales.find(l => l.locale === $i18n.locale).title }}</span>
       </div>
     </template>
@@ -41,7 +41,7 @@
             width="22px"
             :alt="locale.locale"
             class="me-2"
-          ></v-img>
+          />
           <v-list-item-title>{{ locale.title }}</v-list-item-title>
         </v-list-item>
       </v-list-item-group>
@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { loadLanguageAsync } from '@/plugins/i18n'
 import useAppConfig from '@core/@app-config/useAppConfig'
+import { loadLanguageAsync } from '@/plugins/i18n'
 
 export default {
   setup() {

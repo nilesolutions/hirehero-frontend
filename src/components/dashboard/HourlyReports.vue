@@ -13,41 +13,44 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
+              v-model="state.dateRange.toString().replace(',','  to  ')"
               outlined
-              v-model="state.dateRange"
               label="Choose date range"
               v-bind="attrs"
               v-on="on"
-            ></v-text-field>
+            />
           </template>
           <v-date-picker
             v-model="state.dateRange"
-            @change="fetchActivity"
             range
             no-title
             scrollable
-          >
-          </v-date-picker>
+            @change="fetchActivity"
+          />
         </v-menu>
       </v-card-text>
 
       <v-card-text>
-        <vue-apex-charts type="bar" height="250px" :options="state.options" :series="state.series">
-        </vue-apex-charts>
+        <vue-apex-charts
+          type="bar"
+          height="250px"
+          :options="state.options"
+          :series="state.series"
+        />
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import axios from "@axios";
-import VueApexCharts from "vue-apexcharts";
+import axios from '@axios'
+import VueApexCharts from 'vue-apexcharts'
 
-import { generateWeekRange } from "@/helpers";
-import { onMounted, reactive } from "@vue/composition-api";
+import { onMounted, reactive } from '@vue/composition-api'
+import { generateWeekRange } from '@/helpers'
 
 export default {
-  name: "HourlyReports",
+  name: 'HourlyReports',
   components: { VueApexCharts },
   setup() {
     const state = reactive({
@@ -55,48 +58,49 @@ export default {
       dateRange: [],
       series: [],
       options: {
-        legend: { position: "bottom" },
+        legend: { position: 'bottom' },
         xaxis: {
           categories: [],
         },
         yaxis: {},
         noData: {
-          text: "No data for selected period",
+          text: 'No data for selected period',
         },
       },
-    });
+    })
 
     onMounted(() => {
-      state.dateRange = generateWeekRange(1);
-      fetchActivity();
-    });
+      state.dateRange = generateWeekRange(1)
+      console.log(state.dateRange)
+      fetchActivity()
+    })
 
     async function fetchActivity() {
       try {
-        if (state.dateRange.length < 2) return;
-        state.isLoading = true;
-        const { data: activity } = await axios.get("tracker/activity", {
+        if (state.dateRange.length < 2) return
+        state.isLoading = true
+        const { data: activity } = await axios.get('tracker/activity', {
           params: {
             from: state.dateRange[0],
             to: state.dateRange[1],
           },
-        });
+        })
 
-        const durations = activity.map((entry) => (entry.to - entry.from) / 60);
+        const durations = activity.map(entry => (entry.to - entry.from) / 60)
 
-        state.series = [{ name: "Duration Worked (Minutes)", data: durations }];
+        state.series = [{ name: 'Duration Worked (Minutes)', data: durations }]
 
         state.options = {
           ...state.options,
           ...{
             xaxis: {
-              categories: activity.map((entry) => new Date(entry.from * 1000).toLocaleString()),
+              categories: activity.map(entry => new Date(entry.from * 1000).toLocaleString()),
             },
           },
-        };
+        }
       } catch (err) {
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -104,9 +108,9 @@ export default {
       state,
 
       fetchActivity,
-    };
+    }
   },
-};
+}
 </script>
 
 <style>

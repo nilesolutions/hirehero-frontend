@@ -35,7 +35,7 @@
               </v-chip>
             </div>
           </v-list-item>
-          <v-divider></v-divider>
+          <v-divider />
 
           <!-- Notifications -->
           <template v-for="(notification, index) in notifications">
@@ -51,7 +51,7 @@
                 <v-img
                   v-if="notification.user && notification.user.avatar"
                   :src="notification.user.avatar"
-                ></v-img>
+                />
                 <span
                   v-else-if="notification.user && !notification.user.avatar"
                   class="text-lg"
@@ -59,7 +59,7 @@
                 <v-img
                   v-else
                   :src="notification.service.icon"
-                ></v-img>
+                />
               </v-list-item-avatar>
 
               <!-- Content -->
@@ -77,7 +77,7 @@
                 <span class="text--secondary text-xs">{{ notification.time }}</span>
               </v-list-item-action>
             </v-list-item>
-            <v-divider :key="index"></v-divider>
+            <v-divider :key="index" />
           </template>
           <v-list-item
             key="read-all-btn"

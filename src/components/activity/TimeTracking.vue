@@ -14,13 +14,22 @@
           label="Choose date range"
           v-bind="attrs"
           v-on="on"
-        ></v-text-field>
+        />
       </template>
-      <v-date-picker v-model="state.dateRange" @change="fetchTableData" range no-title scrollable>
-      </v-date-picker>
+      <v-date-picker
+        v-model="state.dateRange"
+        range
+        no-title
+        scrollable
+        @change="fetchTableData"
+      />
     </v-menu>
 
-    <v-data-table :loading="state.isLoading" :items="state.tableData" :headers="state.headers">
+    <v-data-table
+      :loading="state.isLoading"
+      :items="state.tableData"
+      :headers="state.headers"
+    >
       <template v-slot:item.from="{ item }">
         <span>{{ formatDate(item.from) }}</span>
       </template>
@@ -40,27 +49,27 @@
       </template>
     </v-data-table>
 
-    <screenshots-popup v-if="isDetailsOpen"></screenshots-popup>
+    <screenshots-popup v-if="isDetailsOpen" />
   </div>
 </template>
 
 <script>
-import ScreenshotsPopup from "@/components/activity/ScreenshotsPopup.vue";
-import { useActivity } from "@/composables/activity/activity";
-import { generateWeekRange } from "@/helpers";
-import axios from "@axios";
-import { mdiEye } from "@mdi/js";
-import { onMounted, reactive, ref } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiEye } from '@mdi/js'
+import { onMounted, reactive, ref } from '@vue/composition-api'
+import ScreenshotsPopup from '@/components/activity/ScreenshotsPopup.vue'
+import { useActivity } from '@/composables/activity/activity'
+import { generateWeekRange } from '@/helpers'
 
 export default {
-  name: "TimeTracking",
+  name: 'TimeTracking',
   components: {
     ScreenshotsPopup,
   },
   setup() {
-    const { setClickedActivityId, isDetailsOpen } = useActivity();
+    const { setClickedActivityId, isDetailsOpen } = useActivity()
 
-    const menu = ref(null);
+    const menu = ref(null)
     const state = reactive({
       tableData: [],
       dateRange: [],
@@ -68,44 +77,44 @@ export default {
       isLoading: false,
       headers: [
         {
-          text: "Start",
-          value: "from",
+          text: 'Start',
+          value: 'from',
         },
         {
-          text: "End",
-          value: "to",
+          text: 'End',
+          value: 'to',
         },
         {
-          text: "View Screenshots",
-          value: "screenshots",
+          text: 'View Screenshots',
+          value: 'screenshots',
           sortable: false,
         },
       ],
-    });
+    })
 
     onMounted(() => {
-      state.dateRange = generateWeekRange(1);
-      fetchTableData();
-    });
+      state.dateRange = generateWeekRange(1)
+      fetchTableData()
+    })
 
-    const formatDate = (date) => new Date(date * 1000).toLocaleString();
+    const formatDate = date => new Date(date * 1000).toLocaleString()
 
     async function fetchTableData() {
       try {
-        if (state.dateRange.length < 2) return;
-        state.isLoading = true;
-        var [from, to] = state.dateRange;
-        var { data } = await axios.get("/tracker/activity", {
+        if (state.dateRange.length < 2) return
+        state.isLoading = true
+        const [from, to] = state.dateRange
+        const { data } = await axios.get('/tracker/activity', {
           params: {
             from,
             to,
           },
-        });
-        state.tableData = data;
+        })
+        state.tableData = data
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -119,9 +128,9 @@ export default {
       icons: {
         mdiEye,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

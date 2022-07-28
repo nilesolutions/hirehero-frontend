@@ -9,7 +9,7 @@
       :options="chartOptionsComputed"
       class="flex-grow-1"
       :series="chartSeries"
-    ></vue-apex-charts>
+    />
 
     <v-card-text class="font-weight-semibold text-center text--primary">
       {{ statTitle }}

@@ -4,38 +4,38 @@ import {
   mdiCogOutline,
   mdiMessageOutline,
   mdiVideoOutline,
-} from "@mdi/js";
+} from '@mdi/js'
 
 export default [
   {
-    subheader: "Workspace",
+    subheader: 'Workspace',
   },
   {
-    title: "Projects",
+    title: 'Projects',
     icon: mdiBriefcaseOutline,
-    to: "projects",
+    to: 'projects',
   },
   {
-    title: "Training Videos",
+    title: 'Training Videos',
     icon: mdiVideoOutline,
-    to: "videos",
+    to: 'videos',
   },
   {
-    title: "Activity",
+    title: 'Activity',
     icon: mdiAvTimer,
-    to: "activity",
+    to: 'activity',
   },
   {
-    subheader: "Personal",
+    subheader: 'Personal',
   },
   {
-    title: "Inbox",
+    title: 'Inbox',
     icon: mdiMessageOutline,
-    to: "home",
+    to: 'home',
   },
   {
-    title: "Settings",
+    title: 'Settings',
     icon: mdiCogOutline,
-    to: "home",
+    to: 'home',
   },
-];
+]

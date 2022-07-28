@@ -1,41 +1,49 @@
 <template>
-  <div class="navigation" :class="menuClass">
+  <div
+    class="navigation"
+    :class="menuClass"
+  >
     <v-btn
-      small
       v-if="breakpoint == 'md'"
+      small
       class="navigation__toggle mb-4"
-      @click="setMenuActive(!state.isMenuFixed)"
       icon
+      @click="setMenuActive(!state.isMenuFixed)"
     >
       <v-icon>{{ state.isMenuFixed ? icons.mdiChevronLeft : icons.mdiChevronRight }}</v-icon>
     </v-btn>
 
     <ul class="navigation__menu">
-      <component v-for="(item, idx) in navItems" :key="idx" :is="item.type" :item="item">
-      </component>
+      <component
+        :is="item.type"
+        v-for="(item, idx) in navItems"
+        :key="idx"
+        :item="item "
+      />
     </ul>
   </div>
 </template>
 
 <script>
-import {useNavigation} from "@/composables/navigation";
-import {mdiChevronRight, mdiChevronLeft} from "@mdi/js";
-import {onMounted, onUnmounted, computed} from "@vue/composition-api";
-import navItems from "@/components/layout/navigation/navigation-items";
-import NavigationItem from "@/components/layout/navigation/NavigationItem.vue";
-import NavigationSubheader from "@/components/layout/navigation/NavigationSubheader.vue";
-import {useUser} from "@/composables/user/user";
+import { mdiChevronRight, mdiChevronLeft } from '@mdi/js'
+import { onMounted, onUnmounted, computed } from '@vue/composition-api'
+import { useNavigation } from '@/composables/navigation'
+import navItems from '@/components/layout/navigation/navigation-items'
+import NavigationItem from '@/components/layout/navigation/NavigationItem.vue'
+import NavigationSubheader from '@/components/layout/navigation/NavigationSubheader.vue'
+import { useUser } from '@/composables/user/user'
 
 export default {
-  name: "Navigation",
+  name: 'Navigation',
   components: {
     NavigationItem,
     NavigationSubheader,
   },
 
   setup() {
-    const {state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive} =
-      useNavigation();
+    const {
+      state, breakpoint, menuClass, setWidth, closeMenu, setHovering, setMenuActive,
+    } = useNavigation()
 
     // const { state: userState } = useUser();
 
@@ -44,8 +52,8 @@ export default {
     //   return navItems.filter((item) => item.to != "settings");
     // });
 
-    onMounted(() => window.addEventListener("resize", setWidth));
-    onUnmounted(() => window.removeEventListener("resize", setWidth));
+    onMounted(() => window.addEventListener('resize', setWidth))
+    onUnmounted(() => window.removeEventListener('resize', setWidth))
 
     return {
       state,
@@ -59,9 +67,9 @@ export default {
         mdiChevronRight,
         mdiChevronLeft,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -94,7 +102,7 @@ export default {
   position: absolute;
   height: 100%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  width: 200px;
+  width: 270px;
   z-index: 9;
 }
 

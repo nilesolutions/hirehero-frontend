@@ -1,16 +1,22 @@
 <template>
-  <v-dialog @click:outside="closeDialog" max-width="500" v-model="isOpen">
+  <v-dialog
+    v-model="isOpen"
+    max-width="500"
+    @click:outside="closeDialog"
+  >
     <v-card>
-      <v-card-title class="justify-center">Create New Project</v-card-title>
+      <v-card-title class="justify-center">
+        Create New Project
+      </v-card-title>
 
       <v-text-field
         v-model="state.name"
-        v-on:keyup.enter="createProject"
         class="mx-5"
         outlined
         height="14"
         label="Project Name"
-      ></v-text-field>
+        @keyup.enter="createProject"
+      />
 
       <v-card-actions class="justify-center">
         <v-btn
@@ -18,52 +24,62 @@
           :disabled="state.isLoading"
           color="primary"
           @click="createProject"
-          >Create</v-btn
+        >Create</v-btn>
+        <v-btn
+          :disabled="state.isLoading"
+          color="danger"
+          @click="closeDialog"
         >
-        <v-btn :disabled="state.isLoading" color="danger" @click="closeDialog">Cancel</v-btn>
+          Cancel
+        </v-btn>
       </v-card-actions>
 
-      <div v-show="state.errorMsg" class="text-center">Error while creating</div>
+      <div
+        v-show="state.errorMsg"
+        class="text-center"
+      >
+        Error while creating
+      </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import axios from "@axios";
-import { reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { reactive } from '@vue/composition-api'
 
 export default {
-  name: "CreateProjectDialog",
-  props: ["isOpen"],
+  name: 'CreateProjectDialog',
+  props: ['isOpen'],
   setup(_, { emit }) {
     const state = reactive({
-      name: "",
-      errorMsg: "",
+      name: '',
+      errorMsg: '',
       isLoading: false,
-    });
+    })
 
-    const closeDialog = () => emit("close");
+    const closeDialog = () => emit('close')
 
     async function createProject() {
       try {
-        if (!state.name) return;
-        state.errorMsg = "";
-        state.isLoading = true;
+        if (!state.name) return
+        state.errorMsg = ''
+        state.isLoading = true
 
-        var response = await axios.post("/projects", {
+        const response = await axios.post('/projects', {
           name: state.name,
-        });
-        emit("projectCreated", {
+        })
+        emit('projectCreated', {
           ...response.data,
           created_at: Date.now(),
-        });
-        emit("close");
+        })
+        emit('close')
       } catch (err) {
-        console.log("failure from function");
-        console.log(err);
-        //state.errorMsg = err.response.data.message;
+        console.log('failure from function')
+        console.log(err)
+        // state.errorMsg = err.response.data.message;
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
@@ -71,9 +87,9 @@ export default {
       state,
       closeDialog,
       createProject,
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>

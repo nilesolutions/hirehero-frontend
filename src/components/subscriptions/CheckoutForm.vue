@@ -1,161 +1,178 @@
 <template>
-  <v-card :loading="isCardDisabled" :disabled="isCardDisabled">
+  <v-card
+    :loading="isCardDisabled"
+    :disabled="isCardDisabled"
+  >
     <v-card-title>
       <span class="cursive-font">Checkout</span>
-      <v-btn class="ml-auto" @click="closeForm" icon>
+      <v-btn
+        class="ml-auto"
+        icon
+        @click="closeForm"
+      >
         <v-icon>{{ icons.mdiClose }}</v-icon>
       </v-btn>
     </v-card-title>
 
-    <v-stepper v-model="checkoutState.step" elevation="0">
+    <v-stepper
+      v-model="checkoutState.step"
+      elevation="0"
+    >
       <v-stepper-header>
-        <v-stepper-step step="1">Apply coupon</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="2">Checkout details</v-stepper-step>
+        <v-stepper-step step="1">
+          Apply coupon
+        </v-stepper-step>
+        <v-divider />
+        <v-stepper-step step="2">
+          Checkout details
+        </v-stepper-step>
       </v-stepper-header>
     </v-stepper>
 
-    <apply-coupon-step v-if="checkoutState.step == 1"></apply-coupon-step>
-    <billing-details-step v-if="checkoutState.step == 2"></billing-details-step>
+    <apply-coupon-step v-if="checkoutState.step == 1" />
+    <billing-details-step v-if="checkoutState.step == 2" />
 
-    <div class="text-center" v-if="state.initError">
+    <div
+      v-if="state.initError"
+      class="text-center"
+    >
       {{ state.initError }}
     </div>
   </v-card>
 </template>
 
 <script>
-import axios from "@axios";
-import { loadStripe } from "@stripe/stripe-js";
-import { mdiClose } from "@mdi/js";
+import axios from '@axios'
+import { loadStripe } from '@stripe/stripe-js'
+import { mdiClose } from '@mdi/js'
 
-import { reactive, onMounted, computed } from "@vue/composition-api";
-import { useSubscription } from "@/composables/user/subscription";
+import { reactive, onMounted, computed } from '@vue/composition-api'
+import { useSubscription } from '@/composables/user/subscription'
 
-import ApplyCouponStep from "@/components/subscriptions/ApplyCouponStep.vue";
-import BillingDetailsStep from "@/components/subscriptions/BillingDetailsStep.vue";
-import { useCheckout } from "@/composables/user/checkout";
+import ApplyCouponStep from '@/components/subscriptions/ApplyCouponStep.vue'
+import BillingDetailsStep from '@/components/subscriptions/BillingDetailsStep.vue'
+import { useCheckout } from '@/composables/user/checkout'
 
 export default {
-  name: "CheckoutForm",
+  name: 'CheckoutForm',
   components: { ApplyCouponStep, BillingDetailsStep },
   setup() {
-    const { state: subscriptionState } = useSubscription();
+    const { state: subscriptionState } = useSubscription()
 
-    const { state: checkoutState, checkoutPlan, resetCheckoutState } = useCheckout();
+    const { state: checkoutState, checkoutPlan, resetCheckoutState } = useCheckout()
 
     const state = reactive({
       isInitting: true,
       isSubmitting: false,
-      initError: "",
-      msg: "",
-    });
+      initError: '',
+      msg: '',
+    })
 
-    var subId = "",
-      stripe = null,
-      elements = null,
-      paymentElement = null;
+    let subId = ''
+    let stripe = null
+    let elements = null
+    let paymentElement = null
 
     async function closeForm() {
-      if (subId) cancelCheckout();
-      resetCheckoutState();
+      if (subId) cancelCheckout()
+      resetCheckoutState()
     }
 
     const isCardDisabled = computed(() => {
-      if (checkoutState.isBillingLoading && checkoutState.step == 2) return true;
-      if (checkoutState.isSubmitting) return true;
-      return false;
-    });
+      if (checkoutState.isBillingLoading && checkoutState.step == 2) return true
+      if (checkoutState.isSubmitting) return true
+      return false
+    })
 
     async function handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      state.msg = "";
-      state.isSubmitting = true;
+      state.msg = ''
+      state.isSubmitting = true
 
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: process.env.VUE_APP_STRIPE_REDIRECT_URL + "?type=subscribed",
+          return_url: `${process.env.VUE_APP_STRIPE_REDIRECT_URL}?type=subscribed`,
         },
-      });
+      })
 
       if (error) {
-        state.msg = error.message;
-        state.isSubmitting = false;
+        state.msg = error.message
+        state.isSubmitting = false
       }
     }
 
     async function applyCoupon() {
-      if (!state.promotionCode) return;
+      if (!state.promotionCode) return
 
       try {
-        state.isSubmitting = true;
-        const { data: appliedCoupon } = await axios.post("/coupons/apply", {
-          subId: subId,
+        state.isSubmitting = true
+        const { data: appliedCoupon } = await axios.post('/coupons/apply', {
+          subId,
           code: state.promotionCode,
-        });
+        })
 
-        state.appliedCoupon = appliedCoupon;
+        state.appliedCoupon = appliedCoupon
       } catch (err) {
-        const status = err.response.status;
-        if (status == 403) state.couponError = "Code expired";
-        else if (status == 400) state.couponError = "Code does not exist";
-        else state.couponError = "Invalid code";
+        const { status } = err.response
+        if (status == 403) state.couponError = 'Code expired'
+        else if (status == 400) state.couponError = 'Code does not exist'
+        else state.couponError = 'Invalid code'
 
-        state.appliedCoupon = {};
+        state.appliedCoupon = {}
       } finally {
-        state.isSubmitting = false;
+        state.isSubmitting = false
       }
     }
 
     async function removeCoupon() {
       try {
-        state.isSubmitting = true;
-        await axios.post("/coupons/clear", {
-          subId: subId,
-        });
-        state.appliedCoupon = {};
+        state.isSubmitting = true
+        await axios.post('/coupons/clear', {
+          subId,
+        })
+        state.appliedCoupon = {}
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isSubmitting = false;
+        state.isSubmitting = false
       }
     }
 
     async function initForm() {
       try {
-        const { data: paymentIntent } = await axios.post("/subscriptions", {
+        const { data: paymentIntent } = await axios.post('/subscriptions', {
           priceId: subscriptionState.clickedPrice,
-        });
+        })
 
-        subId = paymentIntent.subscriptionId;
+        subId = paymentIntent.subscriptionId
 
-        stripe = await loadStripe(process.env.VUE_APP_STRIPE_PK);
+        stripe = await loadStripe(process.env.VUE_APP_STRIPE_PK)
         elements = stripe.elements({
           clientSecret: paymentIntent.clientSecret,
-        });
-        paymentElement = elements.create("payment");
-        paymentElement.on("ready", () => {
-          state.isInitting = false;
-        });
+        })
+        paymentElement = elements.create('payment')
+        paymentElement.on('ready', () => {
+          state.isInitting = false
+        })
 
-        paymentElement.mount("#payment-element");
+        paymentElement.mount('#payment-element')
       } catch (err) {
-        state.initError = "Error occured while checking out. Please try again later";
-        state.isInitting = false;
-        console.log(err);
+        state.initError = 'Error occured while checking out. Please try again later'
+        state.isInitting = false
+        console.log(err)
       }
     }
 
     onMounted(() => {
-      //initForm();
-    });
+      // initForm();
+    })
 
     async function cancelCheckout() {
-      await axios.post("/subscriptions/cancel-checkout", {
+      await axios.post('/subscriptions/cancel-checkout', {
         subId,
-      });
+      })
     }
 
     return {
@@ -172,9 +189,9 @@ export default {
       icons: {
         mdiClose,
       },
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss"></style>

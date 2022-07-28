@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <v-btn class="d-block mb-2" small elevation="0" @click="toggleActivePlanUpdate(true)">
-      <b>
+  <div class="py-4">
+    <v-btn
+      class="d-block mb-2 "
+      elevation="0"
+      @click="toggleActivePlanUpdate(true)"
+    >
+      <b class="heading-size">
         Manage plan
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
@@ -14,21 +18,28 @@
       elevation="0"
       @click="removeCard"
     >
-      <b>
+      <b class="heading-size">
         Remove card
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
-    <v-btn class="d-block mb-2" small elevation="0" @click="togglePaymentMethodUpdate(true)">
-      <b>
+    <v-btn
+      class="d-block mb-2"
+      elevation="0"
+      @click="togglePaymentMethodUpdate(true)"
+    >
+      <b class="heading-size">
         Update payment method
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
     </v-btn>
 
-    <v-btn @click="cancelSubscription" small elevation="0">
-      <b>
+    <v-btn
+      elevation="0"
+      @click="cancelSubscription"
+    >
+      <b class="heading-size">
         Cancel subscription
         <v-icon>{{ icons.mdiChevronRight }}</v-icon>
       </b>
@@ -37,15 +48,14 @@
 </template>
 
 <script>
-import axios from "@axios";
+import axios from '@axios'
 
-import {reactive} from "@vue/composition-api";
-import {useSubscription} from "@/composables/user/subscription";
-
-import {mdiChevronRight} from "@mdi/js";
+import { reactive } from '@vue/composition-api'
+import { mdiChevronRight } from '@mdi/js'
+import { useSubscription } from '@/composables/user/subscription'
 
 export default {
-  name: "CurrentPlanControls",
+  name: 'CurrentPlanControls',
   setup() {
     const {
       isSubscribed,
@@ -65,60 +75,60 @@ export default {
       togglePaymentMethodUpdate,
       toggleIsRemovingCard,
       hasPaymentMethodAttached,
-    } = useSubscription();
+    } = useSubscription()
 
     const state = reactive({
       isCancelOpen: false,
       isCancelling: false,
       isLoading: false,
-    });
+    })
 
     async function cancelSubscription() {
       const confirm = await this.$confirm(
-        "Are you sure you want to cancel your plan?<br> This action can not be undone!",
-        {title: "Warning"}
-      );
+        'Are you sure you want to cancel your plan?<br> This action can not be undone!',
+        { title: 'Warning' },
+      )
 
-      if (!confirm) return;
+      if (!confirm) return
 
       try {
-        state.isCancelling = true;
-        await axios.delete("/subscriptions");
-        setSubInfo({});
+        state.isCancelling = true
+        await axios.delete('/subscriptions')
+        setSubInfo({})
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isCancelOpen = false;
-        state.isCancelling = false;
+        state.isCancelOpen = false
+        state.isCancelling = false
       }
     }
 
     async function removeCard() {
       try {
         const confirm = await this.$confirm(
-          "Are you sure you want to remove your card?<br> This will cause future payments to fail.",
+          'Are you sure you want to remove your card?<br> This will cause future payments to fail.',
           {
-            buttonFalseText: "Cancel",
-            buttonTrueText: "Remove Card"
-          }
-        );
-        if (!confirm) return;
+            buttonFalseText: 'Cancel',
+            buttonTrueText: 'Remove Card',
+          },
+        )
+        if (!confirm) return
 
-        toggleIsRemovingCard(true);
-        await axios.post("/payment-methods/remove-default");
-        setPaymentMethod({});
-        this.$confirm("Credit card removed successfully", {
-          buttonFalseText: "",
-          buttonTrueText: "Confirm",
-        });
+        toggleIsRemovingCard(true)
+        await axios.post('/payment-methods/remove-default')
+        setPaymentMethod({})
+        this.$confirm('Credit card removed successfully', {
+          buttonFalseText: '',
+          buttonTrueText: 'Confirm',
+        })
       } catch (err) {
-        this.$confirm("Error occured while removing card", {
-          buttonFalseText: "",
-          buttonTrueText: "Confirm",
-        });
-        console.log(err);
+        this.$confirm('Error occured while removing card', {
+          buttonFalseText: '',
+          buttonTrueText: 'Confirm',
+        })
+        console.log(err)
       } finally {
-        toggleIsRemovingCard(false);
+        toggleIsRemovingCard(false)
       }
     }
 
@@ -145,9 +155,17 @@ export default {
       icons: {
         mdiChevronRight,
       },
-    };
+    }
   },
-};
+}
 </script>
 
-<style></style>
+<style>
+
+@media (max-width:767px) {
+  .heading-size{
+  font-size: 16px !important;
+}
+}
+
+</style>

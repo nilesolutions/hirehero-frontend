@@ -3,16 +3,19 @@
     <v-card :loading="state.isLoading">
       <v-card-title>
         <span>Recent Tasks</span>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <router-link to="projects">
           <small>See Details</small>
         </router-link>
       </v-card-title>
 
       <v-card-text>
-        <v-data-table :items="state.tableData" :headers="headers">
+        <v-data-table
+          :items="state.tableData"
+          :headers="headers"
+        >
           <template v-slot:item.created_at="{ item }">
-            <span>{{ new Date(item.created_at).toLocaleString() }}</span>
+            <span>{{ new Date(item.created_at).toLocaleDateString().split('/').reverse().join('-') }}</span>
           </template>
 
           <template v-slot:item.completed="{ item }">
@@ -25,57 +28,57 @@
 </template>
 
 <script>
-import axios from "@axios";
-import { onMounted, reactive } from "@vue/composition-api";
+import axios from '@axios'
+import { onMounted, reactive } from '@vue/composition-api'
 
 export default {
-  name: "RecentTasks",
+  name: 'RecentTasks',
 
   setup() {
     const headers = [
       {
-        text: "Name",
-        value: "name",
+        text: 'Name',
+        value: 'name',
       },
       {
-        text: "Date",
-        value: "created_at",
+        text: 'Date',
+        value: 'created_at',
       },
       {
-        text: "Priority",
-        value: "priority",
+        text: 'Priority',
+        value: 'priority',
       },
       {
-        text: "Status",
-        value: "completed",
+        text: 'Status',
+        value: 'completed',
       },
-    ];
+    ]
 
     const state = reactive({
       isLoading: false,
       tableData: [],
-    });
+    })
 
-    onMounted(() => fetchRecentTasks());
+    onMounted(() => fetchRecentTasks())
 
     async function fetchRecentTasks() {
       try {
-        state.isLoading = true;
-        const { data } = await axios.get("stats/recent-tasks");
-        state.tableData = data;
+        state.isLoading = true
+        const { data } = await axios.get('stats/recent-tasks')
+        state.tableData = data
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        state.isLoading = false;
+        state.isLoading = false
       }
     }
 
     return {
       state,
       headers,
-    };
+    }
   },
-};
+}
 </script>
 
 <style></style>
