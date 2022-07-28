@@ -356,7 +356,7 @@
         </v-col>
 
         <v-col cols="12" class="mx-auto">
-          <div class="auth-footer" style="background: transparent !important;">
+          <div class="auth-footer" >
             <ul>
               <li>Privacy Policy</li>
               <li>Contact us</li>
@@ -642,8 +642,25 @@ export default {
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 
+.v-card__text.auth-mob-padding{
+  text-align: center !important;
+}
+.auth-bg-wrapper{
+  background: #f5f5f5 !important;
+}
+.auth-footer{
+  background: #fff !important;
+}
 .auth-submit-btn {
  padding: 24px  0 !important;
+}
+.logo-img-size{
+    max-width: 150px !important;
+}
+.v-application.theme--light .v-sheet.v-card:not(.v-sheet--outlined),
+.v-sheet.v-card:not(.v-sheet--outlined)
+{
+  box-shadow: none;
 }
 @media (max-width:1265px) {
   .auth-mob-padding{
@@ -658,6 +675,19 @@ export default {
 }
 
 @media (max-width: 767px) {
+
+.v-application.theme--light .v-stepper:not(.v-sheet--outlined),
+.v-application.theme--light .v-sheet.v-card:not(.v-sheet--outlined),
+.v-sheet.v-card:not(.v-sheet--outlined)
+{
+  box-shadow: none;
+}
+
+
+  .v-application .pa-10{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
   .brand-logo{
     display: flex;
   justify-content: center;

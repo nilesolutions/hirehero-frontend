@@ -4,7 +4,7 @@
       class="mb-2"
       @click="goToProject"
     >
-      <v-card-title class="font-weight-black black--text text-capitalize">
+      <v-card-title class="font-weight-black black--text text-capitalize px-4 pt-4 ">
         {{ project.name }}
       </v-card-title>
 
@@ -104,6 +104,9 @@ export default {
 </script>
 
 <style scoped>
+/* .v-card__title .font-weight-black .black--text .text-capitalize{
+  padding: 20px 20px 0 20px !important;
+} */
 .box-padding{
   padding-right:20px !important;
   padding-left: 0 !important;

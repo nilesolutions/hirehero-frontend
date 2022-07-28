@@ -254,7 +254,8 @@ button.theme--light.v-btn:hover::before {
 .v-card__text.mt-2.black--text.d-flex.flex-row.align-center.text-capitalize{
   overflow: hidden;
   word-break: break-all !important;
-  max-width: 325px !important;
+  max-width: 266px !important;
+  padding: 5PX 20px !important;
 }
 .video-card.mb-5.mt-3.m-right.p-relative.v-card.v-sheet.theme--light{
 max-width: 325px !important;
@@ -282,20 +283,28 @@ max-width: 325px !important;
   padding-right: 20px !important;
 }
 @media (max-width:768px) {
+  .v-application .mr-4{
+    margin-right: 0px !important;
+  }
   .m-right{
     margin-right: 0px !important;
   }
   .video-thumbnail {
   max-width: 500px !important;
-  height: 200px !important;
+  height: 210px !important;
   max-height: 300px;
   top: 0 !important;
   bottom: 0 !important;
   left:  0 !important;
   right: 0 !important;
+  padding-top: 4px;
 }
 .video-card.mb-5.mt-3.m-right.p-relative.v-card.v-sheet.theme--light{
-max-width: 415px !important;
+max-width: 515px !important;
 }
+.v-card__text.mt-2.black--text.d-flex.flex-row.align-center.text-capitalize{
+  max-width: 100% !important;
+}
+
 }
 </style>
