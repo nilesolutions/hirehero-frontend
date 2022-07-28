@@ -8,7 +8,7 @@
         {{ plan.name }} {{ isActivePlan ? " (Your Plan)" : "" }}
       </v-card-title>
 
-      <v-card-text class="text-center price">
+      <v-card-text class="price">
         {{ planPrice }}
       </v-card-text>
 
@@ -46,8 +46,9 @@ export default {
 
     const planPrice = computed(() => {
       const price = plan.amount / 100
+      const commaSeparatedPrice = price.toLocaleString('en-US')
       const currency = plan.currency.toUpperCase()
-      return `$ ${price} ${currency} / Month`
+      return `$${commaSeparatedPrice} / Month`
     })
 
     const isActivePlan = computed(() => {
@@ -95,7 +96,6 @@ padding: 15px 10px !important;
 /* margin: 0 5px !important; */
 }
 .price{
-  padding: 0;
   font-size: 18px !important;
 }
 

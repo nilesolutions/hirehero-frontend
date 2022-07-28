@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex flex-row mt-4 ">
+  <div class="d-flex flex-row mt-4">
     <v-card
-      class="col-lg-8 col-12 box"
+      class="col-12 box"
       elevation="4"
       :loading="subscriptionState.isRetryingPayment || subscriptionState.isRemovingCard"
       :disabled="subscriptionState.isRetryingPayment || subscriptionState.isRemovingCard"

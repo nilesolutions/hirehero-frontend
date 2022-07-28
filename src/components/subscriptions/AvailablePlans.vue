@@ -1,10 +1,11 @@
 <template>
-  <div class="mt-4">
-    <h3 class="cursive-font">
+  <div class="mt-10">
+    <h3 class="cursive-font mx-3">
       Available Plans
     </h3>
     <div class="d-flex flex-row flex-wrap">
       <plan-card
+        class="p-0 m-0"
         v-for="plan in plans"
         :key="plan.priceId"
         :plan="plan"
