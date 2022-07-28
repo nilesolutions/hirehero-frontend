@@ -371,10 +371,10 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import axios from "@axios";
-import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
-import themeConfig from "@themeConfig";
-import { reactive, computed } from "@vue/composition-api";
+import axios from '@axios'
+import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
+import themeConfig from '@themeConfig'
+import { reactive, computed } from '@vue/composition-api'
 
 export default {
   name: 'Signup',
@@ -382,27 +382,28 @@ export default {
     const state = reactive({
       isPasswordVisible: false,
       isLoading: false,
-      errorMsg: "",
-      user_id: "",
-      first_name: "",
-      last_name: "",
-      username: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      accType: "",
+      errorMsg: '',
+      user_id: '',
+      first_name: '',
+      last_name: '',
+      username: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      accType: '',
       number_of_va: 0,
-      va_description: "",
-      va_assist_application: "",
-      source: "",
-      other_source: "",
-      referred_person: "",
+      va_description: '',
+      va_assist_application: '',
+      source: '',
+      other_source: '',
+      referred_person: '',
       accCreated: false,
       tos_agreement: 'no',
-      e1: 1
-    });
+      e1: 1,
+    })
 
+    // eslint-disable-next-line arrow-body-style
     const signupData = computed(() => {
       return {
         first_name: state.first_name,
@@ -419,13 +420,14 @@ export default {
         heard_from_other: state.other_source,
         referred_person: state.referred_person,
       }
-    });
+    })
 
     const accTypeOpts = [
       { value: 'client', text: 'Hire a virtual assistant' },
       { value: 'va', text: 'Work as a virtual assistant' },
     ]
 
+    // eslint-disable-next-line no-shadow
     function resetForm(state) {
       state.first_name = ''
       state.last_name = ''
@@ -445,124 +447,53 @@ export default {
 
     async function validateStep1() {
       state.errorMsg = ''
-      if (state.first_name == '') {
+      if (state.first_name === '') {
         state.errorMsg = 'First name is required'
       }
-      if (state.last_name == '') {
+      if (state.last_name === '') {
         state.errorMsg = 'Last name is required'
       }
-      if (state.username == '') {
+      if (state.username === '') {
         state.errorMsg = 'Username is required'
       }
-      if (state.email == '') {
+      if (state.email === '') {
         state.errorMsg = 'Email is required'
       }
-      if (state.phone == '') {
+      if (state.phone === '') {
         state.errorMsg = 'Phone is required'
       }
 
       if (state.password.length < 6) {
         state.errorMsg = 'Too short password'
       }
-      if (state.password != state.confirmPassword) {
+      if (state.password !== state.confirmPassword) {
         state.errorMsg = 'Passwords did not match'
       }
 
-      if (state.errorMsg == '') {
+      if (state.errorMsg === '') {
         state.e1 = 2
       }
     }
 
     function validateStep2() {
       state.errorMsg = ''
-      if (state.accType == '') {
+      if (state.accType === '') {
         state.errorMsg = 'Please select a account type'
       }
 
-      if (state.accType == 'client') {
-        if (state.number_of_va == 0) {
+      if (state.accType === 'client') {
+        if (state.number_of_va === 0) {
           state.errorMsg = 'Please set number of VA you need.'
         }
-        if (state.va_description == '') {
+        if (state.va_description === '') {
           state.errorMsg = 'Please write down task requirements.'
         }
-        if (state.va_assist_application == '') {
+        if (state.va_assist_application === '') {
           state.errorMsg = 'Please write down software requirements.'
         }
       }
 
-      if (state.errorMsg == '') {
-        state.e1 = 3
-      }
-    }
-
-    function resetForm (state) {
-      state.first_name = "";
-      state.last_name = "";
-      state.username = "";
-      state.email = "";
-      state.phone = "";
-      state.password = "";
-      state.confirmPassword = "";
-      state.accType = {};
-      state.number_of_va = 0;
-      state.va_description = "";
-      state.va_assist_application = "";
-      state.source = "";
-      state.other_source = "";
-      state.referred_person = "";
-    }
-
-    async function validateStep1() {
-      state.errorMsg = ""
-      if (state.first_name == "") {
-        state.errorMsg = "First name is required";
-      }
-      if (state.last_name == "") {
-        state.errorMsg = "Last name is required";
-      }
-      if (state.username == "") {
-        state.errorMsg = "Username is required";
-      }
-      if (state.email == "") {
-        state.errorMsg = "Email is required";
-      }
-      if (state.phone == "") {
-        state.errorMsg = "Phone is required";
-      }
-
-      if ( state.password.length < 6 ) {
-        state.errorMsg = "Too short password";
-      }
-      if (state.password != state.confirmPassword) {
-        state.errorMsg = "Passwords did not match";
-      }
-
-      if ( state.errorMsg == "" ) {
-        // await axios.post("/signup", signupData.value);
-        state.e1 = 2
-      }
-    }
-
-    function validateStep2() {
-      state.errorMsg = ""
-      if (state.accType == "") {
-        state.errorMsg = "Please select a account type";
-      }
-
-      if ( state.accType == 'client' ) {
-        if ( state.number_of_va == 0 ) {
-          state.errorMsg = "Please set number of VA you need.";
-        }
-        if ( state.va_description == "" ) {
-          state.errorMsg = "Please write down task requirements.";
-        }
-        if ( state.va_assist_application == "" ) {
-          state.errorMsg = "Please write down software requirements.";
-        }
-      }
-
-      if ( state.errorMsg == "" ) {
+      if (state.errorMsg === '') {
         state.e1 = 3
       }
     }
@@ -570,33 +501,37 @@ export default {
     async function signup() {
       try {
         // validate tos agreement
-        if ( state.tos_agreement == 'no' ) {
-          let _msg = "You must agree to terms and conditions to signup."
-          state.errorMsg = _msg
-          throw _msg
-        }
-
-        // validate password match
-        if (state.password != state.confirmPassword) {
-          state.errorMsg = "Passwords did not match"
-          throw "Passwords did not match";
-        }
-
-        // validate account type selection
-        if ( state.accType == "" ) {
-          state.errorMsg = '"I am looking to" is required field.'
-          throw '"I am looking to" is required field.'
+        if (state.tos_agreement === 'no') {
+          const msg = 'You must agree to terms and conditions to signup.'
+          state.errorMsg = msg
+          throw msg
         }
 
         // validate password match
         if (state.password !== state.confirmPassword) {
           state.errorMsg = 'Passwords did not match'
+          // eslint-disable-next-line no-throw-literal
           throw 'Passwords did not match'
         }
 
         // validate account type selection
         if (state.accType === '') {
           state.errorMsg = '"I am looking to" is required field.'
+          // eslint-disable-next-line no-throw-literal
+          throw '"I am looking to" is required field.'
+        }
+
+        // validate password match
+        if (state.password !== state.confirmPassword) {
+          state.errorMsg = 'Passwords did not match'
+          // eslint-disable-next-line no-throw-literal
+          throw 'Passwords did not match'
+        }
+
+        // validate account type selection
+        if (state.accType === '') {
+          state.errorMsg = '"I am looking to" is required field.'
+          // eslint-disable-next-line no-throw-literal
           throw '"I am looking to" is required field.'
         }
 
