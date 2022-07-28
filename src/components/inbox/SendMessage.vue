@@ -271,7 +271,7 @@ export default {
 .box{
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: start-flex;
     align-items: baseline;
     gap: 25px;
   }
