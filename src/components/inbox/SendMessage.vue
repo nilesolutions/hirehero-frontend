@@ -211,6 +211,7 @@ export default {
         const form = new FormData()
         form.append('conversationId', activeConversation.value.id)
         form.append('message', state.msgText)
+        // eslint-disable-next-line no-restricted-syntax
         for (const file of state.files) form.append('attachments', file)
         if (state.finalBlob) form.append('attachments', state.finalBlob, `${Date.now()}.mp3`)
 
