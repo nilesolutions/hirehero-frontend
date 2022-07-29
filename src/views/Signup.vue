@@ -302,6 +302,15 @@
                             style="margin-top: 0px"
                           ></v-checkbox>
 
+                          <!--google site recaptcha-->
+                          <vue-recaptcha
+                            class="mb-4"
+                            :sitekey="siteKey"
+                            @verify="captchaVerifyMethod"
+                            @expired="setCaptchaAsNotVerified"
+                            @error="setCaptchaAsNotVerified"
+                          />
+
                           <v-btn
                             @click="state.e1 = 2"
                           >
@@ -310,7 +319,7 @@
                           <v-btn
                             color="primary"
                             type="submit"
-                            class="auth-submit-btn"
+                            class=""
                             @click="signup"
                             :disabled="state.isLoading"
                             :loading="state.isLoading"
@@ -372,13 +381,19 @@
 <script>
 // eslint-disable-next-line object-curly-newline
 import axios from '@axios'
+// eslint-disable-next-line object-curly-newline
+import { VueRecaptcha } from 'vue-recaptcha'
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
 import themeConfig from '@themeConfig'
-import { reactive, computed } from '@vue/composition-api'
+import { reactive, computed, ref } from '@vue/composition-api'
+import { RECAPTCHA_SITE_KEY } from '../config'
 
 export default {
   name: 'Signup',
+  components: { VueRecaptcha },
   setup() {
+    const siteKey = ref(RECAPTCHA_SITE_KEY)
+    const isCaptchaVerified = ref(false)
     const state = reactive({
       isPasswordVisible: false,
       isLoading: false,
@@ -500,6 +515,12 @@ export default {
 
     async function signup() {
       try {
+        // catpcha check
+        if (!isCaptchaVerified.value) {
+          state.errorMsg = 'Please verify you are not a robot.'
+          // eslint-disable-next-line no-throw-literal
+          throw 'Please verify you are not a robot.'
+        }
         // validate tos agreement
         if (state.tos_agreement === 'no') {
           const msg = 'You must agree to terms and conditions to signup.'
@@ -552,7 +573,18 @@ export default {
       }
     }
 
+    function captchaVerifyMethod(response) {
+      // eslint-disable-next-line no-unneeded-ternary
+      isCaptchaVerified.value = response ? true : false
+    }
+
+    function setCaptchaAsNotVerified() {
+      isCaptchaVerified.value = false
+    }
+
     return {
+      siteKey,
+      isCaptchaVerified,
       state,
       accTypeOpts,
 
@@ -565,10 +597,13 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      // eslint-disable-next-line global-require
       signupBg: require('@/assets/images/signup.svg'),
       signup,
       validateStep1,
       validateStep2,
+      captchaVerifyMethod,
+      setCaptchaAsNotVerified,
     }
   },
 }

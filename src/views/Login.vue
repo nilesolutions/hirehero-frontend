@@ -55,7 +55,7 @@
                       placeholder="Email"
                       hide-details="auto"
                       class="mb-6"
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="password"
@@ -69,7 +69,7 @@
                       hide-details="auto"
                       class="mb-2"
                       @click:append="isPasswordVisible = !isPasswordVisible"
-                    ></v-text-field>
+                    />
 
                     <div class="d-flex align-center justify-space-between flex-wrap">
                       <v-checkbox hide-details label="Remember Me" class="mt-0"> </v-checkbox>
@@ -83,7 +83,7 @@
                       @verify="captchaVerifyMethod"
                       @expired="setCaptchaAsNotVerified"
                       @error="setCaptchaAsNotVerified"
-                    ></vue-recaptcha>
+                    />
                     <v-btn
                       block
                       color="primary"
@@ -147,7 +147,7 @@ export default {
       try {
         if (isLoading.value) return
         if (!isCaptchaVerified.value) {
-          errorMsg.value = 'Please verify captcha!'
+          errorMsg.value = 'Please verify you are not a robot.'
           return
         }
         errorMsg.value = ''
