@@ -72,21 +72,21 @@
                         <v-stepper-step
                           :complete="state.e1 > 1"
                           step="1"
-                        ></v-stepper-step>
+                        />
 
-                        <v-divider></v-divider>
+                        <v-divider/>
 
                         <v-stepper-step
                           :complete="state.e1 > 2"
                           step="2"
-                        ></v-stepper-step>
+                        />
 
                         <v-divider></v-divider>
 
                         <v-stepper-step
                           :complete="state.e1 > 3"
                           step="3"
-                        ></v-stepper-step>
+                        />
                       </v-stepper-header>
                       <v-stepper-items>
                         <v-stepper-content step="1">
@@ -102,18 +102,18 @@
                                   placeholder="First name"
                                   hide-details="auto"
                                   class="mb-4"
-                                ></v-text-field>
+                                />
                               </v-col>
 
                               <v-col>
                                 <v-text-field
-                                v-model="state.last_name"
-                                outlined
-                                label="Last name"
-                                placeholder="Last name"
-                                hide-details="auto"
-                                class="mb-4"
-                              ></v-text-field>
+                                  v-model="state.last_name"
+                                  outlined
+                                  label="Last name"
+                                  placeholder="Last name"
+                                  hide-details="auto"
+                                  class="mb-4"
+                                />
                               </v-col>
                             </v-row>
 
@@ -124,7 +124,7 @@
                               placeholder="Username"
                               hide-details="auto"
                               class="mb-4"
-                            ></v-text-field>
+                            />
 
                             <v-text-field
                               v-model="state.email"
@@ -133,7 +133,7 @@
                               placeholder="username@domain.com"
                               hide-details="auto"
                               class="mb-4"
-                            ></v-text-field>
+                            />
 
                             <v-text-field
                               v-model="state.phone"
@@ -142,7 +142,7 @@
                               placeholder="(000) 000-0000"
                               hide-details="auto"
                               class="mb-4"
-                            ></v-text-field>
+                            />
 
                             <v-text-field
                               v-model="state.password"
@@ -156,7 +156,7 @@
                               hide-details="auto"
                               class="mb-4"
                               @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                            ></v-text-field>
+                            />
 
                             <v-text-field
                               v-model="state.confirmPassword"
@@ -167,7 +167,7 @@
                               hide-details="auto"
                               class="mb-4"
                               @click:append="state.isPasswordVisible = !state.isPasswordVisible"
-                            ></v-text-field>
+                            />
                           </v-card>
 
                           <v-btn
@@ -188,8 +188,7 @@
                               label="I'm looking to"
                               outlined
                               :items="accTypeOpts"
-                            >
-                            </v-select>
+                            />
 
                             <v-text-field
                               v-if="state.accType == 'client'"
@@ -201,7 +200,7 @@
                               placeholder="0"
                               hide-details="auto"
                               class="mb-4"
-                            ></v-text-field>
+                            />
 
                             <v-textarea
                               v-if="state.accType == 'client'"
@@ -212,7 +211,7 @@
                               placeholder="Type here"
                               rows="3"
                               row-height="25"
-                            ></v-textarea>
+                            />
 
                             <v-textarea
                               v-if="state.accType == 'client'"
@@ -223,7 +222,7 @@
                               placeholder="Type here"
                               rows="3"
                               row-height="25"
-                            ></v-textarea>
+                            />
                           </v-card>
 
                           <v-btn
@@ -249,28 +248,28 @@
                               label="Word of Mouth"
                               value="Word of Mouth"
                               style="margin-top: 20px"
-                            ></v-checkbox>
+                            />
 
                             <v-checkbox
                               v-model="state.source"
                               label="Social Media"
                               value="Social Media"
                               style="margin-top: 0px"
-                            ></v-checkbox>
+                            />
 
                             <v-checkbox
                               v-model="state.source"
                               label="Website"
                               value="Website"
                               style="margin-top: 0px"
-                            ></v-checkbox>
+                            />
 
                             <v-checkbox
                               v-model="state.source"
                               label="Other"
                               value="Other"
                               style="margin-top: 0px"
-                            ></v-checkbox>
+                            />
 
                             <!--other value-->
                             <v-text-field
@@ -280,17 +279,17 @@
                                 outlined
                                 hide-details="auto"
                                 class="mb-4"
-                              ></v-text-field>
+                              />
                             <!--mouth of word value-->
 
                             <h4 v-if="state.source == 'Word of Mouth'">What is the name of the person that referred you to us?</h4>
                             <v-text-field
-                                v-if="state.source == 'Word of Mouth'"
-                                v-model="state.referred_person"
-                                outlined
-                                hide-details="auto"
-                                class="mb-4"
-                              ></v-text-field>
+                              v-if="state.source == 'Word of Mouth'"
+                              v-model="state.referred_person"
+                              outlined
+                              hide-details="auto"
+                              class="mb-4"
+                            />
                           </v-card>
 
 
@@ -300,7 +299,16 @@
                             label="I acknowledge that I have read and agree to the Terms."
                             value="yes"
                             style="margin-top: 0px"
-                          ></v-checkbox>
+                          />
+
+                          <!--google site recaptcha-->
+                          <vue-recaptcha
+                            class="mb-4"
+                            :sitekey="siteKey"
+                            @verify="captchaVerifyMethod"
+                            @expired="setCaptchaAsNotVerified"
+                            @error="setCaptchaAsNotVerified"
+                          />
 
                           <v-btn
                             @click="state.e1 = 2"
@@ -310,7 +318,7 @@
                           <v-btn
                             color="primary"
                             type="submit"
-                            class="auth-submit-btn"
+                            class=""
                             @click="signup"
                             :disabled="state.isLoading"
                             :loading="state.isLoading"
@@ -372,13 +380,19 @@
 <script>
 // eslint-disable-next-line object-curly-newline
 import axios from '@axios'
+// eslint-disable-next-line object-curly-newline
+import { VueRecaptcha } from 'vue-recaptcha'
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
 import themeConfig from '@themeConfig'
-import { reactive, computed } from '@vue/composition-api'
+import { reactive, computed, ref } from '@vue/composition-api'
+import { RECAPTCHA_SITE_KEY } from '../config'
 
 export default {
   name: 'Signup',
+  components: { VueRecaptcha },
   setup() {
+    const siteKey = ref(RECAPTCHA_SITE_KEY)
+    const isCaptchaVerified = ref(false)
     const state = reactive({
       isPasswordVisible: false,
       isLoading: false,
@@ -500,6 +514,12 @@ export default {
 
     async function signup() {
       try {
+        // catpcha check
+        if (!isCaptchaVerified.value) {
+          state.errorMsg = 'Please verify you are not a robot.'
+          // eslint-disable-next-line no-throw-literal
+          throw 'Please verify you are not a robot.'
+        }
         // validate tos agreement
         if (state.tos_agreement === 'no') {
           const msg = 'You must agree to terms and conditions to signup.'
@@ -552,7 +572,18 @@ export default {
       }
     }
 
+    function captchaVerifyMethod(response) {
+      // eslint-disable-next-line no-unneeded-ternary
+      isCaptchaVerified.value = response ? true : false
+    }
+
+    function setCaptchaAsNotVerified() {
+      isCaptchaVerified.value = false
+    }
+
     return {
+      siteKey,
+      isCaptchaVerified,
       state,
       accTypeOpts,
 
@@ -565,10 +596,13 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      // eslint-disable-next-line global-require
       signupBg: require('@/assets/images/signup.svg'),
       signup,
       validateStep1,
       validateStep2,
+      captchaVerifyMethod,
+      setCaptchaAsNotVerified,
     }
   },
 }
@@ -617,7 +651,6 @@ export default {
 {
   box-shadow: none;
 }
-
 
   .v-application .pa-10{
     padding-left:0 !important;
