@@ -4,14 +4,23 @@
       <h2 class="cursive-font black--text">
         Projects
       </h2>
-      <v-btn
-        v-if="userType == 'client'"
-        class="ml-auto py-2"
-        color="primary"
-        @click="isCreateDialogOpen = true"
+      <v-tooltip
+        bottom
+        color="error"
       >
-        Add Project
-      </v-btn>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-if="userType == 'client'"
+            class="ml-auto py-2"
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+            @click="isCreateDialogOpen = true"
+          >Add Project</v-btn>
+        </template>
+
+        <span class="tooltip-font">Create new project</span>
+      </v-tooltip>
     </div>
 
     <div

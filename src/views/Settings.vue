@@ -63,7 +63,6 @@
 import { computed } from '@vue/composition-api'
 import AccountManagement from '@/components/settings/AccountManagement.vue'
 import AccountSecurity from '@/components/settings/AccountSecurity.vue'
-import SubscriptionManagement from '@/components/settings/SubscriptionManagement.vue'
 import Subscription from '@/views/Subscription.vue'
 
 import { useSubscription } from '@/composables/user/subscription'
@@ -74,7 +73,6 @@ export default {
   components: {
     AccountManagement,
     AccountSecurity,
-    SubscriptionManagement,
     Subscription,
   },
   setup() {

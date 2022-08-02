@@ -6,7 +6,7 @@
 
     <div
       v-if="state.isLoading"
-      class="d-flex flex-row justify-center"
+      class="d-flex"
     >
       <v-progress-circular
         color="primary"

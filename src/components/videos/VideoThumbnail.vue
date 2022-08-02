@@ -72,6 +72,16 @@
           {{ icons.mdiContentCopy }}
         </v-icon>
       </v-btn>
+      <span
+        v-if="showLinkCopiedSuccessMessage"
+        class="success--text mt-2"
+        style="font-weight: bold"
+      >Link is copied to clipboard.</span>
+      <span
+        v-if="showLinkCopiedErrorMessage"
+        class="error--text mt-2"
+        style="font-weight: bold"
+      >Failed to copy the link!</span>
     </v-card-text>
 
     <v-dialog
@@ -112,7 +122,7 @@ import axios from '@axios'
 import {
   mdiContentCopy, mdiDelete, mdiOpenInNew, mdiPencilOutline,
 } from '@mdi/js'
-import { computed, reactive } from '@vue/composition-api'
+import { computed, reactive, ref } from '@vue/composition-api'
 import { useVideos } from '@/composables/videos/videos'
 import { useUser } from '@/composables/user/user'
 
@@ -129,6 +139,23 @@ export default {
       isSubmitting: false,
       updatedTitle: '',
     })
+    const showLinkCopiedSuccessMessage = ref(false)
+    const showLinkCopiedErrorMessage = ref(false)
+    const linkMessageTimeout = 3000 // ms
+
+    function showLinkCopiedSuccessWithTimeout() {
+      showLinkCopiedSuccessMessage.value = true
+      setTimeout(() => {
+        showLinkCopiedSuccessMessage.value = false
+      }, linkMessageTimeout)
+    }
+
+    function showLinkCopiedErrorWithTimeout() {
+      showLinkCopiedErrorMessage.value = true
+      setTimeout(() => {
+        showLinkCopiedErrorMessage.value = false
+      }, linkMessageTimeout)
+    }
 
     function openInTab() {
       window.open(video.url, '_blank')
@@ -138,10 +165,10 @@ export default {
       navigator.clipboard
         .writeText(video.url)
         .then(() => {
-          alert('Copied to clipboard')
+          showLinkCopiedSuccessWithTimeout()
         })
         .catch(() => {
-          alert('Failed to copy')
+          showLinkCopiedErrorWithTimeout()
         })
     }
 
@@ -208,6 +235,9 @@ export default {
         mdiOpenInNew,
         mdiPencilOutline,
       },
+
+      showLinkCopiedSuccessMessage,
+      showLinkCopiedErrorMessage,
     }
   },
 }

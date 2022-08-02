@@ -12,7 +12,7 @@
     v-else
     class="my-2 d-flex flex-wrap flex-row"
   >
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="col-12 col-md-3">
       <div class="section-heading gray-heading font-weight-bold task-due-m">
         Not done
       </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="col-12 col-md-3">
       <div class="section-heading blue-heading font-weight-bold task-due-m">
         Due Soon
       </div>
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="col-12 col-md-3">
       <div class="section-heading red-heading font-weight-bold task-due-m">
         Overdue
       </div>
@@ -72,7 +72,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="col-12 col-md-3">
       <div class="section-heading green-heading font-weight-bold task-due-m">
         Completed
       </div>
@@ -148,6 +148,7 @@ export default {
 }
 
 .section-heading {
+  cursor: pointer;
   width: 138px;
   height: 34px;
   color: white;

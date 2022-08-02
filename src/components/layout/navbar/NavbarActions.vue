@@ -10,7 +10,7 @@
         :value="notificationsCount"
       >
         <v-tooltip
-          bottom
+          left
           color="error"
         >
           <template v-slot:activator="{ on, attrs }">
