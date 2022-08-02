@@ -6,7 +6,7 @@
         Your Videos
       </h4>
       <div
-        v-if="myVideos.length"
+        v-if="myVideos.length > 0"
         class="videos-container d-flex video-mobile flex-row flex-wrap"
       >
         <video-thumbnail

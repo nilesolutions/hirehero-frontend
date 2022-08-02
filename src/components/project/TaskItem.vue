@@ -11,7 +11,19 @@
         class="task-priority font-weight-bold"
         :class="task.priority"
       >
-        {{ task.priority }}</v-btn>
+        <v-tooltip
+          v-if="task.priority == 'High'"
+          bottom
+          color="error"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on">{{ task.priority }}</span>
+          </template>
+
+          <span class="tooltip-font">Priority #1: complete this first!</span>
+        </v-tooltip>
+        <span v-else>{{ task.priority }}</span>
+      </v-btn>
     </v-card-text>
     <v-card-text class="flex-row align-center">
       <div style="text-transform: capitalize">

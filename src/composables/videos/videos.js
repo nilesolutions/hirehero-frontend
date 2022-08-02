@@ -1,9 +1,13 @@
+/* eslint-disable no-return-assign */
 import {
   computed, reactive, readonly, set,
 } from '@vue/composition-api'
 
 const state = reactive({
-  videos: [],
+  videos: {
+    myVideos: [],
+    associateVideos: [],
+  },
   isUploading: false,
   isRecording: false,
   isRecordDialogOpen: false,
@@ -22,17 +26,17 @@ const addVideo = video => {
 }
 
 const updateVideo = newVideo => {
-  const idx = state.videos.myVideos.findIndex(vid => vid.id == newVideo.id)
+  const idx = state.videos.myVideos.findIndex(vid => vid.id === newVideo.id)
   set(state.videos.myVideos, idx, newVideo)
 }
 
 const deleteVideo = videoId => {
-  state.videos.myVideos = state.videos.myVideos.filter(t => t.id != videoId)
+  state.videos.myVideos = state.videos.myVideos.filter(t => t.id !== videoId)
 }
 
 const activeVideo = computed(() => {
   const allVideos = [...state.videos.myVideos, ...state.videos.associateVideos]
-  return allVideos.find(video => video.url == state.clickedVideoUrl)
+  return allVideos.find(video => video.url === state.clickedVideoUrl)
 })
 
 const toggleUpload = val => (state.isUploading = val)
@@ -50,10 +54,11 @@ const myVideos = computed(() => {
 })
 
 const associateVideos = computed(() => {
-  if (state.videos.myVideos) return state.videos.associateVideos
+  if (state.videos.associateVideos) return state.videos.associateVideos
   return []
 })
 
+// eslint-disable-next-line import/prefer-default-export
 export function useVideos() {
   return {
     state: readonly(state),

@@ -177,7 +177,7 @@ export default {
       if (userType.value == 'va') return false
       // if (!isSubscribed.value && route.value.name != "settings") return true;
       if (!isSubscriptionActive.value && route.value.name != 'settings') return true
-      console.log('isSubscriptionActive : ', isSubscriptionActive.value)
+      // console.log('isSubscriptionActive : ', isSubscriptionActive.value)
       return false
     })
 
