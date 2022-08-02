@@ -17,7 +17,7 @@
       class="ml-auto btn-box"
     >
       <v-tooltip
-        top
+        left
         color="error"
       >
         <template v-slot:activator="{ on, attrs }">
