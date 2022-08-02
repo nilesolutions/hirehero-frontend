@@ -1,66 +1,70 @@
-import { computed, reactive, readonly } from '@vue/composition-api'
-import { usePusher } from '@/composables/pusher'
-import { useNotifications } from './notifications'
+import { usePusher } from "@/composables/pusher";
+import { computed, reactive, readonly } from "@vue/composition-api";
+import { useNotifications } from "./notifications";
 
-const { state: pusherState } = usePusher()
-const { state: notificationsState } = useNotifications()
+const { state: pusherState } = usePusher();
+const { state: notificationsState } = useNotifications();
 
 const state = reactive({
   conversation: {},
   associatedUser: {},
   messages: [],
   onlineUsers: [],
-})
+});
 
-const setConversation = val => (state.conversation = val)
-const setAssociatedUser = val => {
+const setConversation = (val) => (state.conversation = val);
+const setAssociatedUser = (val) => {
   state.associatedUser = val
   console.log('setAssociatedUser : ', val)
-}
+};
 
-const setMessages = val => (state.messages = val)
-const addMessage = val => (state.messages = [...state.messages, val])
-const deleteMessage = msgId => (state.messages = state.messages.filter(msg => msg.id != msgId))
+const setMessages = (val) => (state.messages = val);
+const addMessage = (val) => {
+  console.log('Val : ',val)
+  state.messages = [...state.messages,val]
+  console.log('state.messages = [...state.messages,val]')
+};
+const deleteMessage = (msgId) => (state.messages = state.messages.filter((msg) => msg.id != msgId));
 
 const updateOnlineUsers = () => {
-  const channel = pusherState.pusher.channel(`presence-${state.conversation.id}`)
-  const onlineUsers = []
+  const channel = pusherState.pusher.channel(`presence-${state.conversation.id}`);
+  const onlineUsers = [];
 
-  channel.members.each(member => {
+  channel.members.each((member) => {
     onlineUsers.push({
       id: member.info.id,
       name: member.info.name,
       type: member.info.type,
       profile_picture_url: member.info.profile_picture_url,
-    })
-  })
+    });
+  });
 
-  state.onlineUsers = onlineUsers
-}
+  state.onlineUsers = onlineUsers;
+};
 
 const associatedUser = computed(() => {
-  if (Object.keys(state.associatedUser).length) return state.associatedUser
-  return false
-})
+  if (Object.keys(state.associatedUser).length) return state.associatedUser;
+  return false;
+});
 
 const activeConversation = computed(() => {
-  if (Object.keys(state.conversation).length) return state.conversation
-  return false
-})
+  if (Object.keys(state.conversation).length) return state.conversation;
+  return false;
+});
 
 const readMsgs = computed(() => {
-  const { earliestUnread } = notificationsState.notification
-  if (!earliestUnread) return state.messages
-  const earliestDate = new Date(earliestUnread)
-  return state.messages.filter(msg => new Date(msg.created_at) < earliestDate)
-})
+  const earliestUnread = notificationsState.notification.earliestUnread;
+  if (!earliestUnread) return state.messages;
+  const earliestDate = new Date(earliestUnread);
+  return state.messages.filter((msg) => new Date(msg.created_at) < earliestDate);
+});
 
 const unreadMsgs = computed(() => {
-  const { earliestUnread } = notificationsState.notification
-  if (!earliestUnread) return []
-  const earliestDate = new Date(earliestUnread)
-  return state.messages.filter(msg => new Date(msg.created_at) > earliestDate)
-})
+  const earliestUnread = notificationsState.notification.earliestUnread;
+  if (!earliestUnread) return [];
+  const earliestDate = new Date(earliestUnread);
+  return state.messages.filter((msg) => new Date(msg.created_at) > earliestDate);
+});
 
 export function useMessages() {
   return {
@@ -79,5 +83,5 @@ export function useMessages() {
     addMessage,
     setMessages,
     deleteMessage,
-  }
+  };
 }

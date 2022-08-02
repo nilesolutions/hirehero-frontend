@@ -1,45 +1,23 @@
 <template>
   <div class="video-call">
-    <v-dialog
-      v-model="callState.isInCall"
-      persistent
-      fullscreen
-    >
+    <v-dialog v-model="callState.isInCall" persistent fullscreen>
       <v-card>
         <v-card-title class="d-flex flex-row align-center">
           <span>Call</span>
-          <v-btn
-            class="ml-auto"
-            icon
-            @click="handleCallTermination"
-          >
+          <v-btn class="ml-auto" icon @click="handleCallTermination">
             <v-icon>{{ icons.mdiClose }}</v-icon>
           </v-btn>
         </v-card-title>
 
         <div v-show="callState.isBeingCalled">
           Call from {{ callState.incomingCallRequest.name }}
-          <v-btn @click="answerCall">
-            Answer
-          </v-btn>
-          <v-btn @click="handleCallTermination">
-            Reject
-          </v-btn>
+          <v-btn @click="answerCall">Answer</v-btn>
+          <v-btn @click="handleCallTermination">Reject</v-btn>
         </div>
 
         <div class="d-flex flex-row">
-          <video
-            ref="localVideoPreview"
-            src=""
-            class="col-6 video-preview"
-            autoplay
-          />
-          <video
-            ref="remoteVideoPreview"
-            src=""
-            class="col-6 video-preview"
-            autoplay
-          />
+          <video src="" class="col-6 video-preview" ref="localVideoPreview" autoplay></video>
+          <video src="" class="col-6 video-preview" ref="remoteVideoPreview" autoplay></video>
         </div>
       </v-card>
     </v-dialog>
@@ -47,11 +25,10 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js'
-import { useVideoCall } from '@/composables/chat/videocall'
-
+import { mdiClose } from "@mdi/js";
+import { useVideoCall } from "@/composables/chat/videocall";
 export default {
-  name: 'VideoCall',
+  name: "VideoCall",
   setup() {
     const {
       localVideoPreview,
@@ -59,7 +36,7 @@ export default {
       handleCallTermination,
       answerCall,
       state: callState,
-    } = useVideoCall()
+    } = useVideoCall();
 
     return {
       handleCallTermination,
@@ -70,9 +47,9 @@ export default {
       icons: {
         mdiClose,
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style>
@@ -83,8 +60,4 @@ export default {
   top: 0;
 }
 
-.video-preview {
-  /* height: 200px;
-  width: 200px; */
-}
 </style>

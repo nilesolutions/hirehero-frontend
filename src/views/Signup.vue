@@ -604,15 +604,16 @@ export default {
         state.isLoading = true
 
         const response = await axios.post('/signup', signupData.value)
-        if (response) window.fpr('referral', { email: response.data.email })
-
+        if (response){
+          window.fpr('referral', { email: response.data.email })
         // reset the form
-        resetForm(state)
-
-        state.accCreated = true
-      } catch (err) {
+          resetForm(state)
+          state.accCreated = true
+      }}
+      catch(err) {
         state.errorMsg = err.response.data.message
-      } finally {
+      }
+      finally {
         state.isLoading = false
       }
     }

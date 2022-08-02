@@ -1,23 +1,23 @@
 <template>
-  <div class="d-flex flex-column col-12 col-md-8 padding-0">
+  <div class="d-flex flex-column col-12 col-md-8 padding-0 box-height">
     <v-card class="chat-wrapper ">
-      <messages-log />
-      <send-message />
+      <messages-log showHeader=true height="500px" OverFlowScroll=true></messages-log>
+      <SendMessage :attachment="true" :recording="true"></SendMessage>
     </v-card>
   </div>
 </template>
 
 <script>
-import MessagesLog from '@/components/inbox/MessagesLog.vue'
-import SendMessage from '@/components/inbox/SendMessage.vue'
+import MessagesLog from "@/components/inbox/MessagesLog.vue";
+import SendMessage from "@/components/inbox/SendMessage.vue";
 
 export default {
-  name: 'InboxMessages',
+  name: "InboxMessages",
   components: {
     MessagesLog,
     SendMessage,
   },
-}
+};
 </script>
 
 <style scoped>
