@@ -16,14 +16,24 @@
       v-if="userType == 'client'"
       class="ml-auto btn-box"
     >
-      <v-btn
-        color="primary"
-        large
-        tile
-        @click="isCreateDiagOpen = true"
+      <v-tooltip
+        left
+        color="error"
       >
-        Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
-      </v-btn>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="primary"
+            tile
+            v-bind="attrs"
+            v-on="on"
+            @click="isCreateDiagOpen = true"
+          >
+            Add Task <v-icon>{{ icons.mdiPlus }}</v-icon>
+          </v-btn>
+        </template>
+
+        <span class="tooltip-font">Create a new task</span>
+      </v-tooltip>
     </div>
 
     <create-task-dialog

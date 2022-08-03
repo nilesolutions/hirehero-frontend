@@ -96,7 +96,6 @@ export default {
   setup(props) {
     const { recording,attachment } = props
     const { activeConversation} = useMessages();
-    const count = ref(1)
     const state = reactive({
       sizeError: false,
       msgText: "",
@@ -194,7 +193,6 @@ export default {
         if (!canSend.value) return;
         state.isSending = true;
 
-        console.log('Count : ',count.value++)
         const form = new FormData();
         form.append("conversationId", activeConversation.value.id);
         form.append("message", state.msgText);
@@ -263,7 +261,7 @@ export default {
 .box{
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: start-flex;
     align-items: baseline;
     gap: 25px;
   }

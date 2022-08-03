@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import { computed, ref } from '@vue/composition-api'
 
 const route = ref({})
@@ -9,6 +10,7 @@ const routeParams = () => route.value.params
 const currRouteName = computed(() => route.value.name)
 const currRouteParams = computed(() => route.value.params)
 
+// eslint-disable-next-line import/prefer-default-export
 export function useRouter() {
   return {
     setRoute,

@@ -6,25 +6,46 @@
       </h2>
 
       <div class="ml-auto">
-        <v-btn
-          color="primary"
-          tile
-          :outlined="state.isRecordDialogOpen"
-          :disabled="isCtrlDisabled"
-          @click="toggleRecordDialog(!state.isRecordDialogOpen)"
+        <v-tooltip
+          bottom
+          color="error"
         >
-          Record
-        </v-btn>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              color="primary"
+              tile
+              :outlined="state.isRecordDialogOpen"
+              :disabled="isCtrlDisabled"
+              @click="toggleRecordDialog(!state.isRecordDialogOpen)"
+            >
+              Record
+            </v-btn>
+          </template>
+          <span class="tooltip-font">Click to record a new video</span>
+        </v-tooltip>
 
-        <v-btn
-          class="ml-2 video-upload"
+        <v-tooltip
+          bottom
           color="info"
-          tile
-          :disabled="isCtrlDisabled"
-          @click="toggleUploadDialog(true)"
         >
-          Upload
-        </v-btn>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="ml-2 video-upload"
+              color="info"
+              tile
+              :disabled="isCtrlDisabled"
+              @click="toggleUploadDialog(true)"
+            >
+              Upload
+            </v-btn>
+          </template>
+          <span class="tooltip-font">Click to upload a video</span>
+        </v-tooltip>
+
       </div>
     </div>
 
@@ -66,10 +87,10 @@ export default {
       try {
         toggleLoading(true)
         const response = await axios.get('/media')
-        console.log(response)
+        // console.log(response)
         setVideos(response.data)
       } catch (err) {
-        console.log(err)
+        // console.log(err)
       } finally {
         toggleLoading(false)
       }
@@ -80,7 +101,7 @@ export default {
         await axios.delete(`/media/${videoId}`)
         deleteVideo(videoId)
       } catch (err) {
-        console.log(err.response)
+        // console.log(err.response)
       }
     }
     return {

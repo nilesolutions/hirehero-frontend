@@ -1,15 +1,14 @@
 <template>
   <div class="auth-wrapper auth-v2">
     <div class="auth-inner">
-      <router-link
-        to="/"
-        class="brand-logo"
-      >
+      <router-link to="/" class="brand-logo d-flex align-center">
         <v-img
           :src="appLogo"
+          max-height="30px"
+          max-width="150px"
           alt="logo"
           contain
-          class="me-3 logo-img-size"
+          class="me-3"
         />
 
         <!-- <h2 class="text--primary mt-3">
@@ -18,10 +17,7 @@
       </router-link>
 
       <v-row class="auth-row ma-0">
-        <v-col
-          lg="6"
-          class="d-none d-lg-block position-relative overflow-hidden pa-0"
-        >
+        <v-col lg="6" class="d-none d-lg-block position-relative overflow-hidden pa-0">
           <div class="auth-bg-wrapper">
             <!-- <v-img :src="loginBg" alt="" /> -->
             <v-img
@@ -34,22 +30,10 @@
           </div>
         </v-col>
 
-        <v-col
-          lg="6"
-          class="d-flex align-center auth-bg pa-10 pb-0 login-form"
-        >
+        <v-col lg="6" class="d-flex align-center auth-bg pa-10 pb-0">
           <v-row>
-            <v-col
-              cols="12"
-              sm="8"
-              md="6"
-              lg="12"
-              class="mx-auto"
-            >
-              <v-card
-                flat
-                class="pb-3"
-              >
+            <v-col cols="12" sm="8" md="6" lg="12" class="mx-auto">
+              <v-card flat>
                 <v-card-text class="auth-mob-padding">
                   <p
                     class="cursive-font text-2xl font-weight-semibold text--primary auth-text mb-1"
@@ -71,8 +55,7 @@
                       placeholder="Email"
                       hide-details="auto"
                       class="mb-6"
-
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="password"
@@ -87,48 +70,39 @@
                       class="mb-2"
                       @click:append="isPasswordVisible = !isPasswordVisible"
                     />
-                    <!-- d-flex align-center justify-space-between flex-wrap -->
-                    <div class="custom-box">
-                      <v-checkbox
-                        hide-details
-                        label="Remember Me"
-                        class="mt-0"
-                      />
 
-                      <a
-                        class="ms-3 text-decoration-underline"
-                        href="#"
-                      > Forgot Password? </a>
+                    <div class="d-flex align-center justify-space-between flex-wrap">
+                      <v-checkbox hide-details label="Remember Me" class="mt-0"> </v-checkbox>
+
+                      <a class="ms-3 text-decoration-underline" href="#"> Forgot Password? </a>
                     </div>
-
+                    <!--google site recaptcha-->
+                    <vue-recaptcha
+                      class="mt-5"
+                      :sitekey="siteKey"
+                      @verify="captchaVerifyMethod"
+                      @expired="setCaptchaAsNotVerified"
+                      @error="setCaptchaAsNotVerified"
+                    />
                     <v-btn
                       block
                       color="primary"
                       type="submit"
                       class="mt-6 auth-submit-btn"
+                      @click="login"
                       :disabled="isLoading"
                       :loading="isLoading"
-                      @click="login"
                     >
                       Sign in
                     </v-btn>
-                    <div
-                      v-show="errorMsg != ''"
-                      class="my-2 text-center"
-                    >
-                      {{ errorMsg }}
-                    </div>
+                    <div v-show="errorMsg != ''" class="my-2 text-center">{{ errorMsg }}</div>
                   </v-form>
                 </v-card-text>
 
                 <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-                  <p class="mb-0 me-2">
-                    or
-                  </p>
-                  <br>
-                  <router-link to="/signup">
-                    Register
-                  </router-link>
+                  <p class="mb-0 me-2">or</p>
+                  <br />
+                  <router-link to="/signup"> Register </router-link>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -149,13 +123,16 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
+import { VueRecaptcha } from 'vue-recaptcha'
 import axios from '@axios'
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
 import themeConfig from '@themeConfig'
 import { ref } from '@vue/composition-api'
 import { usePusher } from '@/composables/pusher'
+import { RECAPTCHA_SITE_KEY } from '../config'
 
 export default {
+  components: { VueRecaptcha },
   setup() {
     const { updateAuthCreds } = usePusher()
     const isPasswordVisible = ref(false)
@@ -163,27 +140,40 @@ export default {
     const errorMsg = ref('')
     const email = ref('')
     const password = ref('')
+    const siteKey = ref(RECAPTCHA_SITE_KEY)
+    const isCaptchaVerified = ref(false)
 
     async function login() {
       try {
         if (isLoading.value) return
+        if (!isCaptchaVerified.value) {
+          errorMsg.value = 'Please verify you are not a robot.'
+          return
+        }
         errorMsg.value = ''
         isLoading.value = true
         const response = await axios.post('/login', {
           email: email.value,
           password: password.value,
-        });
-
-
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("userData", JSON.stringify(response.data.userData));
-        updateAuthCreds();
-        this.$router.push({ name: "dashboard" });
+        })
+        localStorage.setItem('accessToken', response.data.accessToken)
+        localStorage.setItem('userData', JSON.stringify(response.data.userData))
+        updateAuthCreds()
+        this.$router.push({ name: 'dashboard' })
       } catch (err) {
         errorMsg.value = err.response.data.message
       } finally {
         isLoading.value = false
       }
+    }
+
+    function captchaVerifyMethod(response) {
+      // eslint-disable-next-line no-unneeded-ternary
+      isCaptchaVerified.value = response ? true : false
+    }
+
+    function setCaptchaAsNotVerified() {
+      isCaptchaVerified.value = false
     }
 
     return {
@@ -192,6 +182,8 @@ export default {
       password,
       errorMsg,
       isLoading,
+      siteKey,
+      isCaptchaVerified,
 
       // Icons
       icons: {
@@ -202,8 +194,11 @@ export default {
       // themeConfig
       appName: themeConfig.app.name,
       appLogo: themeConfig.app.logo,
+      // eslint-disable-next-line global-require
       loginBg: require('@/assets/images/login.svg'),
       login,
+      captchaVerifyMethod,
+      setCaptchaAsNotVerified,
     }
   },
 }
@@ -212,50 +207,14 @@ export default {
 <style lang="scss" scoped>
 @import "@core/preset/preset/pages/auth.scss";
 .auth-submit-btn {
-  padding: 24px  0 !important;
-}
-.logo-img-size{
-    max-width: 150px !important;
-}
-.custom-box{
-  display: flex ;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-@media (max-width:1265px) {
-  .auth-mob-padding{
-
-    text-align: center !important;
-  }
-  .brand-logo{
-  left: 0 ;
-  right: 0 ;
-  margin: 0 auto ;
-  width: 100%;
-  }
+  border-radius: 0;
 }
 
 @media (max-width: 767px) {
-   .brand-logo{
-    display: flex;
-  justify-content: center;
-  align-items: center;
-  }
-  .logo-img-size{
-    max-width: 200px !important;
-    left: -30px;
-  }
-  .login-form{
-    padding-top: 80px !important;
-  }
-
   .auth-text {
     text-align: center;
   }
   .auth-mob-padding {
-
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
